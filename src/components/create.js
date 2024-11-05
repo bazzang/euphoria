@@ -1,0 +1,2246 @@
+import React, { useState } from 'react';
+
+import "../styles/common.css";
+import "../styles/contents.css";
+import bgimg from "../images/create/preview_bg.png"; // 미리보기 배경 이미지
+import letterimg from "../images/create/preview_letter.png"; // 미리보기 손글씨 이미지
+
+function Create() {
+    // 상태로 요소가 보이는지 여부를 관리
+    // 두 개의 요소의 가시성을 관리하는 상태
+    const [visibleTooltips, setVisibleTooltips] = useState({
+        tooltip1: true,
+        tooltip2: true,
+    });
+    
+
+    // 공통 클릭 핸들러로 요소 숨기기
+    const hideTooltip = (tooltipKey) => {
+        setVisibleTooltips((prevState) => ({
+        ...prevState,
+        [tooltipKey]: false, // 선택된 tooltip만 false로 변경
+        }));
+    };
+
+    // 메뉴 버튼 클릭 시 클래스 토글 역할을 하는 함수
+    // const toggleMenu = () => {
+    //     setIsActive(!isActive); // 상태를 반전시켜 토글 기능 구현
+    // }; 
+    // const [isActive, setIsActive] = useState(false);
+
+    // $('.btn-menu').click(function() {
+    //     $('.menu-wrap').toggleClass('active');
+    // })
+
+    ///////////////////////////////teststart///////////////////////////////
+    const [val1, setVal1] = useState('');
+    const [val2, setVal2] = useState('');
+    const [val3, setVal3] = useState('');
+    const [val4, setVal4] = useState('');
+    const [val5, setVal5] = useState('');
+    const [val6, setVal6] = useState('');
+    const [val7, setVal7] = useState('');
+
+    const handleSelectChange = (e) => {
+        setVal1(e.target.value); // 선택한 옵션 값을 상태에 저장
+    };
+
+    const handleSelectChange2 = (e) => {
+        setVal2(e.target.value); // 선택한 옵션 값을 상태에 저장
+    };
+
+    const handleTextChange = (e) => {
+        setVal3(e.target.value); // 메인텍스트입력
+    };
+    ////////////////////////////////testend//////////////////////////////
+
+    // 메뉴 접기 열기 함수 컴포넌트로 빼기 ***********
+    const [isBodyVisible, setIsBodyVisible] = useState(true);
+    const [isButtonActive, setIsButtonActive] = useState(false);
+
+    // 버튼 클릭 시 실행되는 함수 (메뉴 접기)
+    const toggleCategory = () => {
+        setIsBodyVisible(!isBodyVisible);  // category-body 가시성 토글
+        setIsButtonActive(!isButtonActive); // 버튼의 active 클래스 토글
+    };
+
+
+    const [previewImage, setPreviewImage] = useState(null); // 미리보기 이미지 상태
+
+    // 파일 선택 시 미리보기 설정
+    const handleImageChange = (event) => {
+        const file = event.target.files[0]; // 선택한 파일
+        if (file) {
+            const imageUrl = URL.createObjectURL(file); // 파일 URL 생성
+            setPreviewImage(imageUrl); // 미리보기 상태 업데이트
+        }
+    };
+
+    // 이미지 삭제 시 미리보기 제거
+    const handleImageRemove = () => {
+        setPreviewImage(null); // 미리보기 이미지 초기화
+    };
+
+    //컬러픽커 <레터링 색상>
+    const [color1, setColor1] = useState("#93EEF4"); // 초기 색상 설정
+    const [color2, setColor2] = useState("#93EEF4"); 
+
+    const handleColorChange1 = (e) => {
+        setColor1(e.target.value); // 선택한 색상으로 상태 업데이트
+    };
+    const handleColorChange2 = (e) => {
+        setColor2(e.target.value); // 선택한 색상으로 상태 업데이트
+    };
+
+
+
+  return (
+    <div className="contents-wrap">
+        <div className="container">
+            <div className="create-wrap">
+                <div className="create">
+                    <div className="create-preview">
+
+                        <div className="frame-wrap">
+                            <div className="frame">
+                                <section className="main">
+                                    <img className="frame-bg" src={bgimg}/>
+                                    <img className="frame-letter" src={letterimg} style={{ top: "60%" }}/>
+                                </section>
+                                <section className="main">
+                                    {/* <img className="frame-bg" src={previewImage}/> */}
+                                        :::메인:::
+                                        <br/>
+                                        타입 : {val1}<br/>
+                                        레터링문구 : {val2}<br/>
+                                        메인텍스트입력 : {val3}<br/>
+                                        메인 하단 예식 정보 : {val4}<br/>
+                                        스크롤 안내 : {val5}<br/>
+                                </section>
+                                <section className="main">
+                                    <img className="frame-bg" src={bgimg}/>
+                                    <img className="frame-letter" src={letterimg} style={{ top: "60%" }}/>
+                                </section>
+                            </div>
+                        </div>
+
+                        <div className="preview-focus">
+                            <label for="" className="switch">
+                                <input type="checkbox" checked />
+                            </label>
+                            <strong>자동 포커스</strong>
+                            <span>(사용하시면 제작하실때 편리합니다.)</span>
+                        </div>
+
+                    </div>
+
+                    <div className="create-contents">
+                            <div className="category">
+                                <div className="category-head">
+                                    <strong>메인</strong>
+                                    <button 
+                                        className={`btn-toggle ${isButtonActive ? 'active' : ''}`} 
+                                        onClick={toggleCategory}
+                                    >여닫기</button>
+                                </div>
+                                {isBodyVisible && (
+                                <div className="category-body">
+                                    <div className="option">
+                                        <div className="option-label">타입 <sup>필수</sup></div>
+                                        <div className="option-contents">
+                                            <div className="input-change">
+                                                {/* <input className="input-sts" type="text" value="포스터 (풀페이지)" readonly /> */}
+                                                {/* HERE */}
+                                                <select className="input-sts" value={val1} onChange={handleSelectChange}>
+                                                    <option value="포스터(풀페이지)">포스터(풀페이지)</option>
+                                                    <option value="포토그라피(풀페이지) - 디자인없음">포토그라피(풀페이지) - 디자인없음</option>
+                                                    <option value="오리지널(풀페이지) - 디자인없음">오리지널(풀페이지) - 디자인없음</option>
+                                                    <option value="폴라로이드 - 디자인없음">폴라로이드 - 디자인없음</option>
+                                                    <option value="프레임 - 디자인없음">프레임 - 디자인없음</option>
+                                                    <option value="심플 - 디자인없음">심플 - 디자인없음</option>
+                                                    <option value="아치 - 디자인없음">아치 - 디자인없음</option>
+                                                    <option value="레트로 - 디자인없음">레트로 - 디자인없음</option>
+                                                    <option value="실링왁스(이미지 없는 청첩장) - 디자인 없음">실링왁스(이미지 없는 청첩장) - 디자인 없음</option>
+                                                    <option value="화관(이미지 없는 청첩장) - 디자인 없음">화관(이미지 없는 청첩장) - 디자인 없음</option>
+                                                </select>
+                                                <button className="btn-change tooltip">변경
+                                                    {visibleTooltips.tooltip1 && (
+                                                        <span className="tooltip-box" onClick={() => hideTooltip('tooltip1')}>
+                                                        <span>10가지</span> 템플릿이 준비되어 있습니다.
+                                                        </span>
+                                                    )}
+                                                    {/* <span className="tooltip-box" onClick={onClickTooltip1}><span>10가지</span> 템플릿이 준비되어 있습니다.</span> */}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">사진 <sup>필수</sup></div>
+                                        <div className="option-contents">
+                                            <div className="img-uploader">
+                                                <div className="img-upload">
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        id="fileInput"
+                                                        style={{ display: 'none' }}
+                                                        onChange={handleImageChange} // 파일 선택 시 핸들러
+                                                    />
+                                                    <button
+                                                        className="img-upload-add"
+                                                        onClick={() => document.getElementById('fileInput').click()}
+                                                    />
+                                                </div>
+                                                {previewImage && (
+                                                    <div className="img-upload fin">
+                                                        <div className="img-upload-thumb"><img src={previewImage} alt="sample" /></div>
+                                                        <button className="img-upload-cancel" onClick={handleImageRemove}>삭제</button>
+                                                    </div>
+                                                )}
+                                                
+                                            </div>
+                                            <p className="notice">가로사진을 첨부하시면 화질 저하가 발생합니다.<br/>세로사진으로 편집 후 첨부하시면 선명한 사진으로 적용됩니다.</p>
+                                            <div className="mt-10">
+                                                <span className="check">
+                                                    <input type="checkbox" id="check1" />
+                                                    {/* <label for="check1"><i></i>메인 권장사이즈가 궁금해요!(클릭)</label> */}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">레터링 문구 <sup>필수</sup></div>
+                                        <div className="option-contents">
+                                            <div className="input-change">
+                                                {/* <input className="input-sts" type="text" value="We’re getting Married!" readonly /> */}
+                                                <select className="input-sts"  value={val2} onChange={handleSelectChange2}>
+                                                    <option>our wedding day</option>
+                                                    <option>We're getting married_1</option> 
+                                                    <option>We're getting married_2</option> 
+                                                    <option>Just married</option> 
+                                                    <option>With love, always</option> 
+                                                    <option>happy wedding day</option> 
+                                                    <option>Our first page</option> 
+                                                    <option>Happily ever after</option> 
+                                                    <option>선택안함</option> 
+                                                </select>
+                                                <button className="btn-change tooltip">변경
+                                                    {/* <span className="tooltip-box"><span>9가지</span> 문구가 준비되어 있습니다.</span> */}
+                                                    {visibleTooltips.tooltip2 && (
+                                                        <span className="tooltip-box" onClick={() => hideTooltip('tooltip2')}>
+                                                        <span>9가지</span> 템플릿이 준비되어 있습니다.
+                                                        </span>
+                                                    )}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">레터링 색상 <sup>필수</sup></div>
+                                        <div className="option-contents">
+                                            <div className="color-picker">
+                                                <span className="color-value">{color1}</span> {/* 선택한 색상 값 표시 */}
+                                                <input
+                                                    className="color-input"
+                                                    type="color"
+                                                    value={color1} // 현재 상태의 색상으로 초기화
+                                                    onChange={handleColorChange1} // 색상 선택 시 handleColorChange 호출
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">레터링 위치 <sup>필수</sup></div>
+                                        <div className="option-contents">
+                                            <input type="range"/>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">메인 텍스트 입력 <sup>필수</sup></div>
+                                        <div className="option-contents">
+                                            <textarea
+                                                className="textarea-sts"
+                                                rows="4"
+                                                value={val3} // textarea의 값을 상태값으로 설정
+                                                onChange={handleTextChange} // 텍스트 입력 시 handleTextChange 호출
+                                            ></textarea>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">메인 텍스트 색상 <sup>필수</sup></div>
+                                        <div className="option-contents">
+                                            <div className="color-picker">
+                                                <span className="color-value">#93EEF4</span>
+                                                <input
+                                                    className="color-input"
+                                                    type="color"
+                                                    value={color2} // 현재 상태의 색상으로 초기화
+                                                    onChange={handleColorChange2} // 색상 선택 시 handleColorChange 호출
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">메인 텍스트 위치 <sup>필수</sup></div>
+                                        <div className="option-contents">
+                                            <input type="range" />
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">메인 하단 예식 정보 <sup>필수</sup></div>
+                                        <div className="option-contents">
+                                            <div className="radio-wrap">
+                                                <span className="radio">
+                                                    <input type="radio" name="ct1_1" id="ct1_1_1" />
+                                                    <label for="ct1_1_1"><i></i>노출</label>
+                                                </span>
+                                                <span className="radio">
+                                                    <input type="radio" name="ct1_1" id="ct1_1_2" checked />
+                                                    <label for="ct1_1_2"><i></i>비노출</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">스크롤 안내 <sup>필수</sup></div>
+                                        <div className="option-contents">
+                                            <div className="radio-wrap">
+                                                <span className="radio">
+                                                    <input type="radio" name="ct1_2" id="ct1_2_1" />
+                                                    <label for="ct1_2_1"><i></i>표시</label>
+                                                </span>
+                                                <span className="radio">
+                                                    <input type="radio" name="ct1_2" id="ct1_2_2" checked />
+                                                    <label for="ct1_2_2"><i></i>미표시</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                )}
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <strong>신랑측 정보</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="option">
+                                        <div className="option-label">신랑 <sup>필수</sup></div>
+                                        <div className="option-contents">
+                                            <div className="name-set">
+                                                <input type="text" placeholder="성" className="input-sts fn" />
+                                                <input type="text" placeholder="이름" className="input-sts ln" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">아버지</div>
+                                        <div className="option-contents">
+                                            <div className="name-set">
+                                                <input type="text" placeholder="성" className="input-sts fn" />
+                                                <input type="text" placeholder="이름" className="input-sts ln" />
+                                                <span className="check">
+                                                    <input type="checkbox" id="ct2_1"/>
+                                                    <label for="ct2_1"><i></i>고인</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">어머니</div>
+                                        <div className="option-contents">
+                                            <div className="name-set">
+                                                <input type="text" placeholder="성" className="input-sts fn" />
+                                                <input type="text" placeholder="이름" className="input-sts ln" />
+                                                <span className="check">
+                                                    <input type="checkbox" id="ct2_1" />
+                                                    <label for="ct2_1"><i></i>고인</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">관계</div>
+                                        <div className="option-contents">
+                                            <div className="name-set">
+                                                <input type="text" placeholder="아들" className="input-sts rn" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <strong>신부측 정보</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="option">
+                                        <div className="option-label">신부 <sup>필수</sup></div>
+                                        <div className="option-contents">
+                                            <div className="name-set">
+                                                <input type="text" placeholder="성" className="input-sts fn" />
+                                                <input type="text" placeholder="이름" className="input-sts ln" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">아버지</div>
+                                        <div className="option-contents">
+                                            <div className="name-set">
+                                                <input type="text" placeholder="성" className="input-sts fn" />
+                                                <input type="text" placeholder="이름" className="input-sts ln"/>
+                                                <span className="check">
+                                                    <input type="checkbox" id="ct2_1"/>
+                                                    <label for="ct2_1"><i></i>고인</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">어머니</div>
+                                        <div className="option-contents">
+                                            <div className="name-set">
+                                                <input type="text" placeholder="성" className="input-sts fn" />
+                                                <input type="text" placeholder="이름" className="input-sts ln" />
+                                                <span className="check">
+                                                    <input type="checkbox" id="ct2_1" />
+                                                    <label for="ct2_1"><i></i>고인</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">관계</div>
+                                        <div className="option-contents">
+                                            <div className="name-set">
+                                                <input type="text" placeholder="아들" className="input-sts rn" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <strong>예식일자</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="option">
+                                        <div className="option-label">일자<sup>필수</sup></div>
+                                        <div className="option-contents">
+                                            <input type="datetime-local" className="input-sts" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <strong>예식장</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="option">
+                                        <div className="option-label">예식장 명<sup>필수</sup></div>
+                                        <div className="option-contents">
+                                            <input type="text" className="input-sts" placeholder="예식장 명" />
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">예식장 층과 홀</div>
+                                        <div className="option-contents">
+                                            <input type="text" className="input-sts" placeholder="OO홀" />
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">예식장 전화번호</div>
+                                        <div className="option-contents">
+                                            <input type="text" className="input-sts" placeholder="-없이 입력해주세요." />
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">예식장 주소</div>
+                                        <div className="option-contents">
+                                            <button className="btn-address-search">주소 검색</button>
+                                            <input type="text" className="input-sts" placeholder="주소 검색을 통해 입력해주세요." />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <label for="" className="switch">
+                                        <input type="checkbox" checked />
+                                    </label>
+                                    <strong>달력</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="option">
+                                        <div className="option-label">달력타입</div>
+                                        <div className="option-contents">
+                                            <div className="radio-wrap">
+                                                <span className="radio">
+                                                    <input type="radio" name="ct1_2" id="ct1_2_1" />
+                                                    <label for="ct1_2_1"><i></i>한글</label>
+                                                </span>
+                                                <span className="radio">
+                                                    <input type="radio" name="ct1_2" id="ct1_2_2" checked />
+                                                    <label for="ct1_2_2"><i></i>심플</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">달력 제목</div>
+                                        <div className="option-contents">
+                                            <input type="text" className="input-sts" placeholder="예식 안내" />
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">달력 사진</div>
+                                        <div className="option-contents">
+                                            <div className="img-uploader">
+                                                <div className="img-upload">
+                                                    <button className="img-upload-add"></button>
+                                                </div>
+                                                <div className="img-upload fin">
+                                                    <div className="img-upload-thumb"><img src="./images/create/sample.png" alt="sample" /></div>
+                                                    <button className="img-upload-cancel">삭제</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">디데이</div>
+                                        <div className="option-contents">
+                                            <div className="radio-wrap">
+                                                <span className="check">
+                                                    <input type="checkbox" name="ct1_2" id="ct1_2_1" />
+                                                    <label for="ct1_2_1"><i></i>사용</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <label for="" className="switch">
+                                        <input type="checkbox" checked />
+                                    </label>
+                                    <strong>글귀</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="option">
+                                        <div className="option-label">글귀</div>
+                                        <div className="option-contents">
+                                            <div className="phrase">
+                                                <button className="phrase-sample">샘플 양식</button>
+                                                <textarea name="" id="" className="textarea-sts" rows="9">
+                                                내가 그다지 사랑하던 그대여
+                                                내 한 평생에 차마
+                                                그대를 잊을 수 없소이다.
+                                                못 올 사랑인 줄 알면서도
+                                                나 혼자는 꾸준히 생각하리라.
+
+                                                자, 그러면 내내 어여쁘소서.
+
+                                                이런 시, 이상</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <label for="" className="switch">
+                                        <input type="checkbox" checked />
+                                    </label>
+                                    <strong>인사말</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="option">
+                                        <div className="option-label">제목</div>
+                                        <div className="option-contents">
+                                            <input type="text" className="input-sts" placeholder="소중한 분들을 초대합니다."/>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">내용</div>
+                                        <div className="option-contents">
+                                            <div className="phrase">
+                                                <button className="phrase-sample">샘플 양식</button>
+                                                <textarea name="" id="" className="textarea-sts" rows="9">
+                                                오랜 기다림 속에서 저희 두 사람,
+                                                한 마음 되어 참된 사랑의 결실을
+                                                맺게 되었습니다.
+
+                                                오셔서 축복해 주시면 큰 기쁨이겠습니다.</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">사진</div>
+                                        <div className="option-contents">
+                                            <div className="img-uploader">
+                                                <div className="img-upload">
+                                                    <button className="img-upload-add"></button>
+                                                </div>
+                                                <div className="img-upload fin">
+                                                    <div className="img-upload-thumb"><img src="./images/create/sample.png" alt="sample"/></div>
+                                                    <button className="img-upload-cancel">삭제</button>
+                                                </div>
+                                            </div>
+                                            <div className="mt-10"><button className="btn-positioning">위치 조정</button></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <label for="" className="switch">
+                                        <input type="checkbox" checked />
+                                    </label>
+                                    <strong>프로필형 소개</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="option">
+                                        <div className="option-label">신랑 사진<sup>필수</sup></div>
+                                        <div className="option-contents">
+                                            <div className="img-uploader">
+                                                <div className="img-upload">
+                                                    <button className="img-upload-add"></button>
+                                                </div>
+                                                <div className="img-upload fin">
+                                                    <div className="img-upload-thumb"><img src="./images/create/sample.png" alt="sample" /></div>
+                                                    <button className="img-upload-cancel">삭제</button>
+                                                </div>
+                                            </div>
+                                            <div className="mt-10"><button className="btn-positioning">위치 조정</button></div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">신랑 소개</div>
+                                        <div className="option-contents">
+                                            <textarea name="" id="" rows="9" className="textarea-sts"></textarea>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">신부 사진<sup>필수</sup></div>
+                                        <div className="option-contents">
+                                            <div className="img-uploader">
+                                                <div className="img-upload">
+                                                    <button className="img-upload-add"></button>
+                                                </div>
+                                                <div className="img-upload fin">
+                                                    <div className="img-upload-thumb"><img src="./images/create/sample.png" alt="sample"/></div>
+                                                    <button className="img-upload-cancel">삭제</button>
+                                                </div>
+                                            </div>
+                                            <div className="mt-10"><button className="btn-positioning">위치 조정</button></div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">신부 소개</div>
+                                        <div className="option-contents">
+                                            <textarea name="" id="" rows="9" className="textarea-sts"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <label for="" className="switch">
+                                        <input type="checkbox" checked />
+                                    </label>
+                                    <strong>신랑신부 연락하기</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="option">
+                                        <div className="option-label">신랑 전화번호</div>
+                                        <div className="option-contents">
+                                            <input type="text" className="input-sts" placeholder="-없이 입력해주세요"/>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">신부 전화번호</div>
+                                        <div className="option-contents">
+                                            <input type="text" className="input-sts" placeholder="-없이 입력해주세요" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <label for="" className="switch">
+                                        <input type="checkbox" checked />
+                                    </label>
+                                    <strong>혼주 연락하기</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="option">
+                                        <div className="option-label">신랑 아버지</div>
+                                        <div className="option-contents">
+                                            <input type="text" className="input-sts" placeholder="-없이 입력해주세요"/>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">신랑 어머니</div>
+                                        <div className="option-contents">
+                                            <input type="text" className="input-sts" placeholder="-없이 입력해주세요"/>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">신부 아버지</div>
+                                        <div className="option-contents">
+                                            <input type="text" className="input-sts" placeholder="-없이 입력해주세요"/>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">신부 어머니</div>
+                                        <div className="option-contents">
+                                            <input type="text" className="input-sts" placeholder="-없이 입력해주세요"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <label for="" className="switch">
+                                        <input type="checkbox" checked/>
+                                    </label>
+                                    <strong>타임라인</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="option">
+                                        <div className="option-label">타이틀</div>
+                                        <div className="option-contents">
+                                            <input type="text" className="input-sts" placeholder="우리의 시간"/>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">사진 모양</div>
+                                        <div className="option-contents">
+                                            <div className="radio-wrap">
+                                                <span className="radio">
+                                                    <input type="radio" name="timeline1" id="timeline1_1" checked/>
+                                                    <label for="timeline1_1"><i></i>원형</label>
+                                                </span>
+                                                <span className="radio">
+                                                    <input type="radio" name="timeline1" id="timeline1_2"/>
+                                                    <label for="timeline1_2"><i></i>사각형</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="add-box">
+                                        <div className="add-head">
+                                            <div>
+                                                <button className="add-box-up">위로</button>
+                                                <button className="add-box-down">아래로</button>
+                                            </div>
+                                            <button className="add-box-delete">삭제</button>
+                                        </div>
+                                        <div className="add-body">
+                                            <div className="option">
+                                                <div className="option-label">날짜</div>
+                                                <div className="option-contents">
+                                                    <input type="date" className="input-sts"/>
+                                                </div>
+                                            </div>
+                                            <div className="option">
+                                                <div className="option-label">제목</div>
+                                                <div className="option-contents">
+                                                    <input type="text" className="input-sts"/>
+                                                </div>
+                                            </div>
+                                            <div className="option">
+                                                <div className="option-label">사진</div>
+                                                <div className="option-contents">
+                                                    <div className="img-uploader">
+                                                        <div className="img-upload">
+                                                            <button className="img-upload-add"></button>
+                                                        </div>
+                                                        <div className="img-upload fin">
+                                                            <div className="img-upload-thumb"><img src="./images/create/sample.png" alt="sample"/></div>
+                                                            <button className="img-upload-cancel">삭제</button>
+                                                        </div>
+                                                    </div>
+                                                    <div className="mt-10"><button className="btn-positioning">위치 조정</button></div>
+                                                </div>
+                                            </div>
+                                            <div className="option">
+                                                <div className="option-label">내용</div>
+                                                <div className="option-contents">
+                                                    <textarea name="" id="" rows="7" className="textarea-sts"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="add-btn">
+                                        <button className="add-box-add">타임라인 추가</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <label for="" className="switch">
+                                        <input type="checkbox" checked/>
+                                    </label>
+                                    <strong>갤러리</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="option">
+                                        <div className="option-label">타이틀</div>
+                                        <div className="option-contents">
+                                            <input type="text" className="input-sts" placeholder="갤러리"/>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">타입</div>
+                                        <div className="option-contents">
+                                            <div className="radio-wrap">
+                                                <span className="radio">
+                                                    <input type="radio" name="gallery" id="gallery_1" checked/>
+                                                    <label for="gallery_1"><i></i>그리드</label>
+                                                </span>
+                                                <span className="radio">
+                                                    <input type="radio" name="gallery" id="gallery_2"/>
+                                                    <label for="gallery_2"><i></i>써클</label>
+                                                </span>
+                                                <span className="radio">
+                                                    <input type="radio" name="gallery" id="gallery_2"/>
+                                                    <label for="gallery_2"><i></i>슬라이드</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">사진</div>
+                                        <div className="option-contents">
+                                            <div className="img-uploader2">
+                                                <button className="img-uploader2-btn">업로드</button>
+                                                <div className="img-uploader2-area">
+                                                    <div className="img-uploader2-item">
+                                                        <img src="./images/create/sample.png" alt="sample"/>
+                                                        <button className="img-uploader2-delete">삭제</button>
+                                                    </div>
+                                                    <div className="img-uploader2-item">
+                                                        <img src="./images/create/sample.png" alt="sample"/>
+                                                        <button className="img-uploader2-delete">삭제</button>
+                                                    </div>
+                                                    <div className="img-uploader2-item">
+                                                        <img src="./images/create/sample.png" alt="sample"/>
+                                                        <button className="img-uploader2-delete">삭제</button>
+                                                    </div>
+                                                    <div className="img-uploader2-item">
+                                                        <img src="./images/create/sample.png" alt="sample"/>
+                                                        <button className="img-uploader2-delete">삭제</button>
+                                                    </div>
+                                                    <div className="img-uploader2-item">
+                                                        <img src="./images/create/sample.png" alt="sample"/>
+                                                        <button className="img-uploader2-delete">삭제</button>
+                                                    </div>
+                                                    <div className="img-uploader2-item">
+                                                        <img src="./images/create/sample.png" alt="sample"/>
+                                                        <button className="img-uploader2-delete">삭제</button>
+                                                    </div>
+                                                    <div className="img-uploader2-item">
+                                                        <img src="./images/create/sample.png" alt="sample"/>
+                                                        <button className="img-uploader2-delete">삭제</button>
+                                                    </div>
+                                                    <div className="img-uploader2-item">
+                                                        <img src="./images/create/sample.png" alt="sample"/>
+                                                        <button className="img-uploader2-delete">삭제</button>
+                                                    </div>
+                                                    <div className="img-uploader2-item">
+                                                        <img src="./images/create/sample.png" alt="sample"/>
+                                                        <button className="img-uploader2-delete">삭제</button>
+                                                    </div>
+                                                </div>
+                                                <p className="notice">
+                                                    최대 60장 업로드 가능합니다.<br/>퀄리티를 위하여 업로드에 용량 제한이 없습니다.<br/>모바일에 최적화된 가로 사이즈로 업로드 됩니다.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">하단 진행바</div>
+                                        <div className="option-contents">
+                                            <div className="radio-wrap">
+                                                <span className="radio">
+                                                    <input type="radio" name="gallery_bar" id="gallery_bar_1"/>
+                                                    <label for="gallery_bar_1"><i></i>표시</label>
+                                                </span>
+                                                <span className="radio">
+                                                    <input type="radio" name="gallery_bar" id="gallery_bar_2" checked/>
+                                                    <label for="gallery_bar_2"><i></i>미표시</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">썸네일</div>
+                                        <div className="option-contents">
+                                            <button className="btn-positioning">위치 조정</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <label for="" className="switch">
+                                        <input type="checkbox" checked/>
+                                    </label>
+                                    <strong>영상</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="option">
+                                        <div className="option-label">유튜브 URL<sup>필수</sup></div>
+                                        <div className="option-contents">
+                                            <input type="text" className="input-sts" placeholder="https://www.youtube.com/watch?v=(11자리문자)"/>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">영상 제목<sup>필수</sup></div>
+                                        <div className="option-contents">
+                                            <input type="text" className="input-sts" placeholder="식전 영상"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <label for="" className="switch">
+                                        <input type="checkbox" checked/>
+                                    </label>
+                                    <strong>웨딩 인터뷰</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="option">
+                                        <div className="option-label">보여주기 방식</div>
+                                        <div className="option-contents">
+                                            <div className="radio-wrap">
+                                                <span className="radio">
+                                                    <input type="radio" name="interview" id="interview_1"/>
+                                                    <label for="interview_1"><i></i>버튼 클릭 시 팝업으로 보여주기</label>
+                                                </span>
+                                                <span className="radio">
+                                                    <input type="radio" name="interview" id="interview_2" checked/>
+                                                    <label for="interview_2"><i></i>청첩장에 그대로 보여주기</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="add-box">
+                                        <div className="add-head">
+                                            <div>
+                                                <button className="add-box-up">위로</button>
+                                                <button className="add-box-down">아래로</button>
+                                            </div>
+                                            <button className="add-box-delete">삭제</button>
+                                        </div>
+                                        <div className="add-body">
+                                            <div className="option">
+                                                <div className="option-label">인터뷰 질문</div>
+                                                <div className="option-contents">
+                                                    <input type="text" className="input-sts"/>
+                                                </div>
+                                            </div>
+                                            <div className="option">
+                                                <div className="option-label">인터뷰 답변</div>
+                                                <div className="option-contents">
+                                                    <textarea name="" id="" rows="7" className="textarea-sts"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="add-btn">
+                                        <button className="add-box-add">인터뷰 추가</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <label for="" className="switch">
+                                        <input type="checkbox" checked/>
+                                    </label>
+                                    <strong>지도</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="option">
+                                        <div className="option-label">지도 마커</div>
+                                        <div className="option-contents">
+                                            <div className="map-marker">
+                                                <img src="./images/create/map_marker.png" alt=""/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">지도 높이</div>
+                                        <div className="option-contents">
+                                            <select name="" id="" className="select-sts">
+                                                <option value="0">300px</option>
+                                                <option value="1">350px</option>
+                                                <option value="2">400px</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">지도 줌 레벨</div>
+                                        <div className="option-contents">
+                                            <select name="" id="" className="select-sts">
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                                <option value="13">13</option>
+                                                <option value="14">14</option>
+                                            </select>
+                                            <p className="notice">지도 레벨은 1부터 14레벨이 있으며 숫자가 작을수록 지도 확대 수준이 높습니다.</p>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">네비게이션</div>
+                                        <div className="option-contents">
+                                            <div className="check-wrap">
+                                                <span className="check">
+                                                    <input type="checkbox" id="navigation"/>
+                                                    <label for="navigation"><i></i>네비게이션 삭제</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">지도 고정</div>
+                                        <div className="option-contents">
+                                            <div className="check-wrap">
+                                                <span className="check">
+                                                    <input type="checkbox" id="map_fix"/>
+                                                    <label for="map_fix"><i></i>지도 이동 고정</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <label for="" className="switch">
+                                        <input type="checkbox" checked/>
+                                    </label>
+                                    <strong>교통수단</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="add-box">
+                                        <div className="add-head">
+                                            <div>
+                                                <button className="add-box-up">위로</button>
+                                                <button className="add-box-down">아래로</button>
+                                            </div>
+                                            <button className="add-box-delete">삭제</button>
+                                        </div>
+                                        <div className="add-body">
+                                            <div className="option">
+                                                <div className="option-label">교통수단</div>
+                                                <div className="option-contents">
+                                                    <input type="text" className="input-sts"/>
+                                                </div>
+                                            </div>
+                                            <div className="option">
+                                                <div className="option-label">내용</div>
+                                                <div className="option-contents">
+                                                    <textarea name="" id="" rows="7" className="textarea-sts"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="add-btn">
+                                        <button className="add-box-add">교통수단 추가</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <label for="" className="switch">
+                                        <input type="checkbox" checked/>
+                                    </label>
+                                    <strong>안내사항</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="add-box">
+                                        <div className="add-head">
+                                            <div>
+                                                <button className="add-box-up">위로</button>
+                                                <button className="add-box-down">아래로</button>
+                                            </div>
+                                            <button className="add-box-delete">삭제</button>
+                                        </div>
+                                        <div className="add-body">
+                                            <div className="option">
+                                                <div className="option-label">제목</div>
+                                                <div className="option-contents">
+                                                    <input type="text" className="input-sts"/>
+                                                </div>
+                                            </div>
+                                            <div className="option">
+                                                <div className="option-label">사진</div>
+                                                <div className="option-contents">
+                                                    <div className="img-uploader">
+                                                        <div className="img-upload">
+                                                            <button className="img-upload-add"></button>
+                                                        </div>
+                                                        <div className="img-upload fin">
+                                                            <div className="img-upload-thumb"><img src="./images/create/sample.png" alt="sample"/></div>
+                                                            <button className="img-upload-cancel">삭제</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="option">
+                                                <div className="option-label">내용</div>
+                                                <div className="option-contents">
+                                                    <textarea name="" id="" rows="7" className="textarea-sts"></textarea>
+                                                </div>
+                                            </div>
+                                            <div className="option">
+                                                <div className="option-label">외부링크 버튼</div>
+                                                <div className="option-contents">
+                                                    <div className="radio-wrap">
+                                                        <span className="radio">
+                                                            <input type="radio" name="notice_link" id="notice_link_1" checked/>
+                                                            <label for="notice_link_1"><i></i>미사용</label>
+                                                        </span>
+                                                        <span className="radio">
+                                                            <input type="radio" name="notice_link" id="notice_link_2"/>
+                                                            <label for="notice_link_2"><i></i>사용</label>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="add-btn">
+                                        <button className="add-box-add">안내사항 추가</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <label for="" className="switch">
+                                        <input type="checkbox" checked/>
+                                    </label>
+                                    <strong>안내문</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="option">
+                                        <div className="option-label">제목</div>
+                                        <div className="option-contents">
+                                            <input type="text" className="input-sts"/>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">내용</div>
+                                        <div className="option-contents">
+                                            <div className="phrase">
+                                                <button className="phrase-sample">샘플 양식</button>
+                                                <textarea name="" id="" className="textarea-sts" rows="9">
+                                                </textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">외부링크 버튼</div>
+                                        <div className="option-contents">
+                                            <div className="radio-wrap">
+                                                <span className="radio">
+                                                    <input type="radio" name="notice_link_2" id="notice_link_2_1" checked/>
+                                                    <label for="notice_link_2_1"><i></i>미사용</label>
+                                                </span>
+                                                <span className="radio">
+                                                    <input type="radio" name="notice_link_2" id="notice_link_2_2"/>
+                                                    <label for="notice_link_2_2"><i></i>사용</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <label for="" className="switch">
+                                        <input type="checkbox" checked/>
+                                    </label>
+                                    <strong>참석여부 RSVP</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="option">
+                                        <div className="option-label">타이틀</div>
+                                        <div className="option-contents">
+                                            <input type="text" className="input-sts" placeholder="참석 여부 전달"/>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">안내문구</div>
+                                        <div className="option-contents">
+                                            <textarea name="" id="" className="textarea-sts" rows="9">
+                                                    결혼식에 참석해주시는 모든 분들을
+                                                    더욱 특별하게 모시고자 하오니,
+                                                    참석 여부 전달을 부탁드립니다.
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">사용여부</div>
+                                        <div className="option-contents">
+                                            <div className="check-wrap2">
+                                                <span className="check">
+                                                    <input type="checkbox" id="attend_1" checked/>
+                                                    <label for="attend_1"><i></i>어느측 하객</label>
+                                                </span>
+                                                <span className="check">
+                                                    <input type="checkbox" id="attend_2" checked/>
+                                                    <label for="attend_2"><i></i>참석여부</label>
+                                                </span>
+                                                <span className="check">
+                                                    <input type="checkbox" id="attend_3" checked/>
+                                                    <label for="attend_3"><i></i>식사여부</label>
+                                                </span>
+                                                <span className="check">
+                                                    <input type="checkbox" id="attend_4" checked/>
+                                                    <label for="attend_4"><i></i>성함</label>
+                                                </span>
+                                                <span className="check">
+                                                    <input type="checkbox" id="attend_5"/>
+                                                    <label for="attend_5"><i></i>연락처</label>
+                                                </span>
+                                                <span className="check">
+                                                    <input type="checkbox" id="attend_6" checked/>
+                                                    <label for="attend_6"><i></i>동행인 성함</label>
+                                                </span>
+                                                <span className="check">
+                                                    <input type="checkbox" id="attend_7"/>
+                                                    <label for="attend_7"><i></i>동행인 수(본인 제외)</label>
+                                                </span>
+                                                <span className="check">
+                                                    <input type="checkbox" id="attend_8" checked/>
+                                                    <label for="attend_8"><i></i>전달 사항</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">팝업 사용 여부</div>
+                                        <div className="option-contents">
+                                            <div className="radio-wrap2">
+                                                <span className="radio">
+                                                    <input type="radio" id="attend_popup_1" name="attend_popup" checked/>
+                                                    <label for="attend_popup_1"><i></i>미사용</label>
+                                                </span>
+                                                <span className="radio">
+                                                    <input type="radio" id="attend_popup_2" name="attend_popup"/>
+                                                    <label for="attend_popup_2"><i></i>청첩장 접속 시 참석여부를 묻는 팝업을 먼저 띄웁니다.</label>
+                                                </span>
+                                                <span className="radio">
+                                                    <input type="radio" id="attend_popup_3" name="attend_popup"/>
+                                                    <label for="attend_popup_3"><i></i>메인에서 벗어나면 팝업을 띄웁니다.</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">수신받을 메일</div>
+                                        <div className="option-contents">
+                                            <input type="email" className="input-sts"/>
+                                            <p className="notice">
+                                                작성한 메일주소로 하객들의 참석여부가 실시간 발송됩니다.<br/>Gmail, iCloud는 정책상 수신 불가하니 다른 메일을 이용해주세요.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">수신받을 전화번호</div>
+                                        <div className="option-contents">
+                                            <div className="input-btn-box">
+                                                <input type="email" className="input-sts" placeholder="-없이 입력해주세요."/>
+                                                <button className="input-btn">인증번호 전송</button>
+                                            </div>
+                                            <p className="notice">
+                                                전화번호를 입력하시면 하객들의 참석여부가 카카오톡으로 실시간 발송됩니다.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <label for="" className="switch">
+                                        <input type="checkbox" checked/>
+                                    </label>
+                                    <strong>계좌번호</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="option">
+                                        <div className="option-label">타이틀</div>
+                                        <div className="option-contents">
+                                            <input type="text" className="input-sts" placeholder="마음 전하실 곳"/>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">안내문구</div>
+                                        <div className="option-contents">
+                                            <textarea name="" id="" className="textarea-sts" rows="9">
+                                            멀리서도 축하의 마음을 
+                                            전하고 싶으신 분들을 위해 
+                                            계좌번호를 안내드립니다. 
+
+                                            소중한 축하를 보내주셔서 감사드리며, 
+                                            따뜻한 마음에 깊이 감사드립니다.
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">보여주기 방식</div>
+                                        <div className="option-contents">
+                                            <div className="radio-wrap">
+                                                <span className="radio">
+                                                    <input type="radio" name="bank_account" id="bank_account_1" checked/>
+                                                    <label for="bank_account_1"><i></i>가리기</label>
+                                                </span>
+                                                <span className="radio">
+                                                    <input type="radio" name="bank_account" id="bank_account_2"/>
+                                                    <label for="bank_account_2"><i></i>펼치기</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">
+                                            <span className="check">
+                                                <input type="checkbox" id="bank_info_1" checked/>
+                                                <label for="bank_info_1"><i></i></label>
+                                            </span>
+                                            신랑
+                                        </div>
+                                        <div className="option-contents">
+                                            <div className="bank-info">
+                                                <input type="text" placeholder="은행" className="input-sts"/>
+                                                <input type="text" placeholder="계좌번호" className="input-sts"/>
+                                                <input type="text" placeholder="예금주" className="input-sts"/>
+                                                <span className="check">
+                                                    <input type="checkbox" id="bank_info_1_kakao"/>
+                                                    <label for="bank_info_1_kakao"><i></i>카카오페이 추가</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">
+                                            <span className="check">
+                                                <input type="checkbox" id="bank_info_2" checked/>
+                                                <label for="bank_info_2"><i></i></label>
+                                            </span>
+                                            신부
+                                        </div>
+                                        <div className="option-contents">
+                                            <div className="bank-info">
+                                                <input type="text" placeholder="은행" className="input-sts"/>
+                                                <input type="text" placeholder="계좌번호" className="input-sts"/>
+                                                <input type="text" placeholder="예금주" className="input-sts"/>
+                                                <span className="check">
+                                                    <input type="checkbox" id="bank_info_1_kakao"/>
+                                                    <label for="bank_info_1_kakao"><i></i>카카오페이 추가</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">
+                                            <span className="check">
+                                                <input type="checkbox" id="bank_info_3"/>
+                                                <label for="bank_info_3"><i></i></label>
+                                            </span>
+                                            신랑 아버지
+                                        </div>
+                                        <div className="option-contents">
+                                            <div className="bank-info" style={{display : "none"}}>
+                                                <input type="text" placeholder="은행" className="input-sts"/>
+                                                <input type="text" placeholder="계좌번호" className="input-sts"/>
+                                                <input type="text" placeholder="예금주" className="input-sts"/>
+                                                <span className="check">
+                                                    <input type="checkbox" id="bank_info_1_kakao"/>
+                                                    <label for="bank_info_1_kakao"><i></i>카카오페이 추가</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">
+                                            <span className="check">
+                                                <input type="checkbox" id="bank_info_4"/>
+                                                <label for="bank_info_4"><i></i></label>
+                                            </span>
+                                            신랑 어머니
+                                        </div>
+                                        <div className="option-contents">
+                                            <div className="bank-info" style={{display : "none"}}>
+                                                <input type="text" placeholder="은행" className="input-sts"/>
+                                                <input type="text" placeholder="계좌번호" className="input-sts"/>
+                                                <input type="text" placeholder="예금주" className="input-sts"/>
+                                                <span className="check">
+                                                    <input type="checkbox" id="bank_info_1_kakao"/>
+                                                    <label for="bank_info_1_kakao"><i></i>카카오페이 추가</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">
+                                            <span className="check">
+                                                <input type="checkbox" id="bank_info_5"/>
+                                                <label for="bank_info_5"><i></i></label>
+                                            </span>
+                                            신부 아버지
+                                        </div>
+                                        <div className="option-contents">
+                                            <div className="bank-info" style={{display : "none"}}>
+                                                <input type="text" placeholder="은행" className="input-sts"/>
+                                                <input type="text" placeholder="계좌번호" className="input-sts"/>
+                                                <input type="text" placeholder="예금주" className="input-sts"/>
+                                                <span className="check">
+                                                    <input type="checkbox" id="bank_info_1_kakao"/>
+                                                    <label for="bank_info_1_kakao"><i></i>카카오페이 추가</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">
+                                            <span className="check">
+                                                <input type="checkbox" id="bank_info_6"/>
+                                                <label for="bank_info_6"><i></i></label>
+                                            </span>
+                                            신부 어머니
+                                        </div>
+                                        <div className="option-contents">
+                                            <div className="bank-info" style={{display : "none"}}>
+                                                <input type="text" placeholder="은행" className="input-sts"/>
+                                                <input type="text" placeholder="계좌번호" className="input-sts"/>
+                                                <input type="text" placeholder="예금주" className="input-sts"/>
+                                                <span className="check">
+                                                    <input type="checkbox" id="bank_info_1_kakao"/>
+                                                    <label for="bank_info_1_kakao"><i></i>카카오페이 추가</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <label for="" className="switch">
+                                        <input type="checkbox" checked/>
+                                    </label>
+                                    <strong>방명록</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="option">
+                                        <div className="option-label">타이틀</div>
+                                        <div className="option-contents">
+                                            <input type="text" className="input-sts" placeholder="방명록"/>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">마스터 비밀번호</div>
+                                        <div className="option-contents">
+                                            <input type="password" className="input-sts" placeholder="비밀번호 입력"/>
+                                            <input type="password" className="input-sts" placeholder="비밀번호 확인"/>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">수신받을 메일</div>
+                                        <div className="option-contents">
+                                            <input type="email" className="input-sts"/>
+                                            <p className="notice">작성한 메일주소로 하객들의 방명록이 실시간 발송됩니다.,<br/>Gmail, iCloud는 정책상 수신 불가하니 다른 메일을 이용해주세요.</p>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">수신받을 전화번호</div>
+                                        <div className="option-contents">
+                                            <div className="input-btn-box">
+                                                <input type="email" className="input-sts" placeholder="-없이 입력해주세요."/>
+                                                <button className="input-btn">인증번호 전송</button>
+                                            </div>
+                                            <p className="notice">
+                                                전화번호를 입력하시면 하객들의 참석여부가 카카오톡으로 실시간 발송됩니다.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <label for="" className="switch">
+                                        <input type="checkbox" checked/>
+                                    </label>
+                                    <strong>화환 보내기</strong>
+                                    <button className="btn-toggle" style={{display : "none"}}>여닫기</button>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <label for="" className="switch">
+                                        <input type="checkbox" checked/>
+                                    </label>
+                                    <strong>함께한 시간</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="option">
+                                        <div className="option-label">첫만남</div>
+                                        <div className="option-contents">
+                                            <input type="datetime-local" className="input-sts"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <label for="" className="switch">
+                                        <input type="checkbox" checked/>
+                                    </label>
+                                    <strong>엔딩</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="option">
+                                        <div className="option-label">사진</div>
+                                        <div className="option-contents">
+                                            <div className="img-uploader">
+                                                <div className="img-upload">
+                                                    <button className="img-upload-add"></button>
+                                                </div>
+                                                <div className="img-upload fin">
+                                                    <div className="img-upload-thumb"><img src="./images/create/sample.png" alt="sample"/></div>
+                                                    <button className="img-upload-cancel">삭제</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">글귀</div>
+                                        <div className="option-contents">
+                                            <textarea className="textarea-sts" name="" id="" rows="9"></textarea>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">글귀</div>
+                                        <div className="option-contents">
+                                            <div className="radio-wrap">
+                                                <span className="radio">
+                                                    <input type="radio" name="ending" id="ending_1" checked/>
+                                                    <label for="ending_1"><i></i>상단</label>
+                                                </span>
+                                                <span className="radio">
+                                                    <input type="radio" name="ending" id="ending_2"/>
+                                                    <label for="ending_2"><i></i>중간</label>
+                                                </span>
+                                                <span className="radio">
+                                                    <input type="radio" name="ending" id="ending_3"/>
+                                                    <label for="ending_3"><i></i>하단</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <label for="" className="switch">
+                                        <input type="checkbox" checked/>
+                                    </label>
+                                    <strong>로딩화면</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="option">
+                                        <div className="option-label">타입<sup>필수</sup></div>
+                                        <div className="option-contents">
+                                            <div className="radio-wrap">
+                                                <span className="radio">
+                                                    <input type="radio" name="loading" id="loading_1" checked/>
+                                                    <label for="loading_1"><i></i>드로우(텍스트형)</label>
+                                                </span>
+                                                <span className="radio">
+                                                    <input type="radio" name="loading" id="loading_2"/>
+                                                    <label for="loading_2"><i></i>드로우(이미지형)</label>
+                                                </span>
+                                                <span className="radio">
+                                                    <input type="radio" name="loading" id="loading_3"/>
+                                                    <label for="loading_3"><i></i>타이핑</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">문구<sup>필수</sup></div>
+                                        <div className="option-contents">
+                                            <input type="text" className="input-sts" value="We’re getting Married!"/>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">배경색<sup>필수</sup></div>
+                                        <div className="option-contents">
+                                            <div className="color-picker">
+                                                <span className="color-value">#93EEF4</span>
+                                                <input className="color-input" type="color" value="#93EEF4"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">폰트색<sup>필수</sup></div>
+                                        <div className="option-contents">
+                                            <div className="color-picker">
+                                                <span className="color-value">#93EEF4</span>
+                                                <input className="color-input" type="color" value="#93EEF4"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <label for="" className="switch">
+                                        <input type="checkbox" checked/>
+                                    </label>
+                                    <strong>폰트 및 스타일</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="option">
+                                        <div className="option-label">폰트</div>
+                                        <div className="option-contents">
+                                            <div className="ff-area">
+                                                <div className="ff-item ff1">
+                                                    <input type="radio" name="font" id="font_1" checked/>
+                                                    <label for="font_1">[에스코어드림] 모바일 청첩장</label>
+                                                </div>
+                                                <div className="ff-item ff2">
+                                                    <input type="radio" name="font" id="font_2"/>
+                                                    <label for="font_2">[프리텐다드] 모바일 청첩장</label>
+                                                </div>
+                                                <div className="ff-item ff3">
+                                                    <input type="radio" name="font" id="font_3"/>
+                                                    <label for="font_3">[고운돋움] 모바일 청첩장</label>
+                                                </div>
+                                                <div className="ff-item ff4">
+                                                    <input type="radio" name="font" id="font_4"/>
+                                                    <label for="font_4">[나눔고딕] 모바일 청첩장</label>
+                                                </div>
+                                                <div className="ff-item ff5">
+                                                    <input type="radio" name="font" id="font_5"/>
+                                                    <label for="font_5">[나눔명조] 모바일 청첩장</label>
+                                                </div>
+                                                <div className="ff-item ff6">
+                                                    <input type="radio" name="font" id="font_6"/>
+                                                    <label for="font_6">[순바탕] 모바일 청첩장</label>
+                                                </div>
+                                                <div className="ff-item ff7">
+                                                    <input type="radio" name="font" id="font_7"/>
+                                                    <label for="font_7">[순바탕] 모바일 청첩장</label>
+                                                </div>
+                                                <div className="ff-item ff8">
+                                                    <input type="radio" name="font" id="font_8"/>
+                                                    <label for="font_8">[순바탕] 모바일 청첩장</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">폰트 사이즈</div>
+                                        <div className="option-contents">
+                                            <div className="fs-area">
+                                                <div className="fs-item fs1">
+                                                    <input type="radio" name="fs" id="fs_1" checked/>
+                                                    <label for="fs_1">기본<br/>(권장)</label>
+                                                </div>
+                                                <div className="fs-item fs2">
+                                                    <input type="radio" name="fs" id="fs_2"/>
+                                                    <label for="fs_2">크게</label>
+                                                </div>
+                                                <div className="fs-item fs3">
+                                                    <input type="radio" name="fs" id="fs_3"/>
+                                                    <label for="fs_3">더 크게</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">폰트 강조색</div>
+                                        <div className="option-contents">
+                                            <div className="fp-area">
+                                                <div className="fp-item fp1">
+                                                    <input type="radio" name="fp" id="fp_1" checked/>
+                                                    <label for="fp_1">핑크 <img src="./images/create/fp_1.svg" alt="핑크"/></label>
+                                                </div>
+                                                <div className="fp-item fp2">
+                                                    <input type="radio" name="fp" id="fp_2"/>
+                                                    <label for="fp_2">오렌지 <img src="./images/create/fp_2.svg" alt="오렌지"/></label>
+                                                </div>
+                                                <div className="fp-item fp3">
+                                                    <input type="radio" name="fp" id="fp_3"/>
+                                                    <label for="fp_3">그린 <img src="./images/create/fp_3.svg" alt="그린"/></label>
+                                                </div>
+                                                <div className="fp-item fp4">
+                                                    <input type="radio" name="fp" id="fp_4"/>
+                                                    <label for="fp_4">블루 <img src="./images/create/fp_4.svg" alt="블루"/></label>
+                                                </div>
+                                                <div className="fp-item fp5">
+                                                    <input type="radio" name="fp" id="fp_5"/>
+                                                    <label for="fp_5">브라운 <img src="./images/create/fp_5.svg" alt="브라운"/></label>
+                                                </div>
+                                                <div className="fp-item fp6">
+                                                    <input type="radio" name="fp" id="fp_6"/>
+                                                    <label for="fp_6">없음(블랙) <img src="./images/create/fp_6.svg" alt="없음(블랙)"/></label>
+                                                </div>
+                                                <div className="fp-item fp7">
+                                                    <input type="radio" name="fp" id="fp_7"/>
+                                                    <label for="fp_7">직접 선택 
+                                                        <div className="color-picker2">
+                                                            <input className="color-input" type="color" value="#FFCA6E"/>
+                                                            <input className="color-input"  type="color" value="#FFF0D1"/>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">바탕글 폰트색상</div>
+                                        <div className="option-contents">
+                                            <div className="color-picker">
+                                                <span className="color-value">#93EEF4</span>
+                                                <input className="color-input" type="color" value="#93EEF4"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">버튼 폰트색상</div>
+                                        <div className="option-contents">
+                                            <div className="color-picker">
+                                                <span className="color-value">#93EEF4</span>
+                                                <input className="color-input" type="color" value="#93EEF4"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">배경색</div>
+                                        <div className="option-contents">
+                                            <div className="bg-area"> 
+                                                <div className="bg-item bg1">
+                                                    <input type="radio" name="bg" id="bg_1" checked/>
+                                                    <label for="bg_1">베이지<br/>페이퍼</label>
+                                                </div>
+                                                <div className="bg-item bg2">
+                                                    <input type="radio" name="bg" id="bg_2"/>
+                                                    <label for="bg_2">화이트<br/>페이퍼</label>
+                                                </div>
+                                                <div className="bg-item bg3">
+                                                    <input type="radio" name="bg" id="bg_3"/>
+                                                    <label for="bg_3">크라프트<br/>페이퍼</label>
+                                                </div>
+                                                <div className="bg-item bg4">
+                                                    <input type="radio" name="bg" id="bg_4"/>
+                                                    <label for="bg_4">직접선택
+                                                        <div className="color-picker2">
+                                                            <input className="color-input" type="color" value="#ffffff"/>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <p className="notice">메인페이지를 제외한 나머지 페이지들의 배경색입니다.</p>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">효과</div>
+                                        <div className="option-contents">
+                                            <div className="effect-area"> 
+                                                <div className="effect-item effect1">
+                                                    <input type="radio" name="effect" id="effect_1" checked/>
+                                                    <label for="effect_1">벚꽃 <img src="./images/create/effect_1.png" alt=""/></label>
+                                                </div>
+                                                <div className="effect-item effect2">
+                                                    <input type="radio" name="effect" id="effect_2"/>
+                                                    <label for="effect_2">나뭇잎 <img src="./images/create/effect_2.png" alt=""/></label>
+                                                </div>
+                                                <div className="effect-item effect3">
+                                                    <input type="radio" name="effect" id="effect_3"/>
+                                                    <label for="effect_3">낙엽 <img src="./images/create/effect_3.png" alt=""/></label>
+                                                </div>
+                                                <div className="effect-item effect4">
+                                                    <input type="radio" name="effect" id="effect_4"/>
+                                                    <label for="effect_4">눈 <img src="./images/create/effect_4.png" alt=""/></label>
+                                                </div>
+                                                <div className="effect-item effect5">
+                                                    <input type="radio" name="effect" id="effect_5"/>
+                                                    <label for="effect_4">컨페티 <img src="./images/create/effect_5.png" alt=""/></label>
+                                                </div>
+                                                <div className="effect-item effect6">
+                                                    <input type="radio" name="effect" id="effect_6"/>
+                                                    <label for="effect_4">선샤인 <img src="./images/create/effect_6.png" alt=""/></label>
+                                                </div>
+                                                <div className="effect-item effect7">
+                                                    <input type="radio" name="effect" id="effect_7"/>
+                                                    <label for="effect_4">하트 <img src="./images/create/effect_7.png" alt=""/></label>
+                                                </div>
+                                                <div className="effect-item effect8">
+                                                    <input type="radio" name="effect" id="effect_8"/>
+                                                    <label for="effect_4">별 <img src="./images/create/effect_8.png" alt=""/></label>
+                                                </div>
+                                                <div className="effect-item effect9">
+                                                    <input type="radio" name="effect" id="effect_9"/>
+                                                    <label for="effect_4">데이지 <img src="./images/create/effect_9.png" alt=""/></label>
+                                                </div>
+                                                <div className="effect-item effect9">
+                                                    <input type="radio" name="effect" id="effect_9"/>
+                                                    <label for="effect_4">선택안함</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">효과 적용 위치</div>
+                                        <div className="option-contents">
+                                            <div className="radio-wrap">
+                                                <span className="radio">
+                                                    <input type="radio" name="point" id="point_1" checked/>
+                                                    <label for="point_1"><i></i>전체</label>
+                                                </span>
+                                                <span className="radio">
+                                                    <input type="radio" name="point" id="point_2"/>
+                                                    <label for="point_2"><i></i>메인에만</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <label for="" className="switch">
+                                        <input type="checkbox" checked/>
+                                    </label>
+                                    <strong>배경음악</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="option">
+                                        <div className="option-label">음악</div>
+                                        <div className="option-contents">
+                                            <div className="bgm-area">
+                                                <div className="bgm-item">
+                                                    <span className="radio">
+                                                        <input type="radio" name="bgm" id="bgm_1" checked/>
+                                                        <label for="bgm_1"><i></i>bgm 1</label>
+                                                    </span>
+                                                    <div className="bgm-control">
+                                                        <button className="bgm-play">재생</button>
+                                                        <button className="bgm-pause">멈춤</button>
+                                                    </div>
+                                                </div>
+                                                <div className="bgm-item">
+                                                    <span className="radio">
+                                                        <input type="radio" name="bgm" id="bgm_2"/>
+                                                        <label for="bgm_2"><i></i>bgm 2</label>
+                                                    </span>
+                                                    <div className="bgm-control">
+                                                        <button className="bgm-play">재생</button>
+                                                        <button className="bgm-pause">멈춤</button>
+                                                    </div>
+                                                </div>
+                                                <div className="bgm-item">
+                                                    <span className="radio">
+                                                        <input type="radio" name="bgm" id="bgm_3"/>
+                                                        <label for="bgm_3"><i></i>bgm 3</label>
+                                                    </span>
+                                                    <div className="bgm-control">
+                                                        <button className="bgm-play">재생</button>
+                                                        <button className="bgm-pause">멈춤</button>
+                                                    </div>
+                                                </div>
+                                                <div className="bgm-item">
+                                                    <span className="radio">
+                                                        <input type="radio" name="bgm" id="bgm_4"/>
+                                                        <label for="bgm_4"><i></i>bgm 4</label>
+                                                    </span>
+                                                    <div className="bgm-control">
+                                                        <button className="bgm-play">재생</button>
+                                                        <button className="bgm-pause">멈춤</button>
+                                                    </div>
+                                                </div>
+                                                <div className="bgm-item">
+                                                    <span className="radio">
+                                                        <input type="radio" name="bgm" id="bgm_5"/>
+                                                        <label for="bgm_5"><i></i>bgm 5</label>
+                                                    </span>
+                                                    <div className="bgm-control">
+                                                        <button className="bgm-play">재생</button>
+                                                        <button className="bgm-pause">멈춤</button>
+                                                    </div>
+                                                </div>
+                                                <div className="bgm-item">
+                                                    <span className="radio">
+                                                        <input type="radio" name="bgm" id="bgm_6"/>
+                                                        <label for="bgm_6"><i></i>bgm 6</label>
+                                                    </span>
+                                                    <div className="bgm-control">
+                                                        <button className="bgm-play">재생</button>
+                                                        <button className="bgm-pause">멈춤</button>
+                                                    </div>
+                                                </div>
+                                                <div className="bgm-item">
+                                                    <span className="radio">
+                                                        <input type="radio" name="bgm" id="bgm_7"/>
+                                                        <label for="bgm_7"><i></i>bgm 7</label>
+                                                    </span>
+                                                    <div className="bgm-control">
+                                                        <button className="bgm-play">재생</button>
+                                                        <button className="bgm-pause">멈춤</button>
+                                                    </div>
+                                                </div>
+                                                <div className="bgm-item">
+                                                    <span className="radio">
+                                                        <input type="radio" name="bgm" id="bgm_8"/>
+                                                        <label for="bgm_8"><i></i>bgm 8</label>
+                                                    </span>
+                                                    <div className="bgm-control">
+                                                        <button className="bgm-play">재생</button>
+                                                        <button className="bgm-pause">멈춤</button>
+                                                    </div>
+                                                </div>
+                                                <div className="bgm-item">
+                                                    <span className="radio">
+                                                        <input type="radio" name="bgm" id="bgm_9"/>
+                                                        <label for="bgm_9"><i></i>직접추가</label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div className="mt-30">
+                                                <span className="check">
+                                                    <input type="checkbox" id="bgm_autoplay"/>
+                                                    <label for="bgm_autoplay"><i></i>자동재생</label>
+                                                </span>
+                                            </div>
+                                            <p className="notice">브라우저 정책에 따라 자동재생기능이 동작하지 않을 수 있습니다.</p>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">음량</div>
+                                        <div className="option-contents">
+                                            <input type="range"/>
+                                            <p className="notice">IOS정책에 따라 아이폰은 음량 제어가 불가능합니다.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <label for="" className="switch">
+                                        <input type="checkbox" checked/>
+                                    </label>
+                                    <strong>카카오톡 공유 스타일 수정</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="option">
+                                        <div className="option-label">썸네일</div>
+                                        <div className="option-contents">
+                                            <div className="img-uploader">
+                                                <div className="img-upload">
+                                                    <button className="img-upload-add"></button>
+                                                </div>
+                                                <div className="img-upload fin">
+                                                    <div className="img-upload-thumb"><img src="./images/create/sample.png" alt="sample"/></div>
+                                                    <button className="img-upload-cancel">삭제</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">제목</div>
+                                        <div className="option-contents">
+                                            <input className="input-sts" type="text"/>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">내용</div>
+                                        <div className="option-contents">
+                                            <textarea name="" id="" className="textarea-sts" rows="9"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <label for="" className="switch">
+                                        <input type="checkbox" checked/>
+                                    </label>
+                                    <strong>URL 공유 스타일 수정</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="option">
+                                        <div className="option-label">썸네일</div>
+                                        <div className="option-contents">
+                                            <div className="img-uploader">
+                                                <div className="img-upload">
+                                                    <button className="img-upload-add"></button>
+                                                </div>
+                                                <div className="img-upload fin">
+                                                    <div className="img-upload-thumb"><img src="./images/create/sample.png" alt="sample"/></div>
+                                                    <button className="img-upload-cancel">삭제</button>
+                                                </div>
+                                            </div>
+                                            <p className="notice">URL 공유 수정 시, 해당 서비스에서 수집한 캐시로 인하여 <span className="red">반영까지 1시간 이상</span> 소요됩니다.</p>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">제목</div>
+                                        <div className="option-contents">
+                                            <input className="input-sts" type="text"/>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">내용</div>
+                                        <div className="option-contents">
+                                            <textarea name="" id="" className="textarea-sts" rows="9"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <label for="" className="switch">
+                                        <input type="checkbox" checked/>
+                                    </label>
+                                    <strong>순서변경</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="option">
+                                        <div className="option-label">순서변경</div>
+                                        <div className="option-contents">
+                                            <div className="sort-area">
+                                                <div className="sort-item">메인</div>
+                                                <div className="sort-item">글귀</div>
+                                                <div className="sort-item">인사말</div>
+                                                <div className="sort-item">소개</div>
+                                                <div className="sort-item">갤러리</div>
+                                                <div className="sort-item">영상</div>
+                                                <div className="sort-item">웨딩 인터뷰</div>
+                                                <div className="sort-item">오시는 길</div>
+                                                <div className="sort-item">안내사항</div>
+                                                <div className="sort-item">타임라인</div>
+                                                <div className="sort-item">안내문</div>
+                                                <div className="sort-item">참석여부</div>
+                                                <div className="sort-item">계좌번호</div>
+                                                <div className="sort-item">방명록</div>
+                                                <div className="sort-item">화한 보내기</div>
+                                                <div className="sort-item">함께한 시간</div>
+                                                <div className="sort-item">엔딩</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <label for="" className="switch">
+                                        <input type="checkbox" checked/>
+                                    </label>
+                                    <strong>혼주명칭 변경</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="option">
+                                        <div className="option-label">신랑 아버지</div>
+                                        <div className="option-contents">
+                                            <input type="text" className="input-sts" placeholder="아버지"/>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">신랑 어머니</div>
+                                        <div className="option-contents">
+                                            <input type="text" className="input-sts" placeholder="어머니"/>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">신부 아버지</div>
+                                        <div className="option-contents">
+                                            <input type="text" className="input-sts" placeholder="아버지"/>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">신부 어머니</div>
+                                        <div className="option-contents">
+                                            <input type="text" className="input-sts" placeholder="어머니"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="category">
+                                <div className="category-head">
+                                    <label for="" className="switch">
+                                        <input type="checkbox" checked/>
+                                    </label>
+                                    <strong>부가기능</strong>
+                                    <button className="btn-toggle">여닫기</button>
+                                </div>
+                                <div className="category-body">
+                                    <div className="option">
+                                        <div className="option-label">카카오톡 공유</div>
+                                        <div className="option-contents">
+                                            <div className="radio-wrap">
+                                                <span className="radio">
+                                                    <input type="radio" name="etc_1" id="etc_1_1" checked/>
+                                                    <label for="etc_1_1"><i></i>사용</label>
+                                                </span>
+                                                <span className="radio">
+                                                    <input type="radio" name="etc_1" id="etc_1_2"/>
+                                                    <label for="etc_1_2"><i></i>미사용</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">
+                                            상단메뉴바
+                                        </div>
+                                        <div className="option-contents">
+                                            <div className="radio-wrap">
+                                                <span className="radio">
+                                                    <input type="radio" name="etc_2" id="etc_2_1" checked/>
+                                                    <label for="etc_2_1"><i></i>사용</label>
+                                                </span>
+                                                <span className="radio">
+                                                    <input type="radio" name="etc_2" id="etc_2_2"/>
+                                                    <label for="etc_2_2"><i></i>미사용</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">
+                                            스크롤바 효과
+                                        </div>
+                                        <div className="option-contents">
+                                            <div className="radio-wrap">
+                                                <span className="radio">
+                                                    <input type="radio" name="etc_3" id="etc_3_1" checked/>
+                                                    <label for="etc_3_1"><i></i>사용</label>
+                                                </span>
+                                                <span className="radio">
+                                                    <input type="radio" name="etc_3" id="etc_3_2"/>
+                                                    <label for="etc_3_2"><i></i>미사용</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">
+                                            청첩장 확대
+                                        </div>
+                                        <div className="option-contents">
+                                            <div className="radio-wrap">
+                                                <span className="radio">
+                                                    <input type="radio" name="etc_4" id="etc_4_1"/>
+                                                    <label for="etc_4_1"><i></i>사용</label>
+                                                </span>
+                                                <span className="radio">
+                                                    <input type="radio" name="etc_4" id="etc_4_2" checked/>
+                                                    <label for="etc_4_2"><i></i>미사용</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">
+                                            신랑신부 순서
+                                        </div>
+                                        <div className="option-contents">
+                                            <div className="radio-wrap">
+                                                <span className="radio">
+                                                    <input type="radio" name="etc_5" id="etc_5_1" checked/>
+                                                    <label for="etc_5_1"><i></i>신랑 먼저</label>
+                                                </span>
+                                                <span className="radio">
+                                                    <input type="radio" name="etc_5" id="etc_5_2"/>
+                                                    <label for="etc_5_2"><i></i>신부 먼저</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="option">
+                                        <div className="option-label">
+                                            고인 표시 방법
+                                        </div>
+                                        <div className="option-contents">
+                                            <div className="radio-wrap">
+                                                <span className="radio">
+                                                    <input type="radio" name="etc_6" id="etc_6_1" checked/>
+                                                    <label for="etc_6_1"><i></i>국화꽃</label>
+                                                </span>
+                                                <span className="radio">
+                                                    <input type="radio" name="etc_6" id="etc_6_2"/>
+                                                    <label for="etc_6_2"><i></i>한자</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button className="btn-save">저장</button>
+                        </div>
+
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="create-btn">
+            <div class="preview-tooltip">실시간으로 확인해보세요! <button class="preview-tooltip-close">닫기</button></div>
+            <button class="btn-save">저장</button>
+            <button class="btn-preview">미리보기</button>
+        </div>
+    </div>
+  )
+}
+
+export default Create;
