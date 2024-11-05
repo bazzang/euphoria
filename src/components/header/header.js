@@ -14,7 +14,7 @@ function Header() {
                 <header>
                     <div className="hd-left">
                         <button className="btn-menu">menu</button>
-                        <a href="https://u4ria.imweb.me/">
+                        <a href="https://euphoriacard.co.kr/">
                             <img className="hd-logo" src={logoimg} alt="Photomag" />
                         </a>
                     </div>
