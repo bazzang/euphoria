@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { useNavigate } from 'react-router-dom'; // 페이지 이동을 위해 useNavigate import
 import "../styles/common.css";
 import "../styles/contents.css";
 import wd_thumb from "../images/list/wd_thumb.png";
@@ -9,7 +9,7 @@ import wd_option_icon_3 from '../images/list/wd_option_icon_3.svg';
 import wd_option_icon_4 from '../images/list/wd_option_icon_4.svg';
 import wd_option_icon_5 from '../images/list/wd_option_icon_5.svg';
 function ProductionList() {
-
+    const navigate = useNavigate(); // useNavigate 훅 사용
   return (
     <>
     <div className="contents-wrap">
@@ -45,7 +45,7 @@ function ProductionList() {
                             </div>
                             <div className="wd-etc">
                                 <div className="wd-option">
-                                    <button className="wd-option-btn"><img src={wd_option_icon_1} alt=""/>청첩장 확인하기</button>
+                                    <button className="wd-option-btn" onClick={() => navigate('/preview')}><img src={wd_option_icon_1} alt=""/>청첩장 확인하기</button>
                                     <button className="wd-option-btn"><img src={wd_option_icon_2} alt=""/>참석여부 확인</button>
                                     <button className="wd-option-btn"><img src={wd_option_icon_3} alt=""/>URL 복사하기</button>
                                     <button className="wd-option-btn"><img src={wd_option_icon_4} alt=""/>카톡 공유하기</button>
