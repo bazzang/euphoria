@@ -16,7 +16,7 @@ function App() {
     <div id="wrap" className={wrapClassName}>
       <Header />
       <Routes>
-        <Route path="/create" element={<Create />} /> 
+        <Route path="/" element={<Create />} /> 
         <Route path="/production-list" element={<ProductionList />} /> 
         <Route path="/preview" element={<PreviewPage />} /> 
       </Routes>
