@@ -77,7 +77,7 @@ function ProductionList() {
                             </div>
                             <div className="wd-etc">
                                 <div className="wd-option">
-                                    <button className="wd-option-btn"><img src={wd_option_icon_1} alt=""/>청첩장 확인하기</button>
+                                    <button className="wd-option-btn" onClick={() => navigate('/preview')}><img src={wd_option_icon_1} alt=""/>청첩장 확인하기</button>
                                     <button className="wd-option-btn"><img src={wd_option_icon_2} alt=""/>참석여부 확인</button>
                                     <button className="wd-option-btn"><img src={wd_option_icon_3} alt=""/>URL 복사하기</button>
                                     <button className="wd-option-btn"><img src={wd_option_icon_4} alt=""/>카톡 공유하기</button>
