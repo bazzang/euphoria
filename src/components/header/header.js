@@ -24,7 +24,7 @@ function Header() {
                         </a>
                         <a href="https://u4ria.imweb.me/FAQ" target="_blank" rel="noopener noreferrer">자주묻는질문</a>
                         <a href="https://u4ria.imweb.me/contact" target="_blank" rel="noopener noreferrer">고객센터</a>
-                        <a href="#" onClick={() => navigate('/')}>모바일청첩장</a>
+                        <a onClick={() => navigate('/preview')}>모바일청첩장</a> {/* 경로 수정 */}
                     </nav>
                     <div className="hd-right">
                         <button onClick={() => navigate('/production-list')}> {/* 클릭 시 경로 이동 */}
