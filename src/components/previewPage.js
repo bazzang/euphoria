@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import "../styles/common.css";
 import "../styles/contents.css";
 
+import typo from '../images/card/typo.png';
+import page3_bg from '../images/card/page3_bg.png';
 function PreviewPage() {
 
   return (
@@ -21,8 +23,8 @@ function PreviewPage() {
         <div className="wedding-card">
             <section className="main"> 
                 <div className="cardbg-img">
-                    <img src="./images/card/typo.png" className="main-typo"/>
-                    <img src="./images/card/page3_bg.png" className="marry-main-bg"/> 
+                    <img src={typo} className="main-typo"/>
+                    <img src={page3_bg} className="marry-main-bg"/> 
                 </div>
                 <div className="info-card">
                     <div className="title-name">
