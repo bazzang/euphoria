@@ -19,11 +19,11 @@ function Header() {
                         </a>
                     </div>
                     <nav className="hd-gnb">
-                        <a href="https://u4ria.imweb.me/shop_view/?idx=3" target="_blank" rel="noopener noreferrer">
-                            주문하기
+                        <a href="euphoriacard.co.kr/order" target="_blank" rel="noopener noreferrer">
+                            스토어
                         </a>
-                        <a href="https://u4ria.imweb.me/FAQ" target="_blank" rel="noopener noreferrer">자주묻는질문</a>
-                        <a href="https://u4ria.imweb.me/contact" target="_blank" rel="noopener noreferrer">고객센터</a>
+                        <a href="https://euphoriacard.co.kr/FAQ" target="_blank" rel="noopener noreferrer">자주묻는질문</a>
+                        <a href="https://euphoriacard.co.kr/HOME#s202408296ba039055f3c7" target="_blank" rel="noopener noreferrer">고객센터</a>
                         <a onClick={() => navigate('/preview')}>모바일청첩장</a> {/* 경로 수정 */}
                     </nav>
                     <div className="hd-right">
