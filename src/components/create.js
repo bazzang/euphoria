@@ -1,18 +1,61 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import "../styles/common.css";
 import "../styles/contents.css";
 import bgimg from "../images/create/preview_bg.png"; // 미리보기 배경 이미지
+
 import letterimg from "../images/create/preview_letter.png"; // 미리보기 손글씨 이미지
 
+import "aos/dist/aos.css";
+import "aos/dist/aos.js";
+import AOS from "aos";
+
+import flower from "../images/create/flower.png";
+import map_t from '../images/create/map_t.png';
+import map_kakao from '../images/create/map_kakao.png';
+import map_naver from '../images/create/map_naver.png';
+
+import { useInvitation } from "./InvitationProvider.js";
+
+import DaumPostcode from 'react-daum-postcode';
+
+import { Map, Polyline, MapMarker, CustomOverlayMap } from "react-kakao-maps-sdk"
+
+
 function Create() {
-    // 상태로 요소가 보이는지 여부를 관리
-    // 두 개의 요소의 가시성을 관리하는 상태
+
+    const { invitationState, setInvitationState } = useInvitation();
+
+    useEffect(() => {
+       console.log('Current state:', invitationState); // 초기 상태 확인
+    }, [invitationState]);
+
+    const handleChange = (key, value) => {
+        
+        setInvitationState((prev) => ({
+          ...prev,
+          [key]: value,
+        }));
+
+        console.log('현재까지 입력된 데이터 : ', invitationState);
+
+    };
+
+    const [message, setMessage] = useState('');
+    // springboot  연결 확인 함수  >  연결 확인 삭제 예정 함수 
+    // useEffect(() =>{
+    //     axios.get('/api/greeting')
+    //         .then(response => {
+    //             setMessage(response.data);
+    //             console.log('test', response.data);
+    //     });
+    // }, []);
+
     const [visibleTooltips, setVisibleTooltips] = useState({
         tooltip1: true,
         tooltip2: true,
     });
-    
+
 
     // 공통 클릭 핸들러로 요소 숨기기
     const hideTooltip = (tooltipKey) => {
@@ -45,9 +88,6 @@ function Create() {
         setVal1(e.target.value); // 선택한 옵션 값을 상태에 저장
     };
 
-    const handleSelectChange2 = (e) => {
-        setVal2(e.target.value); // 선택한 옵션 값을 상태에 저장
-    };
 
     const handleTextChange = (e) => {
         setVal3(e.target.value); // 메인텍스트입력
@@ -65,35 +105,400 @@ function Create() {
     };
 
 
-    const [previewImage, setPreviewImage] = useState(null); // 미리보기 이미지 상태
+    // -------------------------------------------------------------------------------------------------
 
+    // *********************************[메인] 배경이미지************************************************
+
+    // -------------------------------------------------------------------------------------------------
+    const [previewImage, setPreviewImage] = useState(null); // 미리보기 이미지 상태
+    const [backgroundImage, setBackgroundImage] = useState(bgimg); // Default image
     // 파일 선택 시 미리보기 설정
     const handleImageChange = (event) => {
-        const file = event.target.files[0]; // 선택한 파일
+        const file = event.target.files[0]; // Get the selected file
         if (file) {
-            const imageUrl = URL.createObjectURL(file); // 파일 URL 생성
-            setPreviewImage(imageUrl); // 미리보기 상태 업데이트
+            const imageUrl = URL.createObjectURL(file); // Create a temporary URL for the file
+            setPreviewImage(imageUrl); // Update preview state
+            setBackgroundImage(imageUrl); // Update background image
+
+            handleChange("mainPhotoUrl", imageUrl);
         }
     };
 
     // 이미지 삭제 시 미리보기 제거
     const handleImageRemove = () => {
         setPreviewImage(null); // 미리보기 이미지 초기화
+        setBackgroundImage(bgimg);
     };
 
+
+
+
+    // -------------------------------------------------------------------------------------------------
+
+    // *********************************[메인] 레터링/메인텍스트 컬러*************************************
+
+    // -------------------------------------------------------------------------------------------------
+
     //컬러픽커 <레터링 색상>
-    const [color1, setColor1] = useState("#93EEF4"); // 초기 색상 설정
-    const [color2, setColor2] = useState("#93EEF4"); 
+    const [color1, setColor1] = useState("#FFFFFF"); // 초기 색상 설정
+    const [color2, setColor2] = useState("#FFFFFF"); 
 
     const handleColorChange1 = (e) => {
         setColor1(e.target.value); // 선택한 색상으로 상태 업데이트
+        handleChange("letteringMsg", e.target.value)
     };
     const handleColorChange2 = (e) => {
         setColor2(e.target.value); // 선택한 색상으로 상태 업데이트
+        handleChange("mainTxtClr", e.target.value)
     };
 
 
 
+    // -------------------------------------------------------------------------------------------------
+
+    // *********************************[지도] 지도 api  ******************************************
+
+    // -------------------------------------------------------------------------------------------------
+
+    useEffect(() => {
+        
+    }, []); 
+    
+
+    // -------------------------------------------------------------------------------------------------
+
+    // *********************************[교통수단] 교통수단 입력 폼 이벤트 핸들러 *************************
+
+    // -------------------------------------------------------------------------------------------------
+    
+    // 교통수단 상태 관리
+    const [transportationList, setTransportationList] = useState([
+        // { method: "", details: "" },
+    ]);
+
+    // 초기값 설정
+    useEffect(() => {
+        if (transportationList.length === 0) {
+          setTransportationList([{ method: "", details: "" }]);
+        }
+    }, [transportationList]);
+
+    // 교통수단 추가
+    const addTransportation = () => {
+        setTransportationList((prevList) => [
+        ...prevList,
+        { method: "", details: "" },
+        ]);
+    };
+
+    // 교통수단 삭제
+    const removeTransportation = (index) => {
+        setTransportationList((prevList) =>
+        prevList.filter((_, i) => i !== index)
+        );
+    };
+
+    // 교통수단 위로 이동
+    const moveUp = (index) => {
+        if (index === 0) return; // 첫 번째 요소는 위로 이동 불가
+        setTransportationList((prevList) => {
+        const newList = [...prevList];
+        [newList[index - 1], newList[index]] = [
+            newList[index],
+            newList[index - 1],
+        ];
+        return newList;
+        });
+    };
+
+    // 교통수단 아래로 이동
+    const moveDown = (index) => {
+        if (index === transportationList.length - 1) return; // 마지막 요소는 아래로 이동 불가
+        setTransportationList((prevList) => {
+        const newList = [...prevList];
+        [newList[index], newList[index + 1]] = [
+            newList[index + 1],
+            newList[index],
+        ];
+        return newList;
+        });
+    };
+
+    // 교통수단 입력값 업데이트
+    const handleInputChange = (index, field, value) => {
+        setTransportationList((prevList) =>
+          prevList.map((item, i) =>
+            i === index ? { ...item, [field]: value } : item
+          )
+        );
+    };
+    // -------------------------------------------------------------------------------------------------
+
+    // *********************************[전체] AOS 애니메이션 적용 **************************************
+
+    // -------------------------------------------------------------------------------------------------
+    useEffect(() => {
+        // AOS 초기화
+        AOS.init({
+          offset: 100,
+          duration: 1000,
+          once: true, // 애니메이션을 한 번만 실행
+        });
+      
+        // 스크롤 이벤트에서 AOS.refresh() 호출
+        const frameElement = document.querySelector('.frame'); // '.frame' 요소 선택
+        if (frameElement) {
+          const handleScroll = () => {
+            AOS.refresh();
+          };
+      
+          frameElement.addEventListener('scroll', handleScroll);
+      
+          // 컴포넌트 언마운트 시 이벤트 리스너 제거
+          return () => {
+            frameElement.removeEventListener('scroll', handleScroll);
+          };
+        }
+      }, []);
+
+
+    // -------------------------------------------------------------------------------------------------
+
+    // *********************************[예식일자] 예식일자 세팅  **************************************
+
+    // -------------------------------------------------------------------------------------------------
+    const [calendarDays, setCalendarDays] = useState([]);
+
+    const handleDateChange = (e) => {
+        const selectedDate = e.target.value;
+        setInvitationState((prev) => ({
+          ...prev,
+          weddingDate: selectedDate,
+        }));
+        generateCalendar(selectedDate);
+    };
+
+    const generateCalendar = (dateString) => {
+        if (!dateString) return;
+
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = date.getMonth();
+
+        const firstDay = new Date(year, month, 1).getDay(); // Day of the week the month starts on
+        const daysInMonth = new Date(year, month + 1, 0).getDate(); // Number of days in the month
+
+        const days = [];
+        for (let i = 0; i < firstDay; i++) {
+            days.push(null); // Empty slots for days before the 1st
+        }
+        for (let i = 1; i <= daysInMonth; i++) {
+            days.push(i);
+        }
+
+        setCalendarDays(days);
+    };
+
+    useEffect(() => {
+        if (invitationState.weddingDate) {
+            generateCalendar(invitationState.weddingDate);
+        }
+    }, [invitationState.weddingDate]);
+
+    const getKoreanDateInfo = (weddingDate) => {
+        if (!weddingDate) return "";
+      
+        const date = new Date(weddingDate);
+      
+        // 요일 추출 (0: 일요일, 1: 월요일, ...)
+        const daysInKorean = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
+        const dayOfWeek = daysInKorean[date.getDay()];
+      
+        // 시간 추출
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+        const period = hours >= 12 ? "오후" : "오전"; // 오전/오후 구분
+        const twelveHourFormat = hours % 12 || 12; // 12시간 형식으로 변환
+      
+        // 최종 문자열 생성
+        return `${dayOfWeek}  ${period}  ${twelveHourFormat}시  ${minutes}분`;
+
+    };
+
+    // -------------------------------------------------------------------------------------------------
+
+    // *********************************[예식장] 예식장 주소 찾기 api************************************
+
+    // -------------------------------------------------------------------------------------------------
+    const [openPostcode, setOpenPostcode] = useState(false);
+    const handlePostcode = {
+        // 버튼 클릭 이벤트
+            clickButton: () => {
+              setOpenPostcode(current => !current);
+        },
+        
+        // 주소 선택 이벤트
+            selectAddress: (data) => {
+              console.log('주소선택 : ' , data)
+              handleChange("weddingHallAddress", data.address);
+              setOpenPostcode(false);
+        },
+    }       
+
+    // -------------------------------------------------------------------------------------------------
+
+    // *********************************[미리보기] 결혼식까지 남은 시간 ************************************
+
+    // -------------------------------------------------------------------------------------------------
+
+    const [timeLeft, setTimeLeft] = useState({
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+    });
+  
+    useEffect(() => {
+      const calculateTimeLeft = () => {
+        const now = new Date();
+        const weddingDate = new Date(invitationState.weddingDate);
+  
+        if (!isNaN(weddingDate)) {
+          const difference = weddingDate - now;
+  
+          if (difference > 0) {
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((difference / (1000 * 60)) % 60);
+            const seconds = Math.floor((difference / 1000) % 60);
+  
+            setTimeLeft({ days, hours, minutes, seconds });
+          } else {
+            // 만약 시간이 지난 경우 0으로 설정
+            setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+          }
+        }
+      };
+  
+      // 1초마다 업데이트
+      const timer = setInterval(calculateTimeLeft, 1000);
+  
+      // 컴포넌트 언마운트 시 interval 정리
+      return () => clearInterval(timer);
+    }, [invitationState.weddingDate]);
+
+
+
+    // -------------------------------------------------------------------------------------------------
+
+    // *********************************[달력] 달력 사진 ************************************************
+
+    // -------------------------------------------------------------------------------------------------
+    const [calImage, setCalImage] = useState(null); // 미리보기 이미지 상태
+    const [calbackgroundImage, setCalBackgroundImage] = useState(invitationState.calendarImage || null);
+
+    // 파일 선택 시 미리보기 설정
+    const handleCalendarImageChange = (event) => {
+        const file = event.target.files[0]; // Get the selected file
+        if (file) {
+            const imageUrl = URL.createObjectURL(file); // Create a temporary URL for the file
+            setCalImage(imageUrl); // Update preview state
+            setCalBackgroundImage(imageUrl); // Update background image
+
+            handleChange("calendarImage", imageUrl);
+        }
+    };
+
+    // 이미지 삭제 시 미리보기 제거
+    const handleCalImageRemove = () => {
+        setCalImage(null); // 미리보기 이미지 초기화
+        setCalBackgroundImage(bgimg);
+    };
+
+    // -------------------------------------------------------------------------------------------------
+
+    // *********************************[갤러리] 사진 업로드 핸들러 **************************************
+
+    // -------------------------------------------------------------------------------------------------
+
+
+    const [title, setTitle] = useState(invitationState.galleryTitle || "갤러리");
+    const [type, setType] = useState(invitationState.galleryType || "그리드");
+
+    // 이미지 업로드 핸들러
+    const handleImageUpload = (e) => {
+        const files = Array.from(e.target.files);
+        const newImages = files.map((file) => URL.createObjectURL(file)); // 이미지 미리보기 URL 생성
+        setInvitationState((prevState) => ({
+        ...prevState,
+        galleryImages: [...(prevState.galleryImages || []), ...newImages],
+        }));
+    };
+
+    // 이미지 삭제 핸들러
+    const handleImageDelete = (index) => {
+        setInvitationState((prevState) => ({
+        ...prevState,
+        galleryImages: prevState.galleryImages.filter((_, i) => i !== index),
+        }));
+    };
+
+    // 제목 변경 핸들러
+    const handleTitleChange = (e) => {
+        const value = e.target.value;
+        setTitle(value);
+        setInvitationState((prevState) => ({
+        ...prevState,
+        galleryTitle: value,
+        }));
+    };
+
+    // 타입 변경 핸들러
+    const handleTypeChange = (e) => {
+        const value = e.target.value;
+        setType(value);
+        setInvitationState((prevState) => ({
+        ...prevState,
+        galleryType: value,
+        }));
+    };
+
+    // -------------------------------------------------------------------------------------------------
+
+    // *********************************[함께한 시간] 함께한 시간 계산 ***********************************
+
+    // -------------------------------------------------------------------------------------------------
+    const [elapsedTime, setElapsedTime] = useState("");
+
+    useEffect(() => {
+      // 타이머 업데이트 함수
+      const updateElapsedTime = () => {
+        if (invitationState.firstMeetTime) {
+          const firstMeetDate = new Date(invitationState.firstMeetTime); // firstMeetTime 값
+          const now = new Date();
+          const diffInSeconds = Math.floor((now - firstMeetDate) / 1000); // 초 단위 차이 계산
+  
+          const years = Math.floor(diffInSeconds / (365 * 24 * 60 * 60));
+          const months = Math.floor((diffInSeconds % (365 * 24 * 60 * 60)) / (30 * 24 * 60 * 60));
+          const days = Math.floor((diffInSeconds % (30 * 24 * 60 * 60)) / (24 * 60 * 60));
+          const hours = Math.floor((diffInSeconds % (24 * 60 * 60)) / (60 * 60));
+          const minutes = Math.floor((diffInSeconds % (60 * 60)) / 60);
+          const seconds = diffInSeconds % 60;
+  
+          setElapsedTime(`${years}년 ${months}개월 ${days}일 ${hours}시간 ${minutes}분 ${seconds}초`);
+        } else {
+          setElapsedTime("날짜를 입력해주세요.");
+        }
+      };
+  
+      // 1초마다 업데이트
+      const intervalId = setInterval(updateElapsedTime, 1000);
+  
+      // 컴포넌트 언마운트 시 interval 제거
+      return () => clearInterval(intervalId);
+    }, [invitationState.firstMeetTime]);
+      
+    
   return (
     <div className="contents-wrap">
         <div className="container">
@@ -103,25 +508,274 @@ function Create() {
 
                         <div className="frame-wrap">
                             <div className="frame">
+
                                 <section className="main">
-                                    <img className="frame-bg" src={bgimg}/>
-                                    <img className="frame-letter" src={letterimg} style={{ top: "60%" }}/>
+                                    {/* <img className="bg" src={bgimg} alt="bg"/> */}
+                                    <img className="bg" src={backgroundImage} alt="bg" />
+                                    <div className="cts">
+                                        <strong
+                                            className="lettering type1"
+                                            style={{
+                                                color: color1,
+                                                top: '18%',
+                                                display: invitationState.letteringMsg === 'our wedding day' ? 'block' : 'none',
+                                            }}
+                                            >
+                                            our<br />wedding<br />day
+                                            </strong>
+                                            <strong
+                                            className="lettering type2"
+                                            style={{
+                                                color: color1,
+                                                top: '22%',
+                                                display: invitationState.letteringMsg === "We're getting married_1" ? 'block' : 'none',
+                                            }}
+                                            >
+                                            We're getting<br />married!
+                                            </strong>
+                                            <strong
+                                            className="lettering type3"
+                                            style={{
+                                                color: color1,
+                                                top: '26%',
+                                                display: invitationState.letteringMsg === 'Just married' ? 'block' : 'none',
+                                            }}
+                                            >
+                                            Just married
+                                        </strong>
+
+                                        <p
+                                            className="text"
+                                            style={{
+                                                color : color2,
+                                                top: "55%",
+                                                wordWrap: "break-word", // 긴 단어를 자동으로 줄바꿈
+                                                overflowWrap: "break-word", // 긴 단어가 깨지도록 줄바꿈
+                                                whiteSpace: "normal", // 일반 줄바꿈 허용
+                                            }}
+                                            >
+                                            {invitationState.mainTxt || ""}
+                                        </p>
+
+                                </div>
                                 </section>
-                                <section className="main">
-                                    {/* <img className="frame-bg" src={previewImage}/> */}
-                                        :::메인:::
-                                        <br/>
-                                        타입 : {val1}<br/>
-                                        레터링문구 : {val2}<br/>
-                                        메인텍스트입력 : {val3}<br/>
-                                        메인 하단 예식 정보 : {val4}<br/>
-                                        스크롤 안내 : {val5}<br/>
+
+                                <section className="profile">
+                                    <div className="profile-wrap" data-aos="fade-up" data-aos-duration="1000">
+                                        <div className="item">
+                                            <div className="thumb">
+                                                <img 
+                                                    src={invitationState.groomPhotoUrl || ""} 
+                                                    alt="신랑이미지" 
+                                                />
+                                            </div>
+                                            <p className="t1"><span className="blue">신랑</span><strong>{invitationState.groomFirstName}{invitationState.groomLastName}</strong></p>
+                                            <p className="t2">{invitationState.groomIntroduction}</p>
+                                            {/* <p className="t3"><span>신랑 아버지</span>의 {invitationState.groomRelationship}</p> */}
+
+                                            {invitationState.groomFatherFirstName || invitationState.groomMotherFirstName && (
+                                                <p className="t3">
+                                                    <span>
+                                                        {invitationState.groomFatherFirstName}{invitationState.groomFatherLastName}
+                                                        •
+                                                        {invitationState.groomMotherFirstName}{invitationState.groomMotherLastName}
+                                                    </span>의 {invitationState.groomRelationship}
+                                                </p>
+                                            )}
+                                            
+                                        </div>
+                                        <div className="item">
+                                            <div className="thumb">
+                                                <img 
+                                                    src={invitationState.bridePhotoUrl || ""} 
+                                                    alt="신랑이미지" 
+                                                />
+
+                                            </div>
+                                            <p className="t1"><span className="pink">신부</span><strong>{invitationState.brideFirstName}{invitationState.brideLastName}</strong></p>
+                                            <p className="t2">{invitationState.brideIntroduction}</p>
+                                            {invitationState.brideFatherFirstName || invitationState.brideMotherFirstName && (
+                                                <p className="t3">
+                                                    <span>
+                                                        {invitationState.brideFatherFirstName}{invitationState.brideFatherLastName}
+                                                        •
+                                                        {invitationState.brideMotherFirstName}{invitationState.brideMotherLastName}
+                                                    </span>의 {invitationState.brideRelationship}
+                                                </p>
+                                            )}
+                                        </div>
+                                    </div>
+                                    {/* 목요일 이후 / 팝업 디자인 및 퍼블리싱 없음 */}
+                                    {/* <button className="btn">혼주에게 연락하기</button> */}
                                 </section>
-                                <section className="main">
-                                    <img className="frame-bg" src={bgimg}/>
-                                    <img className="frame-letter" src={letterimg} style={{ top: "60%" }}/>
+                            
+
+                                <section className="calendar">
+                                    
+                                    <strong className="title">{invitationState.calendarTitle || "예식 안내"}</strong>
+                                    <p className="info">{parseInt(invitationState.weddingDate.split("-")[0], 10)}년&nbsp;
+                                                        {parseInt(invitationState.weddingDate.split("-")[1], 10)}월&nbsp;
+                                                        {parseInt(invitationState.weddingDate.split("-")[2])}일&nbsp;
+                                                        {/* {}요일 오후 {}시 */}
+                                                        {getKoreanDateInfo(invitationState.weddingDate)}<br/>
+                                                        {invitationState.weddingHallName || ""}&nbsp;
+                                                        {invitationState.weddingHallFloorAndRoom || ""}
+                                    </p>
+
+                                    {invitationState.calendarImage && (
+                                        <img
+                                            className="bg"
+                                            src={invitationState.calendarImage}
+                                            alt="calbg"
+                                            style={{ borderRadius: "60px", padding: "30px"}}
+                                        />  
+                                    )}
+
+
+
+                                    <div className="month" data-aos="fade-up" data-aos-duration="1000">
+                                        <span className="month-title">{parseInt(invitationState.weddingDate.split("-")[1], 10)}월</span>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th className="holiday">일</th>
+                                                    <th>월</th>
+                                                    <th>화</th>
+                                                    <th>수</th>
+                                                    <th>목</th>
+                                                    <th>금</th>
+                                                    <th>토</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {Array.from({ length: Math.ceil(calendarDays.length / 7) }).map(
+                                                (_, weekIndex) => (
+                                                    <tr key={weekIndex}>
+                                                    {calendarDays
+                                                        .slice(weekIndex * 7, weekIndex * 7 + 7)
+                                                        .map((day, index) => (
+                                                        <td
+                                                            key={index}
+                                                            className={day ? (day === parseInt(invitationState.weddingDate.split("-")[2]) ? "target" : "") : ""}
+                                                        >
+                                                            {day && <span>{day}</span>}
+                                                        </td>
+                                                        ))}
+                                                    </tr>
+                                                )
+                                                )}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div
+                                        className={`d-day ${invitationState.useDday ? '' : 'hidden'}`}
+                                        style={{ display: invitationState.useDday ? 'block' : 'none' }}
+                                    >
+                                        <p className="point" data-aos="fade-up" data-aos-duration="1000">
+                                            <span>{invitationState.groomLastName || "신랑"}</span>♥
+                                            <span>{invitationState.brideLastName || "신부"}</span> 결혼식까지
+                                        </p>
+                                        <ul className="timer" data-aos="fade-up" data-aos-duration="1000">
+                                            <li><span>{timeLeft.days}</span>Days</li>
+                                            <li><span>{timeLeft.hours}</span>Hours</li>
+                                            <li><span>{timeLeft.minutes}</span>Minutes</li>
+                                            <li><span>{timeLeft.seconds}</span>Seconds</li>
+                                        </ul>
+                                    </div>
                                 </section>
+
+                                <section className="gallery">
+                                    <strong className="title" data-aos="fade-up" data-aos-duration="1000">{invitationState.galleryTitle || "갤러리"}</strong>
+                                    <div className="gallery-list" data-aos="fade-up" data-aos-duration="1000">
+                                        {invitationState.galleryImages &&
+                                            invitationState.galleryImages.map((image, index) => (
+                                                <div className="gallery-item" key={index}>
+                                                    <img src={image} alt={`gallery-${index}`} />
+                                                </div>
+                                        ))}
+                                        
+                                    </div>
+                                </section>
+
+                                <section className="infomation">
+                                    <div className="infomation-box" data-aos="fade-up" data-aos-duration="1000">
+                                        <strong className="title">{invitationState.noticeTitle || "안내문"}</strong>
+                                        <p>
+                                            {invitationState.noticeContent}
+                                        </p>
+                                        {/* 목요일 구현  */}
+                                        {/* <a href="#" className="btn">버튼</a> */}
+                                    </div>
+                                </section>
+                                <section className="flower">
+                                    <div className="flower-box" data-aos="fade-up" data-aos-duration="1000">
+                                        <img src={flower} alt="화환"/>
+                                        <div className="text">
+                                            <strong className="title">축하 화환 보내기</strong>
+                                            <p>축하의 마음을 담아 전해보세요.</p>
+                                        </div>
+                                    </div>
+                                </section>
+                                <section className="our-time">
+                                    <span className="title" data-aos="fade-up" data-aos-duration="1000">함께한 시간</span>
+                                    {/* <p className="timer" data-aos="fade-up" data-aos-duration="1000">“25년 1개월 17시간 42분 7초”</p> */}
+                                    <p className="timer" data-aos="fade-up" data-aos-duration="900">{elapsedTime}</p>
+                                </section>
+                                
+                                <section className="directions">
+                                    <strong className="title" data-aos="fade-up" data-aos-duration="1000">오시는 길</strong>
+                                    <div className="info" data-aos="fade-up" data-aos-duration="1000">
+                                        <strong className="name">
+                                            {invitationState.weddingHallName || "예식장 이름"}
+                                            {/* <a href="#" className="call"></a> */}
+                                        </strong>
+                                        <p className="place">{invitationState.weddingHallFloorAndRoom || "OOO홀"}</p>
+                                        <p className="address">{ invitationState.weddingHallAddress||"경기 성남시 분당구 판교역로 4"}</p>
+                                        {/* 목요일에 할거임 */}
+                                        {/* <div className="map"></div> */}
+                                        {/* <div className="map-btns">
+                                            <a href="#" className="map-btn"><img src={map_t} alt=""/>티맵</a>
+                                            <a href="#" className="map-btn"><img src={map_kakao} alt=""/>카카오 내비</a>
+                                            <a href="#" className="map-btn"><img src={map_naver} alt=""/>네이버 지도</a>
+                                        </div> */}
+                                    </div>
+                                </section>
+                                
+                                <section className="transportion">
+                                {transportationList &&
+                                    transportationList.map((list, index) => (
+                                        <div key={index}>
+                                            {/* <span className="title" data-aos="fade-up" data-aos-duration="1000">{list.method}</span>
+                                            <p className="text" data-aos="fade-up" data-aos-duration="1000">{list.details}</p> */}
+                                            <span className="title" >{list.method}</span>
+                                            <p className="text" >{list.details}</p> 
+                                        </div>
+                                ))}
+                                </section>
+
+
+                                <section className="land" data-aos="fade-up" data-aos-duration="1200">
+                                    <img className="bg" src={invitationState.endingImage ||bgimg} alt="bg" />
+                                    <p className="text">
+                                        {invitationState.endingContent}
+                                    </p>
+                                </section>
+
                             </div>
+
+
+                            {/* <!-- // 2024-11-13 미리보기 영역 --> */}
+
+
+
+
+
+
+
+
+
+
+
                         </div>
 
                         <div className="preview-focus">
@@ -153,7 +807,7 @@ function Create() {
                                                 {/* HERE */}
                                                 <select className="input-sts" value={val1} onChange={handleSelectChange}>
                                                     <option value="포스터(풀페이지)">포스터(풀페이지)</option>
-                                                    <option value="포토그라피(풀페이지) - 디자인없음">포토그라피(풀페이지) - 디자인없음</option>
+                                                    {/* <option value="포토그라피(풀페이지) - 디자인없음">포토그라피(풀페이지) - 디자인없음</option>
                                                     <option value="오리지널(풀페이지) - 디자인없음">오리지널(풀페이지) - 디자인없음</option>
                                                     <option value="폴라로이드 - 디자인없음">폴라로이드 - 디자인없음</option>
                                                     <option value="프레임 - 디자인없음">프레임 - 디자인없음</option>
@@ -161,7 +815,7 @@ function Create() {
                                                     <option value="아치 - 디자인없음">아치 - 디자인없음</option>
                                                     <option value="레트로 - 디자인없음">레트로 - 디자인없음</option>
                                                     <option value="실링왁스(이미지 없는 청첩장) - 디자인 없음">실링왁스(이미지 없는 청첩장) - 디자인 없음</option>
-                                                    <option value="화관(이미지 없는 청첩장) - 디자인 없음">화관(이미지 없는 청첩장) - 디자인 없음</option>
+                                                    <option value="화관(이미지 없는 청첩장) - 디자인 없음">화관(이미지 없는 청첩장) - 디자인 없음</option> */}
                                                 </select>
                                                 <button className="btn-change tooltip">변경
                                                     {visibleTooltips.tooltip1 && (
@@ -184,8 +838,9 @@ function Create() {
                                                         accept="image/*"
                                                         id="fileInput"
                                                         style={{ display: 'none' }}
-                                                        onChange={handleImageChange} // 파일 선택 시 핸들러
+                                                        onChange={handleImageChange} // Use updated function here
                                                     />
+
                                                     <button
                                                         className="img-upload-add"
                                                         onClick={() => document.getElementById('fileInput').click()}
@@ -213,16 +868,20 @@ function Create() {
                                         <div className="option-contents">
                                             <div className="input-change">
                                                 {/* <input className="input-sts" type="text" value="We’re getting Married!" readonly /> */}
-                                                <select className="input-sts"  value={val2} onChange={handleSelectChange2}>
-                                                    <option>our wedding day</option>
-                                                    <option>We're getting married_1</option> 
-                                                    <option>We're getting married_2</option> 
-                                                    <option>Just married</option> 
-                                                    <option>With love, always</option> 
+                                                <select
+                                                    className="input-sts"
+                                                    value={invitationState.letteringMsg || 'our wedding day'}
+                                                    onChange={(e) => handleChange("letteringMsg", e.target.value)} // letteringMsg 업데이트
+                                                >
+                                                    <option value="our wedding day">our wedding day</option>
+                                                    <option value="We're getting married_1">We're getting married_1</option>
+                                                    {/* <option>We're getting married_2</option>  */}
+                                                    <option value="Just married">Just married</option>
+                                                    {/* <option>With love, always</option> 
                                                     <option>happy wedding day</option> 
                                                     <option>Our first page</option> 
-                                                    <option>Happily ever after</option> 
-                                                    <option>선택안함</option> 
+                                                    <option>Happily ever after</option>  */}
+                                                   <option value="">선택안함</option>
                                                 </select>
                                                 <button className="btn-change tooltip">변경
                                                     {/* <span className="tooltip-box"><span>9가지</span> 문구가 준비되어 있습니다.</span> */}
@@ -239,30 +898,31 @@ function Create() {
                                         <div className="option-label">레터링 색상 <sup>필수</sup></div>
                                         <div className="option-contents">
                                             <div className="color-picker">
-                                                <span className="color-value">{color1}</span> {/* 선택한 색상 값 표시 */}
+                                                <span className="color-value">{invitationState.letteringClr || color1}</span> {/* 선택한 색상 값 표시 */}
                                                 <input
                                                     className="color-input"
                                                     type="color"
-                                                    value={color1} // 현재 상태의 색상으로 초기화
                                                     onChange={handleColorChange1} // 색상 선택 시 handleColorChange 호출
+                                                    value={invitationState.letteringClr || color1}
                                                 />
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="option">
+                                    {/* 목요일 이후 구현 */}
+                                    {/* <div className="option">
                                         <div className="option-label">레터링 위치 <sup>필수</sup></div>
                                         <div className="option-contents">
                                             <input type="range"/>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     <div className="option">
                                         <div className="option-label">메인 텍스트 입력 <sup>필수</sup></div>
                                         <div className="option-contents">
                                             <textarea
                                                 className="textarea-sts"
                                                 rows="4"
-                                                value={val3} // textarea의 값을 상태값으로 설정
-                                                onChange={handleTextChange} // 텍스트 입력 시 handleTextChange 호출
+                                                value={invitationState.mainTxt || ""} // Bind to invitationState
+                                                onChange={(e) => handleChange("mainTxt", e.target.value)} // Update state
                                             ></textarea>
                                         </div>
                                     </div>
@@ -270,7 +930,7 @@ function Create() {
                                         <div className="option-label">메인 텍스트 색상 <sup>필수</sup></div>
                                         <div className="option-contents">
                                             <div className="color-picker">
-                                                <span className="color-value">#93EEF4</span>
+                                            <span className="color-value">{invitationState.mainTxtClr || color2}</span> {/* 선택한 색상 값 표시 */}
                                                 <input
                                                     className="color-input"
                                                     type="color"
@@ -280,12 +940,13 @@ function Create() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="option">
+                                    {/* 목요일 이후 구현 */}
+                                    {/* <div className="option">
                                         <div className="option-label">메인 텍스트 위치 <sup>필수</sup></div>
                                         <div className="option-contents">
                                             <input type="range" />
                                         </div>
-                                    </div>
+                                    </div> */}
                                     <div className="option">
                                         <div className="option-label">메인 하단 예식 정보 <sup>필수</sup></div>
                                         <div className="option-contents">
@@ -329,8 +990,20 @@ function Create() {
                                         <div className="option-label">신랑 <sup>필수</sup></div>
                                         <div className="option-contents">
                                             <div className="name-set">
-                                                <input type="text" placeholder="성" className="input-sts fn" />
-                                                <input type="text" placeholder="이름" className="input-sts ln" />
+                                                <input 
+                                                    type="text" 
+                                                    placeholder="성" 
+                                                    className="input-sts fn" 
+                                                    value={invitationState.groomFirstName || ""} // Bind to invitationState
+                                                    onChange={(e) => handleChange("groomFirstName", e.target.value)} // Update state
+                                                />
+                                                <input 
+                                                    type="text" 
+                                                    placeholder="이름" 
+                                                    className="input-sts ln"
+                                                    value={invitationState.groomLastName || ""} // Bind to invitationState
+                                                    onChange={(e) => handleChange("groomLastName", e.target.value)} // Update state
+                                                />
                                             </div>
                                         </div>
                                     </div>
@@ -338,8 +1011,24 @@ function Create() {
                                         <div className="option-label">아버지</div>
                                         <div className="option-contents">
                                             <div className="name-set">
-                                                <input type="text" placeholder="성" className="input-sts fn" />
-                                                <input type="text" placeholder="이름" className="input-sts ln" />
+                                                {/* <input type="text" placeholder="성" className="input-sts fn" />
+                                                
+                                                <input type="text" placeholder="이름" className="input-sts ln" /> */}
+                                                <input 
+                                                    type="text" 
+                                                    placeholder="성" 
+                                                    className="input-sts fn" 
+                                                    value={invitationState.groomFatherFirstName || ""} // Bind to invitationState
+                                                    onChange={(e) => handleChange("groomFatherFirstName", e.target.value)} // Update state
+                                                />
+                                                <input 
+                                                    type="text" 
+                                                    placeholder="이름" 
+                                                    className="input-sts ln"
+                                                    value={invitationState.groomFatherLastName || ""} // Bind to invitationState
+                                                    onChange={(e) => handleChange("groomFatherLastName", e.target.value)} // Update state
+                                                />
+
                                                 <span className="check">
                                                     <input type="checkbox" id="ct2_1"/>
                                                     <label for="ct2_1"><i></i>고인</label>
@@ -351,8 +1040,20 @@ function Create() {
                                         <div className="option-label">어머니</div>
                                         <div className="option-contents">
                                             <div className="name-set">
-                                                <input type="text" placeholder="성" className="input-sts fn" />
-                                                <input type="text" placeholder="이름" className="input-sts ln" />
+                                                <input 
+                                                    type="text" 
+                                                    placeholder="성" 
+                                                    className="input-sts fn" 
+                                                    value={invitationState.groomMotherFirstName || ""} // Bind to invitationState
+                                                    onChange={(e) => handleChange("groomMotherFirstName", e.target.value)} // Update state
+                                                />
+                                                <input 
+                                                    type="text" 
+                                                    placeholder="이름" 
+                                                    className="input-sts ln"
+                                                    value={invitationState.groomMotherLastName || ""} // Bind to invitationState
+                                                    onChange={(e) => handleChange("groomMotherLastName", e.target.value)} // Update state
+                                                />
                                                 <span className="check">
                                                     <input type="checkbox" id="ct2_1" />
                                                     <label for="ct2_1"><i></i>고인</label>
@@ -364,7 +1065,13 @@ function Create() {
                                         <div className="option-label">관계</div>
                                         <div className="option-contents">
                                             <div className="name-set">
-                                                <input type="text" placeholder="아들" className="input-sts rn" />
+                                                <input 
+                                                    type="text" 
+                                                    placeholder="아들" 
+                                                    className="input-sts rn"
+                                                    value={invitationState.groomRelationship || ""} // Bind to invitationState
+                                                    onChange={(e) => handleChange("groomRelationship", e.target.value)} // Update state
+                                                />
                                             </div>
                                         </div>
                                     </div>
@@ -380,8 +1087,20 @@ function Create() {
                                         <div className="option-label">신부 <sup>필수</sup></div>
                                         <div className="option-contents">
                                             <div className="name-set">
-                                                <input type="text" placeholder="성" className="input-sts fn" />
-                                                <input type="text" placeholder="이름" className="input-sts ln" />
+                                                <input 
+                                                    type="text" 
+                                                    placeholder="성" 
+                                                    className="input-sts fn"
+                                                    value={invitationState.brideFirstName || ""} // Bind to invitationState
+                                                    onChange={(e) => handleChange("brideFirstName", e.target.value)} // Update state
+                                                />
+                                                <input 
+                                                    type="text" 
+                                                    placeholder="이름" 
+                                                    className="input-sts ln"
+                                                    value={invitationState.brideLastName || ""} // Bind to invitationState
+                                                    onChange={(e) => handleChange("brideLastName", e.target.value)} // Update state
+                                                />
                                             </div>
                                         </div>
                                     </div>
@@ -389,8 +1108,20 @@ function Create() {
                                         <div className="option-label">아버지</div>
                                         <div className="option-contents">
                                             <div className="name-set">
-                                                <input type="text" placeholder="성" className="input-sts fn" />
-                                                <input type="text" placeholder="이름" className="input-sts ln"/>
+                                                <input 
+                                                    type="text" 
+                                                    placeholder="성" 
+                                                    className="input-sts fn"
+                                                    value={invitationState.brideFatherFirstName || ""} // Bind to invitationState
+                                                    onChange={(e) => handleChange("brideFatherFirstName", e.target.value)} // Update state
+                                                />
+                                                <input 
+                                                    type="text" 
+                                                    placeholder="이름" 
+                                                    className="input-sts ln"
+                                                    value={invitationState.brideFatherLastName || ""} // Bind to invitationState
+                                                    onChange={(e) => handleChange("brideFatherLastName", e.target.value)} // Update state
+                                                />
                                                 <span className="check">
                                                     <input type="checkbox" id="ct2_1"/>
                                                     <label for="ct2_1"><i></i>고인</label>
@@ -402,8 +1133,20 @@ function Create() {
                                         <div className="option-label">어머니</div>
                                         <div className="option-contents">
                                             <div className="name-set">
-                                                <input type="text" placeholder="성" className="input-sts fn" />
-                                                <input type="text" placeholder="이름" className="input-sts ln" />
+                                                <input 
+                                                    type="text" 
+                                                    placeholder="성" 
+                                                    className="input-sts fn"
+                                                    value={invitationState.brideMotherFirstName || ""} // Bind to invitationState
+                                                    onChange={(e) => handleChange("brideMotherFirstName", e.target.value)} // Update state
+                                                />
+                                                <input 
+                                                    type="text" 
+                                                    placeholder="이름" 
+                                                    className="input-sts ln"
+                                                    value={invitationState.brideMotherLastName || ""} // Bind to invitationState
+                                                    onChange={(e) => handleChange("brideMotherLastName", e.target.value)} // Update state
+                                                />
                                                 <span className="check">
                                                     <input type="checkbox" id="ct2_1" />
                                                     <label for="ct2_1"><i></i>고인</label>
@@ -430,7 +1173,12 @@ function Create() {
                                     <div className="option">
                                         <div className="option-label">일자<sup>필수</sup></div>
                                         <div className="option-contents">
-                                            <input type="datetime-local" className="input-sts" />
+                                            <input
+                                                type="datetime-local"
+                                                className="input-sts"
+                                                value={invitationState.weddingDate || ""}
+                                                onChange={handleDateChange}
+                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -444,26 +1192,55 @@ function Create() {
                                     <div className="option">
                                         <div className="option-label">예식장 명<sup>필수</sup></div>
                                         <div className="option-contents">
-                                            <input type="text" className="input-sts" placeholder="예식장 명" />
+                                            <input
+                                            type="text"
+                                            className="input-sts"
+                                            placeholder="예식장 명"
+                                            value={invitationState.weddingHallName || ""} // Bind value to state
+                                            onChange={(e) => handleChange("weddingHallName", e.target.value)} // Update state on change
+                                            />
                                         </div>
                                     </div>
                                     <div className="option">
                                         <div className="option-label">예식장 층과 홀</div>
                                         <div className="option-contents">
-                                            <input type="text" className="input-sts" placeholder="OO홀" />
+                                            <input 
+                                            type="text" 
+                                            className="input-sts" 
+                                            placeholder="OO홀"
+                                            value={invitationState.weddingHallFloorAndRoom || ""} // Bind value to state
+                                            onChange={(e) => handleChange("weddingHallFloorAndRoom", e.target.value)} // Update state on change
+                                            />
                                         </div>
                                     </div>
                                     <div className="option">
                                         <div className="option-label">예식장 전화번호</div>
                                         <div className="option-contents">
-                                            <input type="text" className="input-sts" placeholder="-없이 입력해주세요." />
+                                            <input 
+                                            type="text" 
+                                            className="input-sts" 
+                                            placeholder="-없이 입력해주세요." 
+                                            value={invitationState.weddingHallPhoneNumber || ""} // Bind value to state
+                                            onChange={(e) => handleChange("weddingHallPhoneNumber", e.target.value)} // Update state on change
+                                            />
                                         </div>
                                     </div>
                                     <div className="option">
                                         <div className="option-label">예식장 주소</div>
                                         <div className="option-contents">
-                                            <button className="btn-address-search">주소 검색</button>
-                                            <input type="text" className="input-sts" placeholder="주소 검색을 통해 입력해주세요." />
+                                            <button className="btn-address-search" onClick={handlePostcode.clickButton}>주소 검색</button>
+                                            {openPostcode &&
+                                                <DaumPostcode
+                                                onComplete={handlePostcode.selectAddress}  // 값을 선택할 경우 실행되는 이벤트
+                                                autoClose={false} // 값을 선택할 경우 사용되는 DOM을 제거하여 자동 닫힘 설정
+                                            />}
+                                            <input 
+                                            type="text" 
+                                            className="input-sts" 
+                                            placeholder="주소 검색을 통해 입력해주세요." 
+                                            value={invitationState.weddingHallAddress || ""}
+                                            readOnly
+                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -477,7 +1254,8 @@ function Create() {
                                     <button className="btn-toggle">여닫기</button>
                                 </div>
                                 <div className="category-body">
-                                    <div className="option">
+                                    {/* 목요일 이후 구현 */}
+                                    {/* <div className="option">
                                         <div className="option-label">달력타입</div>
                                         <div className="option-contents">
                                             <div className="radio-wrap">
@@ -491,11 +1269,18 @@ function Create() {
                                                 </span>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     <div className="option">
                                         <div className="option-label">달력 제목</div>
                                         <div className="option-contents">
-                                            <input type="text" className="input-sts" placeholder="예식 안내" />
+                                            {/* <input type="text" className="input-sts" placeholder="예식 안내" /> */}
+                                            <input
+                                            type="text"
+                                            className="input-sts"
+                                            placeholder="예식 안내"
+                                            value={invitationState.calendarTitle || ""} // Bind value to state
+                                            onChange={(e) => handleChange("calendarTitle", e.target.value)} // Update state on change
+                                            />
                                         </div>
                                     </div>
                                     <div className="option">
@@ -503,29 +1288,43 @@ function Create() {
                                         <div className="option-contents">
                                             <div className="img-uploader">
                                                 <div className="img-upload">
-                                                    <button className="img-upload-add"></button>
+                                                    <button className="img-upload-add"  onClick={() => document.getElementById('fileInput2').click()}>
+                                                        <input
+                                                            type="file"
+                                                            accept="image/*"
+                                                            id="fileInput2"
+                                                            style={{ display: 'none' }}
+                                                            onChange={handleCalendarImageChange} // Use updated function here
+                                                        />
+                                                        
+                                                    </button>
                                                 </div>
-                                                <div className="img-upload fin">
-                                                    <div className="img-upload-thumb"><img src="./images/create/sample.png" alt="sample" /></div>
-                                                    <button className="img-upload-cancel">삭제</button>
-                                                </div>
+                                                {calImage && (
+                                                    <div className="img-upload fin">
+                                                        <div className="img-upload-thumb"><img src={calImage} alt="sample" /></div>
+                                                        <button className="img-upload-cancel" onClick={handleCalImageRemove}>삭제</button>
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="option">
+                                    {/* 목요일 이후 (일단 패스) */}
+                                    {/* <div className="option">
                                         <div className="option-label">디데이</div>
                                         <div className="option-contents">
                                             <div className="radio-wrap">
                                                 <span className="check">
-                                                    <input type="checkbox" name="ct1_2" id="ct1_2_1" />
+                                                    <input type="checkbox" name="ct1_2" id="ct1_2_1" 
+                                                    onChange={(e) => handleChange("useDday", e.target.value === 'on'? true : false)} />
                                                     <label for="ct1_2_1"><i></i>사용</label>
                                                 </span>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
-                            <div className="category">
+                            {/* 목요일 이후 구현 (퍼블리싱 없음) */}
+                            {/* <div className="category">
                                 <div className="category-head">
                                     <label for="" className="switch">
                                         <input type="checkbox" checked />
@@ -553,8 +1352,9 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="category">
+                            </div> */}
+                            {/* 목요일 이후 구현 (퍼블리싱 없음) */}
+                            {/* <div className="category">
                                 <div className="category-head">
                                     <label for="" className="switch">
                                         <input type="checkbox" checked />
@@ -599,7 +1399,7 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="category">
                                 <div className="category-head">
                                     <label for="" className="switch">
@@ -614,12 +1414,38 @@ function Create() {
                                         <div className="option-contents">
                                             <div className="img-uploader">
                                                 <div className="img-upload">
-                                                    <button className="img-upload-add"></button>
+                                                 <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        id="groomPhotoInput"
+                                                        style={{ display: "none" }}
+                                                        onChange={(e) => {
+                                                            const file = e.target.files[0];
+                                                            if (file) {
+                                                                const imageUrl = URL.createObjectURL(file);
+                                                                handleChange("groomPhotoUrl", imageUrl);
+                                                            }
+                                                        }}
+                                                    />
+                                                    <button
+                                                        className="img-upload-add"
+                                                        onClick={() => document.getElementById("groomPhotoInput").click()}
+                                                    />
                                                 </div>
-                                                <div className="img-upload fin">
-                                                    <div className="img-upload-thumb"><img src="./images/create/sample.png" alt="sample" /></div>
-                                                    <button className="img-upload-cancel">삭제</button>
-                                                </div>
+                                                        
+                                                
+                                                {  invitationState.groomPhotoUrl && (
+                                                    <div className="img-upload fin">
+                                                        <div className="img-upload-thumb">
+                                                            <img 
+                                                                src={invitationState.groomPhotoUrl || ""} 
+                                                                alt="신랑이미지" 
+                                                            />
+                                                        </div>
+                                                        <button className="img-upload-cancel" onClick={() =>invitationState.groomPhotoUrl = "" }>삭제</button>
+                                                    </div>
+                                                )}
+                                                
                                             </div>
                                             <div className="mt-10"><button className="btn-positioning">위치 조정</button></div>
                                         </div>
@@ -627,7 +1453,12 @@ function Create() {
                                     <div className="option">
                                         <div className="option-label">신랑 소개</div>
                                         <div className="option-contents">
-                                            <textarea name="" id="" rows="9" className="textarea-sts"></textarea>
+                                            <textarea
+                                                className="textarea-sts"
+                                                rows="9"
+                                                value={invitationState.groomIntroduction || ""} // Bind to invitationState
+                                                onChange={(e) => handleChange("groomIntroduction", e.target.value)} // Update state
+                                            ></textarea>
                                         </div>
                                     </div>
                                     <div className="option">
@@ -635,12 +1466,39 @@ function Create() {
                                         <div className="option-contents">
                                             <div className="img-uploader">
                                                 <div className="img-upload">
-                                                    <button className="img-upload-add"></button>
+                                                    {/* <button className="img-upload-add"></button> */}
+
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        id="bridePhotoInput"
+                                                        style={{ display: "none" }}
+                                                        onChange={(e) => {
+                                                            const file = e.target.files[0];
+                                                            if (file) {
+                                                                const imageUrl = URL.createObjectURL(file);
+                                                                handleChange("bridePhotoUrl", imageUrl);
+                                                            }
+                                                        }}
+                                                    />
+                                                    <button
+                                                        className="img-upload-add"
+                                                        onClick={() => document.getElementById("bridePhotoInput").click()}
+                                                    />
+
                                                 </div>
-                                                <div className="img-upload fin">
-                                                    <div className="img-upload-thumb"><img src="./images/create/sample.png" alt="sample"/></div>
-                                                    <button className="img-upload-cancel">삭제</button>
-                                                </div>
+
+                                                {  invitationState.bridePhotoUrl && (
+                                                    <div className="img-upload fin">
+                                                        <div className="img-upload-thumb">
+                                                            <img 
+                                                                src={invitationState.bridePhotoUrl || ""} 
+                                                                alt="신랑이미지" 
+                                                            />
+                                                        </div>
+                                                        <button className="img-upload-cancel" onClick={() =>invitationState.bridePhotoUrl = "" }>삭제</button>
+                                                    </div>
+                                                )}
                                             </div>
                                             <div className="mt-10"><button className="btn-positioning">위치 조정</button></div>
                                         </div>
@@ -648,7 +1506,13 @@ function Create() {
                                     <div className="option">
                                         <div className="option-label">신부 소개</div>
                                         <div className="option-contents">
-                                            <textarea name="" id="" rows="9" className="textarea-sts"></textarea>
+                                            {/* <textarea name="" id="" rows="9" className="textarea-sts"></textarea> */}
+                                            <textarea
+                                                className="textarea-sts"
+                                                rows="9"
+                                                value={invitationState.brideIntroduction || ""} // Bind to invitationState
+                                                onChange={(e) => handleChange("brideIntroduction", e.target.value)} // Update state
+                                            ></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -665,18 +1529,31 @@ function Create() {
                                     <div className="option">
                                         <div className="option-label">신랑 전화번호</div>
                                         <div className="option-contents">
-                                            <input type="text" className="input-sts" placeholder="-없이 입력해주세요"/>
+                                            <input 
+                                                type="text" 
+                                                className="input-sts" 
+                                                placeholder="-없이 입력해주세요"
+                                                value={invitationState.groomPhoneNumber}
+                                                onChange={(e) => handleChange("groomPhoneNumber", e.target.value)}
+                                            />
                                         </div>
                                     </div>
                                     <div className="option">
                                         <div className="option-label">신부 전화번호</div>
                                         <div className="option-contents">
-                                            <input type="text" className="input-sts" placeholder="-없이 입력해주세요" />
+                                            <input 
+                                                type="text" 
+                                                className="input-sts" 
+                                                placeholder="-없이 입력해주세요"
+                                                value={invitationState.bridePhoneNumber}
+                                                onChange={(e) => handleChange("bridePhoneNumber", e.target.value)}
+                                            />
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="category">
+                            {/* 목요일 이후 구현 (퍼블리싱 없음) */}
+                            {/* <div className="category">
                                 <div className="category-head">
                                     <label for="" className="switch">
                                         <input type="checkbox" checked />
@@ -710,8 +1587,9 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="category">
+                            </div> */}
+                            {/* 목요일 이후 구현 (퍼블리싱 없음) */}
+                            {/* <div className="category">
                                 <div className="category-head">
                                     <label for="" className="switch">
                                         <input type="checkbox" checked/>
@@ -789,7 +1667,7 @@ function Create() {
                                         <button className="add-box-add">타임라인 추가</button>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="category">
                                 <div className="category-head">
                                     <label for="" className="switch">
@@ -802,10 +1680,13 @@ function Create() {
                                     <div className="option">
                                         <div className="option-label">타이틀</div>
                                         <div className="option-contents">
-                                            <input type="text" className="input-sts" placeholder="갤러리"/>
+                                            <input type="text" className="input-sts" placeholder="갤러리"
+                                            value={invitationState.galleryTitle || ""} // Bind to invitationState
+                                            onChange={(e) => handleChange("galleryTitle", e.target.value)} // Update state
+                                            />
                                         </div>
                                     </div>
-                                    <div className="option">
+                                    {/* <div className="option">
                                         <div className="option-label">타입</div>
                                         <div className="option-contents">
                                             <div className="radio-wrap">
@@ -820,52 +1701,46 @@ function Create() {
                                                 <span className="radio">
                                                     <input type="radio" name="gallery" id="gallery_2"/>
                                                     <label for="gallery_2"><i></i>슬라이드</label>
-                                                </span>
+                                                </span> 
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     <div className="option">
                                         <div className="option-label">사진</div>
                                         <div className="option-contents">
                                             <div className="img-uploader2">
-                                                <button className="img-uploader2-btn">업로드</button>
+                                                <input
+                                                    type="file"
+                                                    multiple
+                                                    accept="image/*"
+                                                    style={{ display: "none" }}
+                                                    id="galleryfileInput"
+                                                    onChange={handleImageUpload}
+                                                />
+                                                <button
+                                                    className="img-uploader2-btn"
+                                                    onClick={() => document.getElementById("galleryfileInput").click()}
+                                                    >
+                                                    업로드
+                                                </button>
                                                 <div className="img-uploader2-area">
-                                                    <div className="img-uploader2-item">
-                                                        <img src="./images/create/sample.png" alt="sample"/>
-                                                        <button className="img-uploader2-delete">삭제</button>
-                                                    </div>
-                                                    <div className="img-uploader2-item">
-                                                        <img src="./images/create/sample.png" alt="sample"/>
-                                                        <button className="img-uploader2-delete">삭제</button>
-                                                    </div>
-                                                    <div className="img-uploader2-item">
-                                                        <img src="./images/create/sample.png" alt="sample"/>
-                                                        <button className="img-uploader2-delete">삭제</button>
-                                                    </div>
-                                                    <div className="img-uploader2-item">
-                                                        <img src="./images/create/sample.png" alt="sample"/>
-                                                        <button className="img-uploader2-delete">삭제</button>
-                                                    </div>
-                                                    <div className="img-uploader2-item">
-                                                        <img src="./images/create/sample.png" alt="sample"/>
-                                                        <button className="img-uploader2-delete">삭제</button>
-                                                    </div>
-                                                    <div className="img-uploader2-item">
-                                                        <img src="./images/create/sample.png" alt="sample"/>
-                                                        <button className="img-uploader2-delete">삭제</button>
-                                                    </div>
-                                                    <div className="img-uploader2-item">
-                                                        <img src="./images/create/sample.png" alt="sample"/>
-                                                        <button className="img-uploader2-delete">삭제</button>
-                                                    </div>
-                                                    <div className="img-uploader2-item">
-                                                        <img src="./images/create/sample.png" alt="sample"/>
-                                                        <button className="img-uploader2-delete">삭제</button>
-                                                    </div>
-                                                    <div className="img-uploader2-item">
-                                                        <img src="./images/create/sample.png" alt="sample"/>
-                                                        <button className="img-uploader2-delete">삭제</button>
-                                                    </div>
+
+                                                    {/* img for문 */}
+                                                    {invitationState.galleryImages &&
+                                                        invitationState.galleryImages.map((image, index) => (
+                                                        <div className="img-uploader2-item" key={index}>
+                                                            <img src={image} alt={`gallery-${index}`} />
+                                                            <button
+                                                            className="img-uploader2-delete"
+                                                            onClick={() => handleImageDelete(index)}
+                                                            >
+                                                            삭제
+                                                            </button>
+                                                        </div>
+                                                    ))}
+
+
+
                                                 </div>
                                                 <p className="notice">
                                                     최대 60장 업로드 가능합니다.<br/>퀄리티를 위하여 업로드에 용량 제한이 없습니다.<br/>모바일에 최적화된 가로 사이즈로 업로드 됩니다.
@@ -873,7 +1748,8 @@ function Create() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="option">
+                                    {/* 목요일 이후 구현 (퍼블리싱 없음) */}
+                                    {/* <div className="option">
                                         <div className="option-label">하단 진행바</div>
                                         <div className="option-contents">
                                             <div className="radio-wrap">
@@ -893,10 +1769,11 @@ function Create() {
                                         <div className="option-contents">
                                             <button className="btn-positioning">위치 조정</button>
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
-                            <div className="category">
+                            {/* 목요일 이후 구현 (퍼블리싱 없음) */}
+                            {/* <div className="category">
                                 <div className="category-head">
                                     <label for="" className="switch">
                                         <input type="checkbox" checked/>
@@ -918,8 +1795,10 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="category">
+                            </div> */}
+
+                            {/* 목요일 이후 구현 (퍼블리싱 없음) */}
+                            {/* <div className="category">
                                 <div className="category-head">
                                     <label for="" className="switch">
                                         <input type="checkbox" checked/>
@@ -971,8 +1850,10 @@ function Create() {
                                         <button className="add-box-add">인터뷰 추가</button>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="category">
+                            </div> */}
+
+                            {/* 목요일 이후 > 지도 안나옴  */}
+                            {/* <div className="category">
                                 <div className="category-head">
                                     <label for="" className="switch">
                                         <input type="checkbox" checked/>
@@ -985,7 +1866,11 @@ function Create() {
                                         <div className="option-label">지도 마커</div>
                                         <div className="option-contents">
                                             <div className="map-marker">
-                                                <img src="./images/create/map_marker.png" alt=""/>
+                                                <Map // 카카오맵을 표시할 컴포넌트
+                                                    center={{lat : 33.491103, lng : 126.496458}} // 중심 좌표
+                                                    level={3} // 확대 레벨
+                                                    style={{ width: "100%", height: "100%" }} // 스타일
+                                                />
                                             </div>
                                         </div>
                                     </div>
@@ -1044,7 +1929,8 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
+
                             <div className="category">
                                 <div className="category-head">
                                     <label for="" className="switch">
@@ -1054,35 +1940,65 @@ function Create() {
                                     <button className="btn-toggle">여닫기</button>
                                 </div>
                                 <div className="category-body">
-                                    <div className="add-box">
+                                {transportationList.map((transport, index) => (
+                                    <div className="add-box" key={index} >
                                         <div className="add-head">
                                             <div>
-                                                <button className="add-box-up">위로</button>
-                                                <button className="add-box-down">아래로</button>
+                                                <button
+                                                className="add-box-up"
+                                                onClick={() => moveUp(index)}
+                                                disabled={index === 0} // 첫 번째 요소 비활성화
+                                                >위로</button>
+                                                <button
+                                                className="add-box-down"
+                                                onClick={() => moveDown(index)}
+                                                disabled={index === transportationList.length - 1} // 마지막 요소 비활성화
+                                                >아래로</button>
                                             </div>
-                                            <button className="add-box-delete">삭제</button>
+                                            <button className="add-box-delete" onClick={() => removeTransportation(index)}>삭제</button>
+                                            
                                         </div>
                                         <div className="add-body">
                                             <div className="option">
                                                 <div className="option-label">교통수단</div>
                                                 <div className="option-contents">
-                                                    <input type="text" className="input-sts"/>
+                                                    <input
+                                                    type="text"
+                                                    className="input-sts"
+                                                    placeholder="교통수단"
+                                                    value={transport.method}
+                                                    onChange={(e) =>
+                                                        handleInputChange(index, "method", e.target.value)
+                                                    }
+                                                    />
                                                 </div>
                                             </div>
                                             <div className="option">
                                                 <div className="option-label">내용</div>
                                                 <div className="option-contents">
-                                                    <textarea name="" id="" rows="7" className="textarea-sts"></textarea>
+                                                    <textarea 
+                                                        name="" 
+                                                        id="" 
+                                                        rows="7" 
+                                                        className="textarea-sts"
+                                                        value={transport.details}
+                                                        onChange={(e) =>
+                                                            handleInputChange(index, "details", e.target.value)
+                                                        }
+                                                    ></textarea>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                ))}
                                     <div className="add-btn">
-                                        <button className="add-box-add">교통수단 추가</button>
+                                        <button className="add-box-add" onClick={addTransportation}>교통수단 추가</button>
                                     </div>
                                 </div>
                             </div>
-                            <div className="category">
+
+                            {/* 목요일 이후 구현 (퍼블리싱 없음) */}
+                            {/* <div className="category">
                                 <div className="category-head">
                                     <label for="" className="switch">
                                         <input type="checkbox" checked/>
@@ -1147,7 +2063,7 @@ function Create() {
                                         <button className="add-box-add">안내사항 추가</button>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="category">
                                 <div className="category-head">
                                     <label for="" className="switch">
@@ -1167,13 +2083,15 @@ function Create() {
                                         <div className="option-label">내용</div>
                                         <div className="option-contents">
                                             <div className="phrase">
-                                                <button className="phrase-sample">샘플 양식</button>
+                                                {/* 목요일 구현 */}
+                                                {/* <button className="phrase-sample">샘플 양식</button> */}
                                                 <textarea name="" id="" className="textarea-sts" rows="9">
                                                 </textarea>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="option">
+                                    {/* 목요일 이후 구현 (퍼블 없어서 만들다 때려ㅓ침 ) */}
+                                    {/* <div className="option">
                                         <div className="option-label">외부링크 버튼</div>
                                         <div className="option-contents">
                                             <div className="radio-wrap">
@@ -1188,9 +2106,28 @@ function Create() {
                                             </div>
                                         </div>
                                     </div>
+                                    
+                                    <div className="option">
+                                        <div className="option-label">버튼 텍스트</div>
+                                        <div className="option-contents">
+                                            <div className="radio-wrap">
+                                                <span className="radio">
+                                                    <input type="radio" name="notice_link_2" id="notice_link_2_1" checked/>
+                                                    <label for="notice_link_2_1"><i></i>미사용</label>
+                                                </span>
+                                                <span className="radio">
+                                                    <input type="radio" name="notice_link_2" id="notice_link_2_2"/>
+                                                    <label for="notice_link_2_2"><i></i>사용</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div> */}
+
+
                                 </div>
                             </div>
-                            <div className="category">
+                            {/* 목요일 이후 구현 (퍼블리싱 없음) */}
+                            {/* <div className="category">
                                 <div className="category-head">
                                     <label for="" className="switch">
                                         <input type="checkbox" checked/>
@@ -1295,8 +2232,9 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="category">
+                            </div> */}
+                            {/* 목요일 이후 구현 (퍼블리싱 없음) */}
+                            {/* <div className="category">
                                 <div className="category-head">
                                     <label for="" className="switch">
                                         <input type="checkbox" checked/>
@@ -1460,8 +2398,9 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="category">
+                            </div> */}
+                            {/* 목요일 이후 구현 (퍼블리싱 없음) */}
+                            {/* <div className="category">
                                 <div className="category-head">
                                     <label for="" className="switch">
                                         <input type="checkbox" checked/>
@@ -1503,14 +2442,14 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="category">
                                 <div className="category-head">
                                     <label for="" className="switch">
                                         <input type="checkbox" checked/>
                                     </label>
                                     <strong>화환 보내기</strong>
-                                    <button className="btn-toggle" style={{display : "none"}}>여닫기</button>
+                                    <button className="btn-toggle" style={{display : "none"}} on>여닫기</button>
                                 </div>
                             </div>
                             <div className="category">
@@ -1525,7 +2464,13 @@ function Create() {
                                     <div className="option">
                                         <div className="option-label">첫만남</div>
                                         <div className="option-contents">
-                                            <input type="datetime-local" className="input-sts"/>
+                                            {/* <input type="datetime-local" className="input-sts"/> */}
+                                            <input
+                                            type="datetime-local"
+                                            className="input-sts"
+                                            value={invitationState.firstMeetTime}
+                                            onChange={(e) => handleChange("firstMeetTime", e.target.value)}
+                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -1544,22 +2489,52 @@ function Create() {
                                         <div className="option-contents">
                                             <div className="img-uploader">
                                                 <div className="img-upload">
-                                                    <button className="img-upload-add"></button>
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        id="endingPhotoInput"
+                                                        style={{ display: "none" }}
+                                                        onChange={(e) => {
+                                                            const file = e.target.files[0];
+                                                            if (file) {
+                                                                const imageUrl = URL.createObjectURL(file);
+                                                                handleChange("endingImage", imageUrl);
+                                                            }
+                                                        }}
+                                                    />
+
+                                                    <button
+                                                        className="img-upload-add"
+                                                        onClick={() => document.getElementById('endingPhotoInput').click()}
+                                                    />
                                                 </div>
-                                                <div className="img-upload fin">
-                                                    <div className="img-upload-thumb"><img src="./images/create/sample.png" alt="sample"/></div>
-                                                    <button className="img-upload-cancel">삭제</button>
+                                                {invitationState.endingImage  && (
+                                                    <div className="img-upload fin">
+                                                    <div className="img-upload-thumb">
+                                                        <img 
+                                                            src={invitationState.endingImage || bgimg} 
+                                                            alt="엔딩" 
+                                                        />
+                                                    </div>
+                                                    <button className="img-upload-cancel" onClick={() =>invitationState.endingImage = "" }>삭제</button>
                                                 </div>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
                                     <div className="option">
                                         <div className="option-label">글귀</div>
                                         <div className="option-contents">
-                                            <textarea className="textarea-sts" name="" id="" rows="9"></textarea>
+                                            <textarea
+                                                className="textarea-sts"
+                                                rows="9"
+                                                value={invitationState.endingContent || ""} // Bind to invitationState
+                                                onChange={(e) => handleChange("endingContent", e.target.value)} // Update state
+                                            ></textarea>
                                         </div>
                                     </div>
-                                    <div className="option">
+                                    {/* 목요일 */}
+                                    {/* <div className="option">
                                         <div className="option-label">글귀</div>
                                         <div className="option-contents">
                                             <div className="radio-wrap">
@@ -1577,10 +2552,11 @@ function Create() {
                                                 </span>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
-                            <div className="category">
+                            {/* 목요일 이후 구현 (디자인, 퍼블리싱 없음) */}
+                            {/* <div className="category">
                                 <div className="category-head">
                                     <label for="" className="switch">
                                         <input type="checkbox" checked/>
@@ -1633,8 +2609,9 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="category">
+                            </div> */}
+                            {/* 목요일 이후 구현 (디자인, 퍼블리싱 없음) */}
+                            {/* <div className="category">
                                 <div className="category-head">
                                     <label for="" className="switch">
                                         <input type="checkbox" checked/>
@@ -1850,8 +2827,9 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="category">
+                            </div> */}
+                            {/* 목요일 이후 구현 (퍼블리싱, 음원 없음) */}
+                            {/* <div className="category">
                                 <div className="category-head">
                                     <label for="" className="switch">
                                         <input type="checkbox" checked/>
@@ -1968,8 +2946,9 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="category">
+                            </div> */}
+                            {/* 목요일 이후 구현 (퍼블리싱, 디자인 없음) */}
+                            {/* <div className="category">
                                 <div className="category-head">
                                     <label for="" className="switch">
                                         <input type="checkbox" checked/>
@@ -2005,8 +2984,9 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="category">
+                            </div> */}
+                            {/* 목요일 이후 구현 (기획 된 것 없음) */}
+                            {/* <div className="category">
                                 <div className="category-head">
                                     <label for="" className="switch">
                                         <input type="checkbox" checked/>
@@ -2043,8 +3023,9 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="category">
+                            </div> */}
+                            {/* 목요일 구현 */}
+                            {/* <div className="category">
                                 <div className="category-head">
                                     <label for="" className="switch">
                                         <input type="checkbox" checked/>
@@ -2113,8 +3094,9 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="category">
+                            </div> */}
+                            {/* 목요일 이후 구현 (기획 없음) */}
+                            {/* <div className="category">
                                 <div className="category-head">
                                     <label for="" className="switch">
                                         <input type="checkbox" checked/>
@@ -2224,7 +3206,7 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                             <button className="btn-save">저장</button>
                         </div>
 
@@ -2234,10 +3216,10 @@ function Create() {
             </div>
         </div>
 
-        <div class="create-btn">
-            <div class="preview-tooltip">실시간으로 확인해보세요! <button class="preview-tooltip-close">닫기</button></div>
-            <button class="btn-save">저장</button>
-            <button class="btn-preview">미리보기</button>
+        <div className="create-btn">
+            <div className="preview-tooltip">실시간으로 확인해보세요! <button className="preview-tooltip-close">닫기</button></div>
+            <button className="btn-save">저장</button>
+            <button className="btn-preview">미리보기</button>
         </div>
     </div>
   )

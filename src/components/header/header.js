@@ -25,12 +25,10 @@ function Header() {
                         <a onClick={() => navigate('/')}>모바일청첩장</a> {/* 경로 수정 */}
                     </nav>
                     <div className="hd-right">
-                        <button onClick={() => navigate('/production-list')}> {/* 클릭 시 경로 이동 */}
+                        <button className="btn-history" onClick={() => navigate('/production-list')}> {/* 클릭 시 경로 이동 */}
                             <img src={makeHistory} style={{ width: "70px" }} alt="제작내역" />
                         </button>
-                        <a href="https://euphoriacard.co.kr/login?back_url=L0hPTUU%3D&used_login_btn=Y" target="_blank" rel="noopener noreferrer">
-                            LOGIN
-                        </a>
+                        <a href="https://euphoriacard.co.kr/login?back_url=L0hPTUU%3D&used_login_btn=Y" className="btn-login">로그인</a>
                     </div>
                 </header>
             </div>

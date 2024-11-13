@@ -16,6 +16,42 @@
     <link rel="stylesheet" href="../src/styles/common.css">
     <link rel="stylesheet" href="../src/styles/contents.css">
     <link rel="icon" href="%PUBLIC_URL%/logo.svg"  />
+
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="./js/common.js"></script>
+
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    
+    <script
+      type="text/javascript"
+      src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=267e72e5ca94418235ab871f6c69fe40&libraries=services,clusterer,drawing"
+    ></script>
+
+    <script>
+        $('.btn-toggle').on('click', function() {
+            $(this).closest('.category').find('.category-body').toggle();
+            $(this).toggleClass('active');
+        })
+
+        // AOS 초기화
+        AOS.init({
+            offset: 100,
+            duration: 1000,
+            scrollContainer: '.frame'
+        });
+
+        $('.frame').scroll(function () { AOS.refresh(); })
+
+
+        $('.btn-menu').click(function() {
+            $('.menu-wrap').toggleClass('active');
+        })
+
+
+    </script>
+
     <!-- <link rel="icon" href="../src/assets/images/" />
       -->
     <!--
