@@ -903,7 +903,7 @@ function Create() {
                                                     className="color-input"
                                                     type="color"
                                                     onChange={handleColorChange1} // 색상 선택 시 handleColorChange 호출
-                                                    value={invitationState.letteringClr || color1}
+                                                    value={color1}
                                                 />
                                             </div>
                                         </div>
