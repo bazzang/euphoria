@@ -562,7 +562,7 @@ function Create() {
                                 </section>
 
                                 <section className="profile">
-                                    <div className="profile-wrap" data-aos="fade-up" data-aos-duration="1000">
+                                    <div className="profile-wrap" data-aos="fade-up" data-aos-duration="600">
                                         <div className="item">
                                             <div className="thumb">
                                                 <img 
@@ -638,7 +638,7 @@ function Create() {
 
 
 
-                                    <div className="month" data-aos="fade-up" data-aos-duration="1000">
+                                    <div className="month" data-aos="fade-up" data-aos-duration="600">
                                         <span className="month-title">{parseInt(invitationState.weddingDate.split("-")[1], 10)}월</span>
                                         <table>
                                             <thead>
@@ -676,11 +676,11 @@ function Create() {
                                         className={`d-day ${invitationState.useDday ? '' : 'hidden'}`}
                                         style={{ display: invitationState.useDday ? 'block' : 'none' }}
                                     >
-                                        <p className="point" data-aos="fade-up" data-aos-duration="1000">
+                                        <p className="point" data-aos="fade-up" data-aos-duration="600">
                                             <span>{invitationState.groomLastName || "신랑"}</span>♥
                                             <span>{invitationState.brideLastName || "신부"}</span> 결혼식까지
                                         </p>
-                                        <ul className="timer" data-aos="fade-up" data-aos-duration="1000">
+                                        <ul className="timer" data-aos="fade-up" data-aos-duration="600">
                                             <li><span>{timeLeft.days}</span>Days</li>
                                             <li><span>{timeLeft.hours}</span>Hours</li>
                                             <li><span>{timeLeft.minutes}</span>Minutes</li>
@@ -690,8 +690,8 @@ function Create() {
                                 </section>
 
                                 <section className="gallery">
-                                    <strong className="title" data-aos="fade-up" data-aos-duration="1000">{invitationState.galleryTitle || "갤러리"}</strong>
-                                    <div className="gallery-list" data-aos="fade-up" data-aos-duration="1000">
+                                    <strong className="title" data-aos="fade-up" data-aos-duration="600">{invitationState.galleryTitle || "갤러리"}</strong>
+                                    <div className="gallery-list" data-aos="fade-up" data-aos-duration="600">
                                         {invitationState.galleryImages &&
                                             invitationState.galleryImages.map((image, index) => (
                                                 <div className="gallery-item" key={index}>
@@ -703,7 +703,7 @@ function Create() {
                                 </section>
 
                                 <section className="infomation">
-                                    <div className="infomation-box" data-aos="fade-up" data-aos-duration="1000">
+                                    <div className="infomation-box" data-aos="fade-up" data-aos-duration="600">
                                         <strong className="title">{invitationState.noticeTitle || "안내문"}</strong>
                                         <p>
                                             {invitationState.noticeContent}
@@ -713,7 +713,7 @@ function Create() {
                                     </div>
                                 </section>
                                 <section className="flower">
-                                    <div className="flower-box" data-aos="fade-up" data-aos-duration="1000">
+                                    <div className="flower-box" data-aos="fade-up" data-aos-duration="600">
                                         <img src={flower} alt="화환"/>
                                         <div className="text">
                                             <strong className="title">축하 화환 보내기</strong>
@@ -722,14 +722,14 @@ function Create() {
                                     </div>
                                 </section>
                                 <section className="our-time">
-                                    <span className="title" data-aos="fade-up" data-aos-duration="1000">함께한 시간</span>
+                                    <span className="title" data-aos="fade-up" data-aos-duration="600">함께한 시간</span>
                                     {/* <p className="timer" data-aos="fade-up" data-aos-duration="1000">“25년 1개월 17시간 42분 7초”</p> */}
-                                    <p className="timer" data-aos="fade-up" data-aos-duration="900">{elapsedTime}</p>
+                                    <p className="timer" data-aos="fade-up" data-aos-duration="600">{elapsedTime}</p>
                                 </section>
                                 
                                 <section className="directions">
-                                    <strong className="title" data-aos="fade-up" data-aos-duration="1000">오시는 길</strong>
-                                    <div className="info" data-aos="fade-up" data-aos-duration="1000">
+                                    <strong className="title" data-aos="fade-up" data-aos-duration="600">오시는 길</strong>
+                                    <div className="info" data-aos="fade-up" data-aos-duration="600">
                                         <strong className="name">
                                             {invitationState.weddingHallName || "예식장 이름"}
                                             {/* <a href="#" className="call"></a> */}
@@ -759,7 +759,7 @@ function Create() {
                                 </section>
 
 
-                                <section className="land" data-aos="fade-up" data-aos-duration="1200">
+                                <section className="land" data-aos="fade-up" data-aos-duration="600">
                                     <img className="bg" src={invitationState.endingImage ||bgimg} alt="bg" />
                                     <p className="text">
                                         {invitationState.endingContent}
