@@ -145,8 +145,9 @@ function Create() {
 
     const handleColorChange1 = (e) => {
         setColor1(e.target.value); // 선택한 색상으로 상태 업데이트
-        handleChange("letteringMsg", e.target.value)
+        handleChange("letteringClr", e.target.value); // `letteringClr` 상태로 저장
     };
+    
     const handleColorChange2 = (e) => {
         setColor2(e.target.value); // 선택한 색상으로 상태 업데이트
         handleChange("mainTxtClr", e.target.value)
@@ -518,7 +519,7 @@ function Create() {
                                             style={{
                                                 color: color1,
                                                 top: '18%',
-                                                display: invitationState.letteringMsg === 'our wedding day' ? 'block' : 'none',
+                                                display: invitationState.letteringMsg === 'our wedding day' ? '' : 'none',
                                             }}
                                             >
                                             our<br />wedding<br />day
