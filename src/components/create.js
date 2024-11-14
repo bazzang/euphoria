@@ -574,15 +574,18 @@ function Create() {
                                             <p className="t2">{invitationState.groomIntroduction}</p>
                                             {/* <p className="t3"><span>신랑 아버지</span>의 {invitationState.groomRelationship}</p> */}
 
-                                            {invitationState.groomFatherFirstName || invitationState.groomMotherFirstName && (
                                                 <p className="t3">
                                                     <span>
                                                         {invitationState.groomFatherFirstName}{invitationState.groomFatherLastName}
-                                                        •
+
+                                                        {invitationState.groomFatherFirstName && (
+                                                            <span>•</span> 
+                                                        )}
+
                                                         {invitationState.groomMotherFirstName}{invitationState.groomMotherLastName}
-                                                    </span>의 {invitationState.groomRelationship}
+                                                    </span>
+                                                    {invitationState.groomFatherFirstName &&(<>의</> )} {invitationState.groomRelationship}
                                                 </p>
-                                            )}
                                             
                                         </div>
                                         <div className="item">
@@ -595,15 +598,16 @@ function Create() {
                                             </div>
                                             <p className="t1"><span className="pink">신부</span><strong>{invitationState.brideFirstName}{invitationState.brideLastName}</strong></p>
                                             <p className="t2">{invitationState.brideIntroduction}</p>
-                                            {invitationState.brideFatherFirstName || invitationState.brideMotherFirstName && (
                                                 <p className="t3">
                                                     <span>
                                                         {invitationState.brideFatherFirstName}{invitationState.brideFatherLastName}
-                                                        •
+                                                        {invitationState.brideFatherFirstName && (
+                                                            <span>•</span> 
+                                                        )}
                                                         {invitationState.brideMotherFirstName}{invitationState.brideMotherLastName}
-                                                    </span>의 {invitationState.brideRelationship}
+                                                    </span>
+                                                    {invitationState.brideFatherFirstName &&(<>의</> )} {invitationState.brideRelationship}
                                                 </p>
-                                            )}
                                         </div>
                                     </div>
                                     {/* 목요일 이후 / 팝업 디자인 및 퍼블리싱 없음 */}
@@ -1159,7 +1163,7 @@ function Create() {
                                         <div className="option-label">관계</div>
                                         <div className="option-contents">
                                             <div className="name-set">
-                                                <input type="text" placeholder="아들" className="input-sts rn" />
+                                                <input type="text" placeholder="딸" className="input-sts rn" />
                                             </div>
                                         </div>
                                     </div>
@@ -2076,8 +2080,15 @@ function Create() {
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">제목</div>
-                                        <div className="option-contents">
-                                            <input type="text" className="input-sts"/>
+                                        <div className="option-contents"> 
+                                            {/* invitationState.noticeTitle */}
+                                            {/* <input type="text" className="input-sts"/> */}
+                                            <input 
+                                                type="text" 
+                                                className="input-sts"
+                                                value={invitationState.noticeTitle} // Bind to invitationState
+                                                onChange={(e) => handleChange("noticeTitle", e.target.value)} // Update state
+                                            />
                                         </div>
                                     </div>
                                     <div className="option">
@@ -2086,8 +2097,13 @@ function Create() {
                                             <div className="phrase">
                                                 {/* 목요일 구현 */}
                                                 {/* <button className="phrase-sample">샘플 양식</button> */}
-                                                <textarea name="" id="" className="textarea-sts" rows="9">
-                                                </textarea>
+                                                <textarea
+                                                className="textarea-sts"
+                                                rows="9"
+                                                value={invitationState.noticeContent || ""} // Bind to invitationState
+                                                onChange={(e) => handleChange("noticeContent", e.target.value)} // Update state
+                                                ></textarea>
+
                                             </div>
                                         </div>
                                     </div>
