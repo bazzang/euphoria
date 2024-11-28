@@ -23,16 +23,16 @@ const InvitationContext = createContext({
 export const InvitationProvider = ({ children }) => {
   const [invitationState, setInvitationState] = useState({
     seq: 0, // 청첩장 seq
-    userId: "", // 유저
+    userId: "wltn", // 유저
 
     // 메인정보
     mainType: "", // 메인화면 청첩장 타입
     mainPhotoUrl: "", // 메인사진저장경로
     mainPhotoNm: "", // 메인사진이름
     letteringMsg: 'our wedding day', // 레터링문구
-    letteringClr: "", // 레터링문구색상
+    letteringClr: "#FFFFFF", // 레터링문구색상
     mainTxt: "", // 메인텍스트
-    mainTxtClr: "", // 메인텍스트색상
+    mainTxtClr: "#FFFFFF", // 메인텍스트색상
     mainWddInfoOnoff: "", // 메인 하단 예식 정보
 
     // 신랑 정보
@@ -120,7 +120,7 @@ export const InvitationProvider = ({ children }) => {
     
     // 화환 보내기
     sendWreath: false, // 화환 보내기 섹션 활성화 여부
-    sendWreathUrl : "https://www.99flower.co.kr/?n_media=27758&n_query=%ED%99%94%ED%99%98&n_rank=2&n_ad_group=grp-m001-01-000000018989733&n_ad=nad-a001-01-000000164210691&n_keyword_id=nkw-m001-01-000000002510180&n_keyword=%ED%99%94%ED%99%98&n_campaign_type=1&n_ad_group_type=1&n_match=1&NaPm=ct%3Dm3g9v5jk%7Cci%3D0Aa0001wZhfBRL8HAeZp%7Ctr%3Dsa%7Chk%3Dc6623bf00a3979924de91c85ae2a24c0583331ea%7Cnacn%3DfRFVDYAV6fvLB", // 화환 보내기에 연결 될 url 
+    sendWreathUrl : "https://www.99flower.co.kr/", // 화환 보내기에 연결 될 url 
     
     // 함께한 시간
     useFirstMeetTime : false, // 함께한 사용 여부 
@@ -132,7 +132,14 @@ export const InvitationProvider = ({ children }) => {
     endingContent: "", // 엔딩 글귀
     endingContentPosition: "상단", // 글귀 위치 (상단, 중간, 하단)
 
+    // 사진
+    mainPhotoFile : "",
+    calendarFile : "",
+    groomPhotoFile : "",
+    bridePhotoFile : "",
+    endingPhotoFile : "",
 
+     
 
 
   });

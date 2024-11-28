@@ -19,7 +19,10 @@ import { useInvitation } from "./InvitationProvider.js";
 
 import DaumPostcode from 'react-daum-postcode';
 
-import { Map, Polyline, MapMarker, CustomOverlayMap } from "react-kakao-maps-sdk"
+import { Map, Polyline, MapMarker, CustomOverlayMap } from "react-kakao-maps-sdk";
+
+import { axiosPost } from './common/common.js';
+
 
 
 function Create() {
@@ -121,6 +124,7 @@ function Create() {
             setBackgroundImage(imageUrl); // Update background image
 
             handleChange("mainPhotoUrl", imageUrl);
+            handleFileChange(event, "mainPhoto");
         }
     };
 
@@ -390,79 +394,7 @@ function Create() {
 
 
 
-    // -------------------------------------------------------------------------------------------------
-
-    // *********************************[달력] 달력 사진 ************************************************
-
-    // -------------------------------------------------------------------------------------------------
-    const [calImage, setCalImage] = useState(null); // 미리보기 이미지 상태
-    const [calbackgroundImage, setCalBackgroundImage] = useState(invitationState.calendarImage || null);
-
-    // 파일 선택 시 미리보기 설정
-    const handleCalendarImageChange = (event) => {
-        const file = event.target.files[0]; // Get the selected file
-        if (file) {
-            const imageUrl = URL.createObjectURL(file); // Create a temporary URL for the file
-            setCalImage(imageUrl); // Update preview state
-            setCalBackgroundImage(imageUrl); // Update background image
-
-            handleChange("calendarImage", imageUrl);
-        }
-    };
-
-    // 이미지 삭제 시 미리보기 제거
-    const handleCalImageRemove = () => {
-        setCalImage(null); // 미리보기 이미지 초기화
-        setCalBackgroundImage(bgimg);
-    };
-
-    // -------------------------------------------------------------------------------------------------
-
-    // *********************************[갤러리] 사진 업로드 핸들러 **************************************
-
-    // -------------------------------------------------------------------------------------------------
-
-
-    const [title, setTitle] = useState(invitationState.galleryTitle || "갤러리");
-    const [type, setType] = useState(invitationState.galleryType || "그리드");
-
-    // 이미지 업로드 핸들러
-    const handleImageUpload = (e) => {
-        const files = Array.from(e.target.files);
-        const newImages = files.map((file) => URL.createObjectURL(file)); // 이미지 미리보기 URL 생성
-        setInvitationState((prevState) => ({
-        ...prevState,
-        galleryImages: [...(prevState.galleryImages || []), ...newImages],
-        }));
-    };
-
-    // 이미지 삭제 핸들러
-    const handleImageDelete = (index) => {
-        setInvitationState((prevState) => ({
-        ...prevState,
-        galleryImages: prevState.galleryImages.filter((_, i) => i !== index),
-        }));
-    };
-
-    // 제목 변경 핸들러
-    const handleTitleChange = (e) => {
-        const value = e.target.value;
-        setTitle(value);
-        setInvitationState((prevState) => ({
-        ...prevState,
-        galleryTitle: value,
-        }));
-    };
-
-    // 타입 변경 핸들러
-    const handleTypeChange = (e) => {
-        const value = e.target.value;
-        setType(value);
-        setInvitationState((prevState) => ({
-        ...prevState,
-        galleryType: value,
-        }));
-    };
+    
 
     // -------------------------------------------------------------------------------------------------
 
@@ -499,6 +431,173 @@ function Create() {
       return () => clearInterval(intervalId);
     }, [invitationState.firstMeetTime]);
       
+    // -------------------------------------------------------------------------------------------------
+
+    // *********************************[달력] 달력 사진 ************************************************
+
+    // -------------------------------------------------------------------------------------------------
+    const [calImage, setCalImage] = useState(null); // 미리보기 이미지 상태
+    const [calbackgroundImage, setCalBackgroundImage] = useState(invitationState.calendarImage || null);
+
+    // 파일 선택 시 미리보기 설정
+    const handleCalendarImageChange = (event) => {
+        const file = event.target.files[0]; // Get the selected file
+        if (file) {
+            const imageUrl = URL.createObjectURL(file); // Create a temporary URL for the file
+            setCalImage(imageUrl); // Update preview state
+            setCalBackgroundImage(imageUrl); // Update background image
+
+            handleChange("calendarImage", imageUrl);
+            handleFileChange(event, 'calendar');
+        }
+    };
+
+    // 이미지 삭제 시 미리보기 제거
+    const handleCalImageRemove = () => {
+        setCalImage(null); // 미리보기 이미지 초기화
+        setCalBackgroundImage(bgimg);
+    };
+
+    // -------------------------------------------------------------------------------------------------
+
+    // *********************************[갤러리] 사진 업로드 핸들러 **************************************
+
+    // -------------------------------------------------------------------------------------------------
+    const [title, setTitle] = useState(invitationState.galleryTitle || "갤러리");
+    const [type, setType] = useState(invitationState.galleryType || "그리드");
+
+    // 이미지 업로드 핸들러
+    const handleImageUpload = (e) => {
+        const files = Array.from(e.target.files);
+        const newImages = files.map((file) => URL.createObjectURL(file)); // 이미지 미리보기 URL 생성
+        setInvitationState((prevState) => ({
+        ...prevState,
+        galleryImages: [...(prevState.galleryImages || []), ...files],
+        }));
+
+        // handleGalleryImageUpload(e);
+
+    };
+
+    // 이미지 삭제 핸들러
+    const handleImageDelete = (index) => {
+        setInvitationState((prevState) => ({
+        ...prevState,
+        galleryImages: prevState.galleryImages.filter((_, i) => i !== index),
+        }));
+    };
+
+    // 제목 변경 핸들러
+    const handleTitleChange = (e) => {
+        const value = e.target.value;
+        setTitle(value);
+        setInvitationState((prevState) => ({
+        ...prevState,
+        galleryTitle: value,
+        }));
+    };
+
+    // 타입 변경 핸들러
+    const handleTypeChange = (e) => {
+        const value = e.target.value;
+        setType(value);
+        setInvitationState((prevState) => ({
+        ...prevState,
+        galleryType: value,
+        }));
+    };
+
+    // -------------------------------------------------------------------------------------------------
+
+    // *********************************[저장] 사진 저장 ************************************************
+
+    // -------------------------------------------------------------------------------------------------
+    const handleFileChange = (event, key) => {
+        const file = event.target.files[0];
+        if (file) {
+            setInvitationState((prevState) => ({
+                ...prevState,
+                [`${key}File`]: file, // 파일 객체 저장
+            }));
+        }
+    };
+
+    // 갤러리 
+    const handleGalleryImageUpload = (event) => {
+        const files = Array.from(event.target.files); // 다중 파일 입력 처리
+        setInvitationState((prevState) => ({
+            ...prevState,
+            galleryImages: [...(prevState.galleryImages || []), ...files], // 기존 이미지와 합침
+        }));
+    };
+
+    // -------------------------------------------------------------------------------------------------
+
+    // *********************************[저장] 저장 버튼 클릭 이벤트 핸들러 *******************************
+
+    // -------------------------------------------------------------------------------------------------
+    const onClickSave1 = async () => {
+        let data = invitationState;
+        axiosPost("/api/save1", data).then(response => {
+            console.log("ddd : ",response)
+            // response에서 저장한 seq가 와야함
+            // onClickSave2(); 
+        });
+
+    }
+    const onClickSave2 = async () => {
+        try {
+            const formData = new FormData();
+            
+            // JSON 데이터를 문자열로 추가
+            formData.append("vo", JSON.stringify(invitationState));
+
+
+            // invitationState의 문자열 및 논리값 데이터 추가
+            Object.keys(invitationState).forEach((key) => {
+                const value = invitationState[key];
+                if (typeof value === "string" || typeof value === "boolean") {
+                    formData.append(key, value);
+                }
+            });
+    
+            // 주요 이미지 파일 처리
+            if (invitationState.mainPhotoFile) {
+                formData.append("mainPhotoFile", invitationState.mainPhotoFile); // 메인 이미지
+            }
+            if (invitationState.calendarFile) {
+                formData.append("calendarFile", invitationState.calendarFile); // 달력 이미지
+            }
+            if (invitationState.groomPhotoFile) {
+                formData.append("groomPhotoFile", invitationState.groomPhotoFile); // 신랑 이미지
+            }
+            if (invitationState.bridePhotoFile) {
+                formData.append("bridePhotoFile", invitationState.bridePhotoFile); // 신부 이미지
+            }
+            if (invitationState.endingPhotoFile) {
+                formData.append("endingPhotoFile", invitationState.endingPhotoFile); // 엔딩 이미지
+            }
+    
+            // 갤러리 이미지 처리 (배열로 추가)
+            if (invitationState.galleryImages && invitationState.galleryImages.length > 0) {
+                invitationState.galleryImages.forEach((file) => {
+                    formData.append("galleryImages", file); // 갤러리 이미지를 배열로 추가
+                });
+            }
+    
+            // 서버로 데이터 전송
+            const response = await axios.post("/api/save2", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+                // transformRequest: [(data) => data], // FormData 변환 방지
+            });
+    
+            console.log("Server response:", response.data);
+        } catch (error) {
+            console.error("Error while saving data:", error);
+        }
+    };
     
   return (
     <div className="contents-wrap">
@@ -1163,7 +1262,13 @@ function Create() {
                                         <div className="option-label">관계</div>
                                         <div className="option-contents">
                                             <div className="name-set">
-                                                <input type="text" placeholder="딸" className="input-sts rn" />
+                                                <input 
+                                                    type="text" 
+                                                    placeholder="딸" 
+                                                    className="input-sts rn"
+                                                    value={invitationState.brideRelationship || ""} // Bind to invitationState
+                                                    onChange={(e) => handleChange("brideRelationship", e.target.value)} // Update state
+                                                />
                                             </div>
                                         </div>
                                     </div>
@@ -1429,6 +1534,7 @@ function Create() {
                                                             if (file) {
                                                                 const imageUrl = URL.createObjectURL(file);
                                                                 handleChange("groomPhotoUrl", imageUrl);
+                                                                handleFileChange(e, 'groomPhoto');
                                                             }
                                                         }}
                                                     />
@@ -1483,6 +1589,7 @@ function Create() {
                                                             if (file) {
                                                                 const imageUrl = URL.createObjectURL(file);
                                                                 handleChange("bridePhotoUrl", imageUrl);
+                                                                handleFileChange(e, 'bridePhoto');
                                                             }
                                                         }}
                                                     />
@@ -1724,7 +1831,8 @@ function Create() {
                                                 />
                                                 <button
                                                     className="img-uploader2-btn"
-                                                    onClick={() => document.getElementById("galleryfileInput").click()}
+                                                    // onClick={() => handleGalleryImageUpload}
+                                                    onClick={() => document.getElementById("galleryfileInput").click()} // Input 파일 선택 창 열기
                                                     >
                                                     업로드
                                                 </button>
@@ -2516,6 +2624,7 @@ function Create() {
                                                             if (file) {
                                                                 const imageUrl = URL.createObjectURL(file);
                                                                 handleChange("endingImage", imageUrl);
+                                                                handleFileChange(e, 'endingPhoto');
                                                             }
                                                         }}
                                                     />
@@ -3224,7 +3333,7 @@ function Create() {
                                     </div>
                                 </div>
                             </div> */}
-                            <button className="btn-save">저장</button>
+                            <button className="btn-save" onClick={onClickSave1}>저장</button>
                         </div>
 
 
