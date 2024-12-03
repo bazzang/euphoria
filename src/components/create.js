@@ -29,6 +29,7 @@ function Create() {
 
     const { invitationState, setInvitationState } = useInvitation();
 
+
     useEffect(() => {
        console.log('Current state:', invitationState); // 초기 상태 확인
     }, [invitationState]);
