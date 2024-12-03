@@ -8,41 +8,6 @@ import logoutB from '../../images/login_b.png';
 function Header() {
     const navigate = useNavigate(); // useNavigate 훅 사용
 
-//     const onclicktest = () => {
-        
-//             // Define the endpoint and parameters
-//         const endpoint = "https://openapi.imweb.me/oauth2/authorize";
-//         const params = new URLSearchParams({
-//             responseType: "code",
-//             clientId: "99b07d0cfbc5ed65e2d968e05aa156c2019a074130	", 
-//             redirectUri: "http://localhost:3000/", 
-//             scope: "member-info:read",
-//             siteCode: "calltest",//"S2024091968b59fb7abb6b",
-//         });
-
-//         // Make the fetch request
-//         const fetchData = async () => {
-//             try {
-//             const response = await fetch(`${endpoint}?${params.toString()}`, {
-//                 method: "GET",
-//             });
-
-//             if (!response.ok) {
-//                 throw new Error(`HTTP error! status: ${response.status}`);
-//             }
-
-//             const data = await response.json();
-//             console.log("테스트 @@@@@@:", data);
-//             } catch (error) {
-//             console.error("Error fetching OAuth2 data:", error);
-//             }
-//         };
-
-//         fetchData();
-
-
-    // };
-
     return (
         <div className="header-wrap">
             <div className="container">
@@ -63,14 +28,7 @@ function Header() {
                         <button className="btn-history" onClick={() => navigate('/production-list')}> {/* 클릭 시 경로 이동 */}
                             <img src={makeHistory} style={{ width: "70px" }} alt="제작내역" />
                         </button>
-                        {/* <a href="https://euphoriacard.co.kr/login?back_url=L0hPTUU%3D&used_login_btn=Y" className="btn-login"
-                            onClick={}
-                        >로그인</a> */}
-                        <a href="https://openapi.imweb.me/oauth2/authorize?responseType=code&clientId=ca56ca29-12b0-4e96-8c79-e2fd7a79e981&redirectUri=http://localhost:3000&scope=member-info%3Aread%20product%3Awrite%20order%3Awrite&siteCode=S2024091968b59fb7abb6b" 
-                        className="btn-login">로그인</a>
-                        
-
-                         {/* <button onClick={onclicktest}>로그인</button> */}
+                        <a href="https://euphoriacard.co.kr/login?back_url=L0hPTUU%3D&used_login_btn=Y" className="btn-login">로그인</a>
                     </div>
                 </header>
             </div>
