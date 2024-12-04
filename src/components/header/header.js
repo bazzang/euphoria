@@ -66,7 +66,7 @@ function Header() {
                         {/* <a href="https://euphoriacard.co.kr/login?back_url=L0hPTUU%3D&used_login_btn=Y" className="btn-login"
                             onClick={}
                         >로그인</a> */}
-                        <a href="https://openapi.imweb.me/oauth2/authorize?responseType=code&clientId=ca56ca29-12b0-4e96-8c79-e2fd7a79e981&redirectUri=euphoria-psi.vercel.app&scope=member-info%3Aread%20product%3Awrite%20order%3Awrite&siteCode=S2024091968b59fb7abb6b" 
+                        <a href="https://openapi.imweb.me/oauth2/authorize?responseType=code&clientId=4327ff80-a2b4-4619-958e-de807e8cdcf7&redirectUri=https://euphoria-psi.vercel.app/&scope=member-info:read&siteCode=S2024082926c7c40e12877" 
                         className="btn-login">로그인</a>
                         
 
