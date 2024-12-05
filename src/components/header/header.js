@@ -54,7 +54,7 @@ function Header() {
 
     const exchangeCodeForToken = async (code) => {
         try {
-          const response = await fetch('http://localhost:8080/api/oauth', {
+          const response = await fetch('/api/oauth', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
