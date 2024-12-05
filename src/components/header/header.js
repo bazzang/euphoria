@@ -22,6 +22,8 @@ function Header() {
         
     // }, []);
 
+
+    // 인가코드 콜 
     const redirectToAuth = () => {
         const authUrl =
           'https://openapi.imweb.me/oauth2/authorize?responseType=code&clientId=4327ff80-a2b4-4619-958e-de807e8cdcf7&redirectUri=https://euphoria-psi.vercel.app/&scope=member-info:read&siteCode=S2024082926c7c40e12877';
@@ -29,15 +31,19 @@ function Header() {
         window.location.href = authUrl;
     };
 
+    // 인가코드 세션스토리지에 저장 후 백엔드 호출 
     const handleAuthCode = () => {
         const queryParams = new URLSearchParams(window.location.search);
         const code = queryParams.get('code');
     
         if (code) {
-          sessionStorage.setItem('authCode', code);
-          console.log('Authorization Code saved to sessionStorage:', code);
+            sessionStorage.setItem('authCode', code);
+            console.log('세션스토리지 저장된 code :', code);
+            
+            exchangeCodeForToken(code);
+
         } else {
-          redirectToAuth(); // 'code'가 없으면 인증 URL로 이동
+            redirectToAuth(); // code가 없으면 인증 URL로 이동
         }
     };
     
@@ -45,6 +51,36 @@ function Header() {
         handleAuthCode();
     }, []);
 
+
+    const exchangeCodeForToken = async (code) => {
+        try {
+          const response = await fetch('http://localhost:8080/api/oauth', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ code }),
+          });
+    
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+    
+          const data = await response.json();
+          console.log('Token Response:', data);
+    
+          // 세션 스토리지에 저장
+          if (data.data && data.data.accessToken) {
+            sessionStorage.setItem('accessToken', data.data.accessToken);
+            sessionStorage.setItem('refreshToken', data.data.refreshToken);
+            console.log('Tokens saved to sessionStorage.', data.data.refreshToken, data.data.accessToken);
+          } else {
+            console.warn('토큰 없음');
+          }
+        } catch (error) {
+          console.error('엑세스토큰 에러:', error);
+        }
+    };
     
     
 
