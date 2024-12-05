@@ -5,7 +5,7 @@ import logoimg from '../../images/logo.svg';
 import makeHistory from '../../images/make_history_b.png';
 import logoutB from '../../images/login_b.png';
 import axios from 'axios';
-
+import { axiosPost } from '../common/common.js';
 function Header() {
     const navigate = useNavigate(); // useNavigate 훅 사용
     const location = useLocation();
@@ -53,33 +53,40 @@ function Header() {
 
 
     const exchangeCodeForToken = async (code) => {
-        try {
-          const response = await fetch('/api/oauth', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ code }),
-          });
+
+        axiosPost("/api/oauth", code).then(response => {
+            console.log("ddd : ",response)
+            // response에서 저장한 seq가 와야함
+            // onClickSave2(); 
+        });
+
+        // try {
+        //   const response = await fetch('/api/oauth', {
+        //     method: 'POST',
+        //     headers: {
+        //       'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify({ code }),
+        //   });
     
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
+        //   if (!response.ok) {
+        //     throw new Error(`HTTP error! status: ${response.status}`);
+        //   }
     
-          const data = await response.json();
-          console.log('Token Response:', data);
+        //   const data = await response.json();
+        //   console.log('Token Response:', data);
     
-          // 세션 스토리지에 저장
-          if (data.data && data.data.accessToken) {
-            sessionStorage.setItem('accessToken', data.data.accessToken);
-            sessionStorage.setItem('refreshToken', data.data.refreshToken);
-            console.log('Tokens saved to sessionStorage.', data.data.refreshToken, data.data.accessToken);
-          } else {
-            console.warn('토큰 없음');
-          }
-        } catch (error) {
-          console.error('엑세스토큰 에러:', error);
-        }
+        //   // 세션 스토리지에 저장
+        //   if (data.data && data.data.accessToken) {
+        //     sessionStorage.setItem('accessToken', data.data.accessToken);
+        //     sessionStorage.setItem('refreshToken', data.data.refreshToken);
+        //     console.log('Tokens saved to sessionStorage.', data.data.refreshToken, data.data.accessToken);
+        //   } else {
+        //     console.warn('토큰 없음');
+        //   }
+        // } catch (error) {
+        //   console.error('엑세스토큰 에러:', error);
+        // }
     };
     
     
