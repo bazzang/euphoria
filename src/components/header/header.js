@@ -10,23 +10,10 @@ function Header() {
     const navigate = useNavigate(); // useNavigate 훅 사용
     const location = useLocation();
 
-    // useEffect(() => {
-    //     // 리다이렉션 URL
-    //     const authUrl =
-    //       'https://openapi.imweb.me/oauth2/authorize?responseType=code&clientId=4327ff80-a2b4-4619-958e-de807e8cdcf7&redirectUri=https://euphoria-psi.vercel.app/&scope=member-info:read&siteCode=S2024082926c7c40e12877';
-    //     // 'https://openapi.imweb.me/oauth2/authorize?responseType=code&clientId=4327ff80-a2b4-4619-958e-de807e8cdcf7&redirectUri=http://localhost:3000/&scope=member-info:read&siteCode=S2024082926c7c40e12877';
-    
-    //     // 페이지 이동
-    //     window.location.href = authUrl;
-
-        
-    // }, []);
-
-
     // 인가코드 콜 
     const redirectToAuth = () => {
         const authUrl =
-          'https://openapi.imweb.me/oauth2/authorize?responseType=code&clientId=4327ff80-a2b4-4619-958e-de807e8cdcf7&redirectUri=https://euphoria-psi.vercel.app/&scope=member-info:read&siteCode=S2024082926c7c40e12877';
+          'https://openapi.imweb.me/oauth2/authorize?responseType=code&clientId=aaa77bb6-2ab9-4836-8a26-8c58079959dc&redirectUri=http://ec2-43-203-229-179.ap-northeast-2.compute.amazonaws.com:8080/&scope=member-info:read&siteCode=S2024082926c7c40e12877';
     
         window.location.href = authUrl;
     };
