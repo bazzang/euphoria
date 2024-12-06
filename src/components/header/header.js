@@ -27,7 +27,7 @@ function Header() {
             sessionStorage.setItem('authCode', code);
             console.log('세션스토리지 저장된 code :', code);
             
-            exchangeCodeForToken(code);
+            // exchangeCodeForToken(code);
 
         } else {
             redirectToAuth(); // code가 없으면 인증 URL로 이동
@@ -41,11 +41,11 @@ function Header() {
 
     const exchangeCodeForToken = async (code) => {
 
-        axiosPost("/api/oauth", code).then(response => {
-            console.log("ddd : ",response)
-            // response에서 저장한 seq가 와야함
-            // onClickSave2(); 
-        });
+        // axiosPost("/api/oauth", code).then(response => {
+        //     console.log("ddd : ",response)
+        //     // response에서 저장한 seq가 와야함
+        //     // onClickSave2(); 
+        // });
 
         // try {
         //   const response = await fetch('/api/oauth', {
