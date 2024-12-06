@@ -13,7 +13,7 @@ function Header() {
     // 인가코드 콜 
     const redirectToAuth = () => {
         const authUrl =
-          'https://openapi.imweb.me/oauth2/authorize?responseType=code&clientId=aaa77bb6-2ab9-4836-8a26-8c58079959dc&redirectUri=http://ec2-43-203-229-179.ap-northeast-2.compute.amazonaws.com:8080/&scope=member-info:read&siteCode=S2024082926c7c40e12877';
+          'https://openapi.imweb.me/oauth2/authorize?responseType=code&clientId=aaa77bb6-2ab9-4836-8a26-8c58079959dc&redirectUri=https://euphoria-psi.vercel.app/&scope=member-info:read&siteCode=S2024082926c7c40e12877';
     
         window.location.href = authUrl;
     };
