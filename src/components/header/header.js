@@ -41,11 +41,10 @@ function Header() {
 
     const exchangeCodeForToken = async (code) => {
 
-        // axiosPost("/api/oauth", code).then(response => {
-        //     console.log("ddd : ",response)
-        //     // response에서 저장한 seq가 와야함
-        //     // onClickSave2(); 
-        // });
+        axiosPost("/api/oauth", code).then(response => {
+            console.log("엑세스토큰  : ",response)
+
+        });
 
         // try {
         //   const response = await fetch('/api/oauth', {

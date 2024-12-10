@@ -539,11 +539,16 @@ function Create() {
     // -------------------------------------------------------------------------------------------------
     const onClickSave1 = async () => {
         let data = invitationState;
-        axiosPost("/api/save1", data).then(response => {
-            console.log("ddd : ",response)
-            // response에서 저장한 seq가 와야함
-            // onClickSave2(); 
-        });
+        // axiosPost("/api/save1", data).then(response => {
+        //     console.log("ddd : ",response)
+        //     // response에서 저장한 seq가 와야함
+        //     // onClickSave2(); 
+        // });
+
+        const response = await axios.post("http://localhost:8080/api/save1", data);
+        
+        console.log('save resposne : ', response);
+
 
     }
     const onClickSave2 = async () => {
@@ -551,7 +556,7 @@ function Create() {
             const formData = new FormData();
             
             // JSON 데이터를 문자열로 추가
-            formData.append("vo", JSON.stringify(invitationState));
+            formData.append("InvitationReqVo", JSON.stringify(invitationState));
 
 
             // invitationState의 문자열 및 논리값 데이터 추가
