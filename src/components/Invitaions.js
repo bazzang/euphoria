@@ -6,7 +6,7 @@ const Invitations = () => {
 
   useEffect(() => {
     axios
-      .get('http://localhost:8080/api/invitations') // proxy 설정이 있다면 이렇게 작성
+      .get('http://ec2-43-203-229-179.ap-northeast-2.compute.amazonaws.com:8080/api/invitations') // proxy 설정이 있다면 이렇게 작성
       .then((response) => {
         console.log('API 응답:', response.data);
         setInvitations(response.data); // 상태 업데이트

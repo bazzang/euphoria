@@ -21,18 +21,18 @@ import { getAccessToken, fetchProducts } from './components/ImwebAPI/AccessToken
 
 function App() {
 
-  useEffect(() => {
-    const runApiExample = async () => {
-      const token = await getAccessToken();
-      console.log('세션 토큰 : ', sessionStorage.getItem("access_token"))
-      if (token) {
-        const members = await fetchProducts(token);
-        console.log("Fetched Members:", members);
-      }
-    };
+  // useEffect(() => {
+  //   const runApiExample = async () => {
+  //     const token = await getAccessToken();
+  //     console.log('세션 토큰 : ', sessionStorage.getItem("access_token"))
+  //     if (token) {
+  //       const members = await fetchProducts(token);
+  //       console.log("Fetched Members:", members);
+  //     }
+  //   };
 
-    runApiExample();
-  }, []); // 빈 배열을 전달해 컴포넌트 마운트 시 한 번만 실행
+  //   runApiExample();
+  // }, []); // 빈 배열을 전달해 컴포넌트 마운트 시 한 번만 실행
 
   const location = useLocation();
   

@@ -1,32 +1,25 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom'; // 페이지 이동을 위해 useNavigate import
 import axios from 'axios';
 import "../styles/common.css";
 import "../styles/contents.css";
 import bgimg from "../images/create/preview_bg.png"; // 미리보기 배경 이미지
-
 import letterimg from "../images/create/preview_letter.png"; // 미리보기 손글씨 이미지
-
 import "aos/dist/aos.css";
 import "aos/dist/aos.js";
 import AOS from "aos";
-
 import flower from "../images/create/flower.png";
 import map_t from '../images/create/map_t.png';
 import map_kakao from '../images/create/map_kakao.png';
 import map_naver from '../images/create/map_naver.png';
-
 import { useInvitation } from "./InvitationProvider.js";
-
 import DaumPostcode from 'react-daum-postcode';
-
 import { Map, Polyline, MapMarker, CustomOverlayMap } from "react-kakao-maps-sdk";
-
 import { axiosPost } from './common/common.js';
-
-
+import FormDialog, { openDialog } from "./dialog.js";
 
 function Create() {
-
+    const navigate = useNavigate(); 
     const { invitationState, setInvitationState } = useInvitation();
 
 
@@ -532,40 +525,57 @@ function Create() {
         }));
     };
 
+
+    // -------------------------------------------------------------------------------------------------
+
+    // *********************************[modal] 주문자 정보 입력 ****************************************
+
+    // -------------------------------------------------------------------------------------------------
+    const [orderDetails, setOrderDetails] = useState({
+        ordererName: "",
+        ordererCall: "",
+      });
+
+    const handleOpenDialog = () => {
+        openDialog();
+    };
+
+    const handleDialogSave = (data) => {
+        setOrderDetails(data);
+
+        invitationState.ordererCall = data.ordererCall
+        invitationState.ordererNm = data.ordererName
+
+        fetchSaveFiles();
+    };
+
     // -------------------------------------------------------------------------------------------------
 
     // *********************************[저장] 저장 버튼 클릭 이벤트 핸들러 *******************************
 
     // -------------------------------------------------------------------------------------------------
-    const onClickSave1 = async () => {
-        let data = invitationState;
-        // axiosPost("/api/save1", data).then(response => {
-        //     console.log("ddd : ",response)
-        //     // response에서 저장한 seq가 와야함
-        //     // onClickSave2(); 
-        // });
+    const fetchInv = async (res) => {
+        invitationState.transportationList = transportationList;
+        // SaveInvitationReqVo에 맞게 데이터 구성
+        let data = {
+            invitation: invitationState, // invitationState를 전송
+            transportationList : transportationList,
+            galleryIds: res.result, // res.result를 galleryIds로 전송
+        };
 
-        const response = await axios.post("http://localhost:8080/api/save1", data);
-        
-        console.log('save resposne : ', response);
-
+        axiosPost("/api/invitation", data).then(response => {
+            console.log("저장  response : ",response)
+            navigate('/production-list')
+        });
 
     }
-    const onClickSave2 = async () => {
+
+    const fetchSaveFiles = async () => {
         try {
             const formData = new FormData();
-            
-            // JSON 데이터를 문자열로 추가
-            formData.append("InvitationReqVo", JSON.stringify(invitationState));
 
-
-            // invitationState의 문자열 및 논리값 데이터 추가
-            Object.keys(invitationState).forEach((key) => {
-                const value = invitationState[key];
-                if (typeof value === "string" || typeof value === "boolean") {
-                    formData.append(key, value);
-                }
-            });
+            formData.append("ordererName", invitationState.ordererCall);
+            formData.append("ordererCall", invitationState.ordererNm);
     
             // 주요 이미지 파일 처리
             if (invitationState.mainPhotoFile) {
@@ -592,18 +602,18 @@ function Create() {
             }
     
             // 서버로 데이터 전송
-            const response = await axios.post("/api/save2", formData, {
+            const response = await axios.post("http://ec2-43-203-229-179.ap-northeast-2.compute.amazonaws.com:8080/api/gallery", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
-                // transformRequest: [(data) => data], // FormData 변환 방지
             });
-    
+            fetchInv(response.data);
             console.log("Server response:", response.data);
         } catch (error) {
             console.error("Error while saving data:", error);
         }
     };
+    
     
   return (
     <div className="contents-wrap">
@@ -3339,7 +3349,9 @@ function Create() {
                                     </div>
                                 </div>
                             </div> */}
-                            <button className="btn-save" onClick={onClickSave1}>저장</button>
+                            {/* <button className="btn-save" onClick={onClickSaveFiles}>저장</button> */}
+                            <FormDialog onSave={handleDialogSave} />
+                            <button className="btn-save" onClick={handleOpenDialog}>저장</button>
                         </div>
 
 
@@ -3349,6 +3361,7 @@ function Create() {
         </div>
 
         <div className="create-btn">
+            
             <div className="preview-tooltip">실시간으로 확인해보세요! <button className="preview-tooltip-close">닫기</button></div>
             <button className="btn-save">저장</button>
             <button className="btn-preview">미리보기</button>

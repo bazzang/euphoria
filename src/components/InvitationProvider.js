@@ -25,6 +25,9 @@ export const InvitationProvider = ({ children }) => {
     seq: 0, // 청첩장 seq
     userId: "wltn", // 유저
 
+    ordererNm : "",
+    ordererCall : "",
+
     // 메인정보
     mainType: "", // 메인화면 청첩장 타입
     mainPhotoUrl: "", // 메인사진저장경로
@@ -108,7 +111,7 @@ export const InvitationProvider = ({ children }) => {
     
     // 교통수단
     useTransportation : false, // 교통수단 사용 여부
-    transportation: [], // 교통수단 배열
+    transportation: [], // 교통수단 배열 method, details
 
     // 안내문
     useNotice : false, // 안내문 사용 여부 
