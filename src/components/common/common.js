@@ -15,7 +15,7 @@ async function axiosPost(url, dataRow) {
         return response;
       }
     } catch (error) {
-      console.error('Error fetching bus info: ', error);
+      console.error('Error fetching : ', error);
       return [];
     }
 }
