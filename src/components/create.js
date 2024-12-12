@@ -602,7 +602,7 @@ function Create() {
             }
     
             // 서버로 데이터 전송
-            const response = await axios.post("http://localhost:8080/api/gallery", formData, {
+            const response = await axios.post("http://ec2-43-203-229-179.ap-northeast-2.compute.amazonaws.com:8080/api/gallery", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
