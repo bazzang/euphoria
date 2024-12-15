@@ -87,13 +87,36 @@ function ProductionList() {
                 orderList.map((item, index) => (
 
                     <div className="wd-item" key={item.id || index}>
-                        <div className="wd-thumb">
-                            <img src={`data:image/jpeg;base64,${item.imageData}`} alt="thumbnail" style={{objectFit:"cover", height:"100%"}}/>
+                        <div className="wd-thumb"
+                        
+                        style={{
+                            backgroundImage: `url('data:image/jpeg;base64,${item.imageData}')`,
+                            backgroundSize: "cover",        // 비율을 유지하면서 요소를 채움
+                            backgroundPosition: "center",   // 이미지를 중앙 정렬
+                            backgroundRepeat: "no-repeat",  // 이미지 반복 방지
+                            width: "260px",                 // 너비 설정
+                            height: "350px",                // 높이 설정
+                            borderRadius: "10px",           // 모서리 둥글게
+                            boxShadow: "0px 0px 25px rgba(0, 0, 0, 0.15)", // 그림자 효과
+                        }}>
+                            {/* <img src={`data:image/jpeg;base64,${item.imageData}`} alt="" /> */}
+                            {/* <div
+                            style={{
+                                backgroundImage: `url('data:image/jpeg;base64,${item.imageData}')`,
+                                backgroundSize: "cover",        // 비율을 유지하면서 요소를 채움
+                                backgroundPosition: "center",   // 이미지를 중앙 정렬
+                                backgroundRepeat: "no-repeat",  // 이미지 반복 방지
+                                width: "100px",                 // 너비 설정
+                                height: "300px",                // 높이 설정
+                                borderRadius: "10px",           // 모서리 둥글게
+                                boxShadow: "0px 0px 25px rgba(0, 0, 0, 0.15)", // 그림자 효과
+                            }}
+                            ></div> */}
                         </div>
                         <div className="wd-contents">
                             <div className="wd-info">
                                 <div>
-                                    <strong className="wd-title">{item.ordererNm}님의 청첩장-1</strong>
+                                    <strong className="wd-title">{item.ordererNm}님의 청첩장-{index +1}</strong>
                                     <ul className="wd-desc">
                                         {/* <li>2024. 09. 01 21:30 제작</li>  */}
                                         <li>{item.createdAt} 제작</li> 
@@ -124,8 +147,9 @@ function ProductionList() {
                 ))
                 )}
 
-                    {/* <div className="wd-item">
-                        <div className="wd-thumb"><img src="./images/wd_thumb.png" alt=""/></div>
+                    <div className="wd-item">
+                        <div className="wd-thumb">
+                            <img src={wd_thumb} alt=""/></div>
                         <div className="wd-contents">
                             <div className="wd-info">
                                 <div>
@@ -155,7 +179,7 @@ function ProductionList() {
                                 </div>  
                             </div>
                         </div> 
-                    </div> */}
+                    </div>
                 </div> 
             </div>
         </div>
