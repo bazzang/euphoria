@@ -565,7 +565,12 @@ function Create() {
 
         axiosPost("/api/invitation", data).then(response => {
             console.log("저장  response : ",response)
-            navigate('/production-list')
+            navigate('/production-list', {
+                state: {
+                    ordererNm: invitationState.ordererNm,
+                    ordererCall: invitationState.ordererCall,
+                }
+            });
         });
 
     }
@@ -602,7 +607,7 @@ function Create() {
             }
     
             // 서버로 데이터 전송
-            const response = await axios.post("http://ec2-43-203-229-179.ap-northeast-2.compute.amazonaws.com:8080/api/gallery", formData, {
+            const response = await axios.post("http://localhost:8080/api/gallery", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },

@@ -1,7 +1,7 @@
 
 function Menu(){
     return (
-        <div class="menu-wrap">
+        <div className="menu-wrap">
             <nav>
                 <a href="#">주문하기</a>
                 <a href="#">자주묻는질문</a>
