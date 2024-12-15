@@ -27,7 +27,8 @@ function Header() {
             sessionStorage.setItem('authCode', code);
             console.log('세션스토리지 저장된 code :', code);
             
-            exchangeCodeForToken(code);
+            //test주석
+            // exchangeCodeForToken(code);
 
         } else {
             redirectToAuth(); // code가 없으면 인증 URL로 이동
