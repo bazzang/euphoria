@@ -671,7 +671,7 @@ function Create() {
                                             style={{
                                                 color: color1,
                                                 top: '18%',
-                                                display: invitationState.letteringMsg === 'our wedding day' ? '' : 'none',
+                                                display: invitationState.letteringMsg === 'our wedding day' ? 'block' : 'none',
                                             }}
                                             >
                                             our<br />wedding<br />day
@@ -1027,7 +1027,7 @@ function Create() {
                                                 {/* <input className="input-sts" type="text" value="We’re getting Married!" readonly /> */}
                                                 <select
                                                     className="input-sts"
-                                                    value={invitationState.letteringMsg || 'our wedding day'}
+                                                    value={invitationState.letteringMsg || ""}
                                                     onChange={(e) => handleChange("letteringMsg", e.target.value)} // letteringMsg 업데이트
                                                 >
                                                     <option value="our wedding day">our wedding day</option>
