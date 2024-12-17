@@ -11,45 +11,43 @@ function Header() {
     const location = useLocation();
 
     // 인가코드 콜 
-    // const redirectToAuth = () => {
-    //     const authUrl =
-    //       'https://openapi.imweb.me/oauth2/authorize?responseType=code&clientId=aaa77bb6-2ab9-4836-8a26-8c58079959dc&redirectUri=https://euphoria-psi.vercel.app/&scope=member-info:read order:read&siteCode=S2024082926c7c40e12877';
+    const redirectToAuth = () => {
+        const authUrl =
+          'https://openapi.imweb.me/oauth2/authorize?responseType=code&clientId=aaa77bb6-2ab9-4836-8a26-8c58079959dc&redirectUri=https://euphoria-psi.vercel.app/&scope=member-info:read order:read&siteCode=S2024082926c7c40e12877';
     
-    //     window.location.href = authUrl;
-    // };
+        window.location.href = authUrl;
+    };
 
-    // // 인가코드 세션스토리지에 저장 후 백엔드 호출 
-    // const handleAuthCode = () => {
-    //     const queryParams = new URLSearchParams(window.location.search);
-    //     const code = queryParams.get('code');
+    // 인가코드 세션스토리지에 저장 후 백엔드 호출 
+    const handleAuthCode = () => {
+        const queryParams = new URLSearchParams(window.location.search);
+        const code = queryParams.get('code');
     
-    //     if (code) {
-    //         sessionStorage.setItem('authCode', code);
-    //         console.log('세션스토리지 저장된 code :', code);
+        if (code) {
+            sessionStorage.setItem('authCode', code);
+            console.log('세션스토리지 저장된 code :', code);
             
-    //         //test주석
-    //         exchangeCodeForToken(code);
+            //test주석
+            exchangeCodeForToken(code);
 
-    //     } else {
-    //         redirectToAuth(); // code가 없으면 인증 URL로 이동
-    //     }
-    // };
+        } else {
+            redirectToAuth(); // code가 없으면 인증 URL로 이동
+        }
+    };
     
-    // useEffect(() => {
-    //     handleAuthCode();
-    // }, []);
+    useEffect(() => {
+        handleAuthCode();
+    }, []);
 
 
-    // const exchangeCodeForToken = async (code) => {
+    const exchangeCodeForToken = async (code) => {
 
-    //     axiosPost("/api/oauth", code).then(response => {
-    //         console.log("엑세스토큰  : ",response)
+        axiosPost("/api/oauth", code).then(response => {
+            console.log("엑세스토큰  : ",response)
 
-    //     });
+        });
 
-
-    
-    // }
+    }
     return (
         <div className="header-wrap">
             <div className="container">
