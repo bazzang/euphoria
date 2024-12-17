@@ -37,8 +37,14 @@ export default function FormDialog({ onClose, disableBackdropClick = false, onSa
     setOpen(false);
     if (onClose) onClose(event, reason); 
   };
-
   
+  const handleHistoryBack = (event, reason) => {
+    if (disableBackdropClick && (reason === "backdropClick" || reason === "escapeKeyDown")) {
+      return; // 외부 클릭이나 ESC 키로 닫지 않음
+    }
+    window.history.back();
+  }
+
   const handleSave = async() => {
     // 유효성 검사
     if (!ordererName.trim()) {
@@ -122,6 +128,7 @@ export default function FormDialog({ onClose, disableBackdropClick = false, onSa
         </DialogContent>
         {hideCancelButton && ( // hideCancelButton이 true일 경우 '취소' 버튼 숨김
           <DialogActions>
+            <Button sx={{fontSize : '1.5rem'}} onClick={handleHistoryBack}>취소</Button>
             <Button type="submit" sx={{fontSize : '1.5rem'}} onClick={handleSave}>저장</Button>
           </DialogActions>
         )}
