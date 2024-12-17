@@ -28,7 +28,7 @@ function Header() {
             console.log('세션스토리지 저장된 code :', code);
             
             //test주석
-            exchangeCodeForToken(code);
+            // exchangeCodeForToken(code);
 
         } else {
             redirectToAuth(); // code가 없으면 인증 URL로 이동
@@ -40,14 +40,16 @@ function Header() {
     }, []);
 
 
-    const exchangeCodeForToken = async (code) => {
+    // const exchangeCodeForToken = async (code) => {
 
-        axiosPost("/api/oauth", code).then(response => {
-            console.log("엑세스토큰  : ",response)
+    //     axiosPost("/api/oauth", code).then(response => {
+    //         console.log("엑세스토큰  : ",response)
 
-        });
+    //     });
 
-    }
+    // }
+
+    
     return (
         <div className="header-wrap">
             <div className="container">
