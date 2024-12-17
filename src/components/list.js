@@ -15,9 +15,8 @@ function ProductionList() {
     const location = useLocation();
     
     const { ordererNm, ordererCall } = location.state || {}; // 저장 후 제작 내역으로 왔을 경우 
-
     const [orderList, setOrderList] = useState([]);
-
+    const [orderDetailCnt, setOrderDetailCnt] = useState(0); // 배송완료 count  제일 먼저 제작한 청첩장부터 워터마크를 제거한다
     // 페이지 로드 시 다이얼로그 열기
     useEffect(() => {
         openDialog();
@@ -27,8 +26,7 @@ function ProductionList() {
     const handleDialogConfirm = async (data) => {
         
         try {
-            const response = await axios.post(
-              "http://localhost:8080/api/list",
+            const response = await axios.post("https://api.euphoriacard.co.kr/api/list",
               {
                 ordererNm: data.ordererName,
                 ordererCall: data.ordererCall,
@@ -41,12 +39,28 @@ function ProductionList() {
             );
         
             console.log("Response Data: ", response.data);
+
+            if(response.data){
+                setOrderList(response.data.ovolist);
+                setOrderDetailCnt(response.data.orderDetailCnt);
+            }
             
-            setOrderList(response.data);
         } catch (error) {
             console.error("Error fetching order list: ", error);
         }
     }
+
+    useEffect(() => {
+        orderList.forEach((ord, idx) => {
+            if((idx+1) <= orderDetailCnt){
+                ord.confirmYn = 'Y'
+            }
+        });
+    }, [orderDetailCnt]);
+
+    useEffect(() => {
+    }, [orderList]);
+
 
     // 사용기간 시간 계산 
     function formattedDate (date) {
@@ -132,7 +146,27 @@ function ProductionList() {
                             </div>
                             <div className="wd-etc">
                                 <div className="wd-option">
-                                    <button className="wd-option-btn" onClick={() => navigate('/preview')}><img src={wd_option_icon_1} alt=""/>청첩장 확인하기</button>
+                                    {/* <button className="wd-option-btn" onClick={() => navigate('/preview')}><img src={wd_option_icon_1} alt=""/>청첩장 확인하기</button> */}
+                                    <button
+                                    className="wd-option-btn"
+                                    // onClick={() => navigate('/preview', { state: { item  } })}
+                                    onClick={() => {
+                                        // orderDetailCnt 값에 따라 orderList의 데이터를 준비
+                                        const selectedItems = orderList.slice(0, orderDetailCnt);
+                                        navigate(`/preview?itemId=${item.invSeq}&index=${index}&confirm=${item.confirmYn}`);
+                                        // 선택된 데이터와 orderDetailCnt를 함께 전달
+                                        // navigate('/preview', {
+                                        //   state: {
+                                        //     item,
+                                        //     selectedItems: selectedItems, // 선택된 인덱스 데이터
+                                        //     orderDetailCnt,       // orderDetailCnt 값
+                                        //   },
+                                        // });
+                                        
+                                      }}
+                                    >
+                                        <img src={wd_option_icon_1} alt="" />청첩장 확인하기
+                                    </button>
                                     {/* <button className="wd-option-btn"><img src={wd_option_icon_2} alt=""/>참석여부 확인</button> */}
                                     <button className="wd-option-btn"><img src={wd_option_icon_3} alt=""/>URL 복사하기</button>
                                     {/* <button className="wd-option-btn"><img src={wd_option_icon_4} alt=""/>카톡 공유하기</button> */}
@@ -147,7 +181,7 @@ function ProductionList() {
                 ))
                 )}
 
-                    <div className="wd-item">
+                    {/* <div className="wd-item">
                         <div className="wd-thumb">
                             <img src={wd_thumb} alt=""/></div>
                         <div className="wd-contents">
@@ -179,7 +213,9 @@ function ProductionList() {
                                 </div>  
                             </div>
                         </div> 
-                    </div>
+                    </div> */}
+
+
                 </div> 
             </div>
         </div>

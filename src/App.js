@@ -17,26 +17,12 @@ import AOS from "aos"
 
 import { getAccessToken, fetchProducts } from './components/ImwebAPI/AccessToken.js';
 
-
-
 function App() {
-
-  // useEffect(() => {
-  //   const runApiExample = async () => {
-  //     const token = await getAccessToken();
-  //     console.log('세션 토큰 : ', sessionStorage.getItem("access_token"))
-  //     if (token) {
-  //       const members = await fetchProducts(token);
-  //       console.log("Fetched Members:", members);
-  //     }
-  //   };
-
-  //   runApiExample();
-  // }, []); // 빈 배열을 전달해 컴포넌트 마운트 시 한 번만 실행
 
   const location = useLocation();
   
-
+  // 경로에 따라 Header를 숨기기
+  const hideHeader = location.pathname === '/preview';
 
   // 경로에 따라 클래스명을 설정합니다
   const wrapClassName =
@@ -49,15 +35,17 @@ function App() {
 
   return (
     <div id="wrap" className={wrapClassName}>
-      <Header />
-      <InvitationProvider>
-      <Routes>
-        <Route path="/" element={<Create />} /> 
-        <Route path="/production-list" element={<ProductionList />} /> 
-        <Route path="/preview" element={<PreviewPage />} /> 
-        <Route path="/invitations" element={<Invitations />} />
+      {/* 조건부 렌더링: Header를 숨김 */}
+      {!hideHeader && <Header />}
 
-      </Routes>
+      <InvitationProvider>
+        <Routes>
+          <Route path="/" element={<Create />} /> 
+          <Route path="/production-list" element={<ProductionList />} /> 
+          <Route path="/preview" element={<PreviewPage />} /> 
+          <Route path="/invitations" element={<Invitations />} />
+
+        </Routes>
       </InvitationProvider>
       
 

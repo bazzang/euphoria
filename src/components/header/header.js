@@ -28,7 +28,7 @@ function Header() {
             console.log('세션스토리지 저장된 code :', code);
             
             //test주석
-            // exchangeCodeForToken(code);
+            exchangeCodeForToken(code);
 
         } else {
             redirectToAuth(); // code가 없으면 인증 URL로 이동
@@ -47,37 +47,9 @@ function Header() {
 
         });
 
-        // try {
-        //   const response = await fetch('/api/oauth', {
-        //     method: 'POST',
-        //     headers: {
-        //       'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({ code }),
-        //   });
-    
-        //   if (!response.ok) {
-        //     throw new Error(`HTTP error! status: ${response.status}`);
-        //   }
-    
-        //   const data = await response.json();
-        //   console.log('Token Response:', data);
-    
-        //   // 세션 스토리지에 저장
-        //   if (data.data && data.data.accessToken) {
-        //     sessionStorage.setItem('accessToken', data.data.accessToken);
-        //     sessionStorage.setItem('refreshToken', data.data.refreshToken);
-        //     console.log('Tokens saved to sessionStorage.', data.data.refreshToken, data.data.accessToken);
-        //   } else {
-        //     console.warn('토큰 없음');
-        //   }
-        // } catch (error) {
-        //   console.error('엑세스토큰 에러:', error);
-        // }
-    };
-    
-    
 
+    
+    }
     return (
         <div className="header-wrap">
             <div className="container">

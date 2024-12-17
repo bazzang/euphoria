@@ -33,7 +33,7 @@
 // // 백엔드 API 호출 함수 (회원 조회)
 // // export const fetchMembers = async (accessToken) => {
 // //   try {
-// //     const response = await axios.get("http://localhost:8080/api/members", {
+// //     const response = await axios.get("https://api.euphoriacard.co.kr/api/members", {
 // //       params: {
 // //         accessToken: accessToken,
 // //       },

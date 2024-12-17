@@ -607,7 +607,7 @@ function Create() {
             }
     
             // 서버로 데이터 전송
-            const response = await axios.post("http://localhost:8080/api/gallery", formData, {
+            const response = await axios.post("https://api.euphoriacard.co.kr/api/gallery", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
