@@ -8,6 +8,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import PositionedSnackbar from "./PositionedSnackbar";
+import axios from 'axios';
 
 let openDialogCallback;
 
@@ -37,7 +38,8 @@ export default function FormDialog({ onClose, disableBackdropClick = false, onSa
     if (onClose) onClose(event, reason); 
   };
 
-  const handleSave = () => {
+  
+  const handleSave = async() => {
     // 유효성 검사
     if (!ordererName.trim()) {
       setErrorMessage("주문자명을 입력해 주세요.");
@@ -48,10 +50,13 @@ export default function FormDialog({ onClose, disableBackdropClick = false, onSa
       setErrorMessage("휴대폰 번호를 입력해 주세요.('-'를 제외하고 입력해 주세요.)");
       return;
     }
-  
-    // 유효성 검사 통과 시 저장 실행
+
+    sessionStorage.setItem('ordererName', ordererName);
+    sessionStorage.setItem('ordererCall', ordererCall);
+
     onSave({ ordererName, ordererCall });
     handleClose();
+    
   };
 
 
@@ -128,7 +133,7 @@ export default function FormDialog({ onClose, disableBackdropClick = false, onSa
         )}
       </Dialog>
     </React.Fragment>
-    
+
     <PositionedSnackbar
         message={errorMessage}
         onClose={() => setErrorMessage("")}

@@ -34,9 +34,11 @@ export const InvitationProvider = ({ children }) => {
     mainPhotoNm: "", // 메인사진이름
     letteringMsg: 'our wedding day', // 레터링문구
     letteringClr: "#FFFFFF", // 레터링문구색상
+    letteringHg : 0, // 레터링문구 위치 
     mainTxt: "", // 메인텍스트
     mainTxtClr: "#FFFFFF", // 메인텍스트색상
     mainWddInfoOnoff: "", // 메인 하단 예식 정보
+    mainTxtHg : 0, // 메인문구 위치 
 
     // 신랑 정보
     groomFirstName: "",

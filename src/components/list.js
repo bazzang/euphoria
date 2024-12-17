@@ -22,8 +22,36 @@ function ProductionList() {
         openDialog();
     }, []);
 
+
+    const handleAuthCode = async() => {
+        try {
+            const authCode = sessionStorage.getItem("authCode"); // 저장된 authCode 가져오기
+
+            // FormData 객체 생성
+            const formData = new FormData();
+            formData.append("code", authCode); // key: 'code', value: authCode
+
+            const response = await axios.post("https://api.euphoriacard.co.kr/api/oauth", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data", // form-data 전송을 위한 헤더
+            },
+            });
+        
+            console.log("Response Data: ", response.data);
+
+            handleDialogConfirm({
+                ordererName: sessionStorage.getItem('ordererName'),
+                ordererCall: sessionStorage.getItem('ordererCall'),
+            });
+        } catch (error) {
+            console.error("엑세스토큰 에러: ", error);
+
+        }
+    }
     // 주문자정보로 청첩장 제작 목록 가져오기 
     const handleDialogConfirm = async (data) => {
+        sessionStorage.setItem('ordererName', data.ordererName);
+        sessionStorage.setItem('ordererCall', data.ordererCall);
         
         try {
             const response = await axios.post("https://api.euphoriacard.co.kr/api/list",
@@ -46,7 +74,30 @@ function ProductionList() {
             }
             
         } catch (error) {
-            console.error("Error fetching order list: ", error);
+            console.error("리스트 가져오기 에러: ", error);
+
+            handleAuthCode();
+            // // 에러 응답에서 statusCode가 401인지 확인
+            // if (error.response && error.response.status === 401) {
+            //     console.log("토큰만료"); // 토큰 만료 메시지 출력
+            //     const response = await axios.post("https://api.euphoriacard.co.kr/api/list",{
+            //     ordererNm: data.ordererName,
+            //     ordererCall: data.ordererCall,
+            //   },
+            //   {
+            //     headers: {
+            //       "Content-Type": "application/json",
+            //     },
+            //   }
+            // );
+
+            // } else if (error.response && error.response.data) {
+            //     // 에러 응답 데이터가 있을 경우 추가 로그
+            //     console.log("Error Code:", error.response.data.errorCode);
+            //     console.log("Error Message:", error.response.data.message);
+            // } else {
+            //     console.log("An unknown error occurred");
+            // }
         }
     }
 

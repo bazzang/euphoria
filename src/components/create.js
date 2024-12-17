@@ -152,7 +152,34 @@ function Create() {
         handleChange("mainTxtClr", e.target.value)
     };
 
+    const [letteringTop, setLetteringTop] = useState({
+        type1: '18%',
+        type2: '22%',
+        type3: '26%',
+    });
 
+    //레터링 위치 조절 
+    const handleRangeChange = (type, value) => {
+        setLetteringTop((prev) => ({
+          ...prev,
+          [type]: `${value}%`, // 값에 % 추가
+        }));
+        
+        // 위치 저장 
+        handleChange("letteringHg", value);
+    };
+
+    const [maintxtHg, setMaintxtHg] = useState(50);
+
+    const handleMainTxtRangeChange = (type, value) => {
+        setMaintxtHg((prev) => ({
+          ...prev,
+          [type]: `${value}%`, // 값에 % 추가
+        }));
+        
+        // 위치 저장 
+        handleChange("mainTxtHg", value);
+    };
 
     // -------------------------------------------------------------------------------------------------
 
@@ -670,27 +697,27 @@ function Create() {
                                             className="lettering type1"
                                             style={{
                                                 color: color1,
-                                                top: '18%',
+                                                top: letteringTop.type1, // 동적 스타일 적용
                                                 display: invitationState.letteringMsg === 'our wedding day' ? 'block' : 'none',
                                             }}
                                             >
                                             our<br />wedding<br />day
-                                            </strong>
-                                            <strong
+                                        </strong>
+                                        <strong
                                             className="lettering type2"
                                             style={{
                                                 color: color1,
-                                                top: '22%',
+                                                top: letteringTop.type2, // 동적 스타일 적용
                                                 display: invitationState.letteringMsg === "We're getting married_1" ? 'block' : 'none',
                                             }}
                                             >
                                             We're getting<br />married!
-                                            </strong>
-                                            <strong
+                                        </strong>
+                                        <strong
                                             className="lettering type3"
                                             style={{
                                                 color: color1,
-                                                top: '26%',
+                                                top: letteringTop.type3, // 동적 스타일 적용
                                                 display: invitationState.letteringMsg === 'Just married' ? 'block' : 'none',
                                             }}
                                             >
@@ -701,7 +728,7 @@ function Create() {
                                             className="text"
                                             style={{
                                                 color : color2,
-                                                top: "55%",
+                                                top: maintxtHg,
                                                 wordWrap: "break-word", // 긴 단어를 자동으로 줄바꿈
                                                 overflowWrap: "break-word", // 긴 단어가 깨지도록 줄바꿈
                                                 whiteSpace: "normal", // 일반 줄바꿈 허용
@@ -1066,12 +1093,40 @@ function Create() {
                                         </div>
                                     </div>
                                     {/* 목요일 이후 구현 */}
-                                    {/* <div className="option">
+                                    <div className="option">
                                         <div className="option-label">레터링 위치 <sup>필수</sup></div>
                                         <div className="option-contents">
-                                            <input type="range"/>
+                                        {invitationState.letteringMsg === "our wedding day" && (
+                                            <input
+                                            type="range"
+                                            min="10"
+                                            max="80"
+                                            value={parseInt(letteringTop.type1)}
+                                            onChange={(e) => handleRangeChange('type1', e.target.value)}
+                                            />
+                                        )}
+                                        {invitationState.letteringMsg === "We're getting married_1" && (
+                                            <input
+                                            type="range"
+                                            min="10"
+                                            max="80"
+                                            value={parseInt(letteringTop.type2)}
+                                            onChange={(e) => handleRangeChange('type2', e.target.value)}
+                                            />
+                                        )}
+                                        {invitationState.letteringMsg === "Just married" && (
+                                            <input
+                                            type="range"
+                                            min="10"
+                                            max="80"
+                                            value={parseInt(letteringTop.type3)}
+                                            onChange={(e) => handleRangeChange('type3', e.target.value)}
+                                            />
+                                        )}
+                                        
+                                            
                                         </div>
-                                    </div> */}
+                                    </div>
                                     <div className="option">
                                         <div className="option-label">메인 텍스트 입력 <sup>필수</sup></div>
                                         <div className="option-contents">
@@ -1097,13 +1152,21 @@ function Create() {
                                             </div>
                                         </div>
                                     </div>
-                                    {/* 목요일 이후 구현 */}
-                                    {/* <div className="option">
+
+                                    <div className="option">
                                         <div className="option-label">메인 텍스트 위치 <sup>필수</sup></div>
                                         <div className="option-contents">
-                                            <input type="range" />
+                                            {/* <input type="range" /> */}
+                                            <input
+                                            type="range"
+                                            min="10"
+                                            max="80"
+                                            value={parseInt(maintxtHg)}
+                                            onChange={(e) => handleMainTxtRangeChange("mainTxtHg", e.target.value)}
+                                            />
                                         </div>
-                                    </div> */}
+                                    </div>
+
                                     <div className="option">
                                         <div className="option-label">메인 하단 예식 정보 <sup>필수</sup></div>
                                         <div className="option-contents">

@@ -27,9 +27,6 @@ function Header() {
             sessionStorage.setItem('authCode', code);
             console.log('세션스토리지 저장된 code :', code);
             
-            //test주석
-            // exchangeCodeForToken(code);
-
         } else {
             redirectToAuth(); // code가 없으면 인증 URL로 이동
         }
@@ -38,16 +35,6 @@ function Header() {
     useEffect(() => {
         handleAuthCode();
     }, []);
-
-
-    // const exchangeCodeForToken = async (code) => {
-
-    //     axiosPost("/api/oauth", code).then(response => {
-    //         console.log("엑세스토큰  : ",response)
-
-    //     });
-
-    // }
 
     
     return (
