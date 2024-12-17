@@ -13,6 +13,9 @@ import { Map, Polyline, MapMarker, CustomOverlayMap } from "react-kakao-maps-sdk
 import typo from '../images/card/typo.png';
 import page3_bg from '../images/card/page3_bg.png';
 
+import map_t from '../images/create/map_t.png';
+import map_kakao from '../images/create/map_kakao.png';
+import map_naver from '../images/create/map_naver.png';
 
 function PreviewPage() {
     const location = useLocation();
@@ -71,30 +74,192 @@ function PreviewPage() {
     }, [trsptList]);
 
     useEffect(() => {
+        generateCalendar(inv.weddingDate);
     }, [inv]);
     
+    const [mapCenter, setMapCenter] = useState({ lat: 37.5665, lng: 126.978 }); // 기본 좌표
+    const [address, setAddress] = useState("경기 성남시 분당구 판교역로 4"); // 기본 주소
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const geocoder = new window.kakao.maps.services.Geocoder();
+        setAddress(inv.weddingHallAddress)
+        // 주소 검색
+        geocoder.addressSearch(address, (result, status) => {
+            if (status === window.kakao.maps.services.Status.OK) {
+                const coords = { lat: parseFloat(result[0].y), lng: parseFloat(result[0].x) };
+                setMapCenter(coords);
+                setLoading(false);
+            } else {
+                console.error("Geocoder failed: ", status);
+                setLoading(false);
+            }
+        });
+    }, [address]);
+    // -------------------------------------------------------------------------------------------------
+    // *********************************[함께한 시간] 함께한 시간 계산 ***********************************
+    // -------------------------------------------------------------------------------------------------
+    const [elapsedTime, setElapsedTime] = useState("");
+
+    useEffect(() => {
+        // 타이머 업데이트 함수
+        const updateElapsedTime = () => {
+        if (inv.firstMeetTime) {
+            const firstMeetDate = new Date(inv.firstMeetTime); // firstMeetTime 값
+            const now = new Date();
+            const diffInSeconds = Math.floor((now - firstMeetDate) / 1000); // 초 단위 차이 계산
+    
+            const years = Math.floor(diffInSeconds / (365 * 24 * 60 * 60));
+            const months = Math.floor((diffInSeconds % (365 * 24 * 60 * 60)) / (30 * 24 * 60 * 60));
+            const days = Math.floor((diffInSeconds % (30 * 24 * 60 * 60)) / (24 * 60 * 60));
+            const hours = Math.floor((diffInSeconds % (24 * 60 * 60)) / (60 * 60));
+            const minutes = Math.floor((diffInSeconds % (60 * 60)) / 60);
+            const seconds = diffInSeconds % 60;
+    
+            setElapsedTime(`${years}년 ${months}개월 ${days}일 ${hours}시간 ${minutes}분 ${seconds}초`);
+        } else {
+            setElapsedTime("날짜를 입력해주세요.");
+        }
+        };
+    
+        // 1초마다 업데이트
+        const intervalId = setInterval(updateElapsedTime, 1000);
+    
+        // 컴포넌트 언마운트 시 interval 제거
+        return () => clearInterval(intervalId);
+    }, [inv.firstMeetTime]);
+
+    // -------------------------------------------------------------------------------------------------
+    // *********************************[미리보기] 결혼식까지 남은 시간 ************************************
+    // -------------------------------------------------------------------------------------------------
+    const [calendarDays, setCalendarDays] = useState([]);
+    const [timeLeft, setTimeLeft] = useState({
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+    });
+    
+    useEffect(() => {
+        const calculateTimeLeft = () => {
+        const now = new Date();
+        const weddingDate = new Date(inv.weddingDate);
+    
+        if (!isNaN(weddingDate)) {
+            const difference = weddingDate - now;
+    
+            if (difference > 0) {
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((difference / (1000 * 60)) % 60);
+            const seconds = Math.floor((difference / 1000) % 60);
+    
+            setTimeLeft({ days, hours, minutes, seconds });
+            } else {
+            // 만약 시간이 지난 경우 0으로 설정
+            setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+            }
+        }
+        };
+    
+        // 1초마다 업데이트
+        const timer = setInterval(calculateTimeLeft, 1000);
+    
+        // 컴포넌트 언마운트 시 interval 정리
+        return () => clearInterval(timer);
+    }, [inv.weddingDate]);
+
+    const getKoreanDateInfo = (weddingDate) => {
+        if (!weddingDate) return "";
+      
+        const date = new Date(weddingDate);
+      
+        // 요일 추출 (0: 일요일, 1: 월요일, ...)
+        const daysInKorean = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
+        const dayOfWeek = daysInKorean[date.getDay()];
+      
+        // 시간 추출
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+        const period = hours >= 12 ? "오후" : "오전"; // 오전/오후 구분
+        const twelveHourFormat = hours % 12 || 12; // 12시간 형식으로 변환
+      
+        // 최종 문자열 생성
+        return `${dayOfWeek}  ${period}  ${twelveHourFormat}시  ${minutes}분`;
+
+    };
+
+    const generateCalendar = (dateString) => {
+        if (!dateString) return;
+
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = date.getMonth();
+
+        const firstDay = new Date(year, month, 1).getDay(); // Day of the week the month starts on
+        const daysInMonth = new Date(year, month + 1, 0).getDate(); // Number of days in the month
+
+        const days = [];
+        for (let i = 0; i < firstDay; i++) {
+            days.push(null); // Empty slots for days before the 1st
+        }
+        for (let i = 1; i <= daysInMonth; i++) {
+            days.push(i);
+        }
+
+        setCalendarDays(days);
+    };
+
+
     // -------------------------------------------------------------------------------------------------
     // *********************************[메인] 배경이미지************************************************
     // -------------------------------------------------------------------------------------------------
-    const [mainImg, setMainImg] = useState(); // Default image
-    const [brideImg, setBrideImg] = useState(); // Default image
-    const [groomImg, setGroomImg] = useState(); // Default image
-
+    const [mainImg, setMainImg] = useState(); 
+    const [brideImg, setBrideImg] = useState(); 
+    const [groomImg, setGroomImg] = useState(); 
+    const [calendarImg, setCalendarImg] = useState(); 
+    const [endingImg, setEndingImg] = useState(); 
+    const [gallImgs, setGallImgs] = useState([]); // 상태로 설정
+    
     function setImg() {
+
+        const newImages = [];
         galList.forEach(img => {
             const fixedFilename = encodeURIComponent((img.pic1).replace(/\\/g, '/'));
             const imageUrl = `https://api.euphoriacard.co.kr/api/image?filename=${fixedFilename}`;
             switch(img.type){
                 case "main" : 
                     setMainImg(imageUrl);
+                    break;
                 case "bride" : 
                     setBrideImg(imageUrl);
+                    break;
                 case "groom" : 
                     setGroomImg(imageUrl);
+                    break;
+                case "calendar" : 
+                    setCalendarImg(imageUrl);
+                    break;
+                case "ending" : 
+                    setEndingImg(imageUrl);
+                    break;
+                case "gallery":
+                    newImages.push(imageUrl);
+                    break;
+                default:
+                    break;
             }
         });
         
+        setGallImgs(newImages); // 상태 업데이트
+        
     }
+    useEffect(() => {
+        if (gallImgs.length > 0) {
+            setImg();
+        }
+    }, [gallImgs]); // gallist가 업데이트되면 setImg 호출
+
 
 
   return (
@@ -114,15 +279,16 @@ function PreviewPage() {
             </div>
         )}
         
-        <div className="wedding-card">
-
+        {/* <div className="wedding-card"> */}
+        <div className="frame" style={{width: "100%", maxWidth: "412px", margin: "0 auto",  boxShadow:" 0 0 10px rgba(0, 0, 0, 0.1)", backgroundColor: "white" }}>
+            
             {/* 메인 */}
             {/* <div className="create-preview">
                 <div className="noframe-wrap">
                     <div className="frame"> */}
                     <div className="frame"> 
                         
-                        <section className="main"> 
+                        <section className="main" style={{height:"900px"}}> 
                             {/* <div className="cardbg-img">
                                 <img src={typo} className="main-typo"/>
                                 <img src={page3_bg} className="marry-main-bg"/> 
@@ -199,12 +365,13 @@ function PreviewPage() {
                         </section>
 
                         {/* 프로필  */}
-                        <section className="main">
-                            <div className="profile-wrap">
+                        <section className="profile" id="profile">
+                            <div className="profile-wrap" style={{marginTop : "70px"}}>
                                 <div className="item">
                                     <div className="thumb">
                                         <img 
-                                            src={galList.groom || ""} 
+                                            className="bg"
+                                            src={groomImg || ""} 
                                             alt="신랑이미지" 
                                         />
                                     </div>
@@ -229,8 +396,9 @@ function PreviewPage() {
                                 <div className="item">
                                     <div className="thumb">
                                         <img 
-                                            src={galList.bride || ""} 
-                                            alt="신랑이미지" 
+                                            className="bg"
+                                            src={brideImg || ""} 
+                                            alt="신부이미지" 
                                         />
 
                                     </div>
@@ -251,6 +419,208 @@ function PreviewPage() {
                             {/* 목요일 이후 / 팝업 디자인 및 퍼블리싱 없음 */}
                             {/* <button className="btn">혼주에게 연락하기</button> */}
                         </section>
+                        
+
+                        <section className="calendar" id="calendar">
+                                    
+                            <strong className="title">{inv.calendarTitle || "예식 안내"}</strong>
+                            
+                            {inv.weddingDate && (
+                            <p className="info">
+                                                {/* {(inv.weddingDate?.substr(0, 4) || "")}년&nbsp;
+                                                {(inv.weddingDate?.substr(6, 2) || "")}월&nbsp;
+                                                {(inv.weddingDate?.substr(9, 2) || "")}일&nbsp; */}
+                                                {(inv.weddingDate).substr(0, 4) || ""}년&nbsp;
+                                                {(inv.weddingDate).substr(5, 2) || ""}월&nbsp;
+                                                {(inv.weddingDate).substr(8, 2) || ""}일&nbsp;
+                                                {/* {}요일 오후 {}시 */}
+                                                {getKoreanDateInfo(inv.weddingDate)}<br/>
+                                                {inv.weddingHallName || ""}&nbsp;
+                                                {inv.weddingHallFloorAndRoom || ""}
+                            </p>
+                            )}
+
+                            {inv.calendarImage && (
+                                <img
+                                    className="bg"
+                                    src={calendarImg}
+                                    alt="calbg"
+                                    style={{ borderRadius: "60px", padding: "30px"}}
+                                />  
+                            )}
+
+
+
+                            {/* <div className="month" data-aos="fade-up" data-aos-duration="600"> */}
+                            {inv.weddingDate && (
+                            <div className="month" >
+                                <span className="month-title">{(inv.weddingDate).substr(5,2) || ""}월</span>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th className="holiday">일</th>
+                                            <th>월</th>
+                                            <th>화</th>
+                                            <th>수</th>
+                                            <th>목</th>
+                                            <th>금</th>
+                                            <th>토</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {Array.from({ length: Math.ceil(calendarDays.length / 7) }).map(
+                                        (_, weekIndex) => (
+                                            <tr key={weekIndex}>
+                                            {calendarDays
+                                                .slice(weekIndex * 7, weekIndex * 7 + 7)
+                                                .map((day, index) => (
+                                                <td
+                                                    key={index}
+                                                    className={day ? (day === parseInt(inv.weddingDate.split("-")[2]) ? "target" : "") : ""}
+                                                >
+                                                    {day && <span>{day}</span>}
+                                                </td>
+                                                ))}
+                                            </tr>
+                                        )
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+                            )}
+
+                            <div
+                                className={`d-day ${inv.useDday ? '' : 'hidden'}`}
+                                style={{ display: inv.useDday ? 'block' : 'none' }}
+                            >
+                                <p className="point" data-aos="fade-up" data-aos-duration="600">
+                                    <span>{inv.groomLastName || "신랑"}</span>♥
+                                    <span>{inv.brideLastName || "신부"}</span> 결혼식까지
+                                </p>
+                                <ul className="timer" data-aos="fade-up" data-aos-duration="600">
+                                    <li><span>{timeLeft.days}</span>Days</li>
+                                    <li><span>{timeLeft.hours}</span>Hours</li>
+                                    <li><span>{timeLeft.minutes}</span>Minutes</li>
+                                    <li><span>{timeLeft.seconds}</span>Seconds</li>
+                                </ul>
+                            </div>
+                        </section>
+
+
+                        <section className="gallery">
+                            {/* <strong className="title" data-aos="fade-up" data-aos-duration="600"> */}
+                            <strong className="title">
+                                {inv.galleryTitle || "갤러리"}
+                            </strong>
+                            {/* <div className="gallery-list" data-aos="fade-up" data-aos-duration="600"> */}
+                            <div className="gallery-list">
+                                {gallImgs &&
+                                    gallImgs.map((image, index) => (
+                                        <div className="gallery-item" key={index}>
+                                            <img src={image} alt={`gallery-${index}`} />
+                                        </div>
+                                ))}
+                                
+                            </div>
+                        </section>
+                        
+                        {/* 안내문 */}
+                        <section className="infomation">
+                            {/* <div className="infomation-box" data-aos="fade-up" data-aos-duration="600"> */}
+                            <div className="infomation-box">
+                                <strong className="title">{inv.noticeTitle || "안내문"}</strong>
+                                <p>
+                                    {inv.noticeContent}
+                                </p>
+                                {/* 목요일 구현  */}
+                                {/* <a href="#" className="btn">버튼</a> */}
+                            </div>
+                        </section>
+                        
+                        {/* 화환보내기 */}
+                        <section className="flower">
+                            {/* <div className="flower-box" data-aos="fade-up" data-aos-duration="600"> */}
+                            <div className="flower-box">
+                                <img src={flower} alt="화환"/>
+                                <div className="text">
+                                    <strong className="title">축하 화환 보내기</strong>
+                                    <p>축하의 마음을 담아 전해보세요.</p>
+                                </div>
+                            </div>
+                        </section>
+
+                                {/* 함꼐한 시간 */}
+                        <section className="our-time">
+                            {/* <span className="title" data-aos="fade-up" data-aos-duration="600">함께한 시간</span>
+                            <p className="timer" data-aos="fade-up" data-aos-duration="600">{elapsedTime}</p> */}
+                            <strong className="title">함께한 시간</strong>
+                            <p className="timer" >{elapsedTime}</p>
+                        </section>
+
+
+
+                                {/* 오시는길 */}
+                        <section className="directions">
+                            {/* <strong className="title" data-aos="fade-up" data-aos-duration="600">오시는 길</strong>
+                            <div className="info" data-aos="fade-up" data-aos-duration="600"> */}
+                            <strong className="title" >오시는 길</strong>
+                            <div className="info" >
+                                <strong className="name">
+                                    {inv.weddingHallName || "예식장 이름"}
+                                    {/* <a href="#" className="call"></a> */}
+                                </strong>
+                                <p className="place">{inv.weddingHallFloorAndRoom || "OOO홀"}</p>
+                                <p className="address">{ inv.weddingHallAddress||"경기 성남시 분당구 판교역로 4"}</p>
+                                {/* <div className="map" id="map" ></div> */}
+                                {/* <Map 
+                                    center={{ lat: 37.5665, lng: 126.978 }} // 기본 좌표 설정 (서울시청 예시)
+                                    style={{ width: "100%", height: "400px" }}
+                                    level={3}
+                                >
+                                    <MapMarker position={{ lat: 37.5665, lng: 126.978 }}>
+                                    <div style={{ padding: "5px", color: "#000" }}>
+                                        {inv.weddingHallName || "예식장"}
+                                    </div>
+                                    </MapMarker>
+                                </Map>
+                                 */}
+                                 <Map center={mapCenter} style={{ width: "100%", height: "400px" }} level={3}>
+                                    <MapMarker position={mapCenter}>
+                                        <div style={{ padding: "5px", color: "#000" }}>{inv.weddingHallName}</div>
+                                    </MapMarker>
+                                </Map>
+                                {/* <div className="map-btns">
+                                    <a href="#" className="map-btn"><img src={map_t} alt=""/>티맵</a>
+                                    <a href="#" className="map-btn"><img src={map_kakao} alt=""/>카카오 내비</a>
+                                    <a href="#" className="map-btn"><img src={map_naver} alt=""/>네이버 지도</a>
+                                </div> */}
+                            </div>
+                        </section>
+
+
+
+                                {/* 교통수단 */}
+                        <section className="transportion">
+                            {trsptList &&
+                                trsptList.map((list, index) => (
+                                    <div key={index}>
+                                        {/* <span className="title" data-aos="fade-up" data-aos-duration="1000">{list.method}</span>
+                                        <p className="text" data-aos="fade-up" data-aos-duration="1000">{list.details}</p> */}
+                                        <span className="title" >{list.method}</span>
+                                        <p className="text" >{list.details}</p> 
+                                    </div>
+                            ))}
+                        </section>
+                        
+                        {/* 엔딩 */}
+                        {/* <section className="land" data-aos="fade-up" data-aos-duration="600"> */}
+                        <section className="land">
+                            <img className="bg" src={endingImg || ""} alt="bg" />
+                            <p className="text">
+                                {inv.endingContent}😂😂😂😂😂😂
+                            </p>
+                        </section>
+
 
                     </div>    
             {/* </div>         
