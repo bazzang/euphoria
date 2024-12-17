@@ -7,7 +7,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-
+import PositionedSnackbar from "./PositionedSnackbar";
 
 let openDialogCallback;
 
@@ -21,6 +21,7 @@ export default function FormDialog({ onClose, disableBackdropClick = false, onSa
   const [open, setOpen] = useState(false);
   const [ordererName, setOrdererName] = useState("");
   const [ordererCall, setOrdererCall] = useState("");
+  const [errorMessage, setErrorMessage] = useState(""); // 에러 메시지 상태
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -37,12 +38,25 @@ export default function FormDialog({ onClose, disableBackdropClick = false, onSa
   };
 
   const handleSave = () => {
+    // 유효성 검사
+    if (!ordererName.trim()) {
+      setErrorMessage("주문자명을 입력해 주세요.");
+      return;
+    }
+  
+    if (!ordererCall.trim()) {
+      setErrorMessage("휴대폰 번호를 입력해 주세요.('-'를 제외하고 입력해 주세요.)");
+      return;
+    }
+  
+    // 유효성 검사 통과 시 저장 실행
     onSave({ ordererName, ordererCall });
     handleClose();
   };
 
 
   return (
+    <>
     <React.Fragment>
       <Dialog open={open} onClose={handleClose}>
         {/* <DialogTitle>Subscribe</DialogTitle> */}
@@ -114,5 +128,11 @@ export default function FormDialog({ onClose, disableBackdropClick = false, onSa
         )}
       </Dialog>
     </React.Fragment>
+    
+    <PositionedSnackbar
+        message={errorMessage}
+        onClose={() => setErrorMessage("")}
+      />
+    </>
   );
 }
