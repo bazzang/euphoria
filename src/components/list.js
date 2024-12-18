@@ -39,7 +39,7 @@ function ProductionList() {
         
             console.log("Response Data: ", response.data);
 
-            andleDialogConfirm({
+            handleDialogConfirm({
                 ordererName: sessionStorage.getItem('ordererName'),
                 ordererCall: sessionStorage.getItem('ordererCall'),
             });
