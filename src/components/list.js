@@ -25,28 +25,28 @@ function ProductionList() {
 
     const handleAuthCode = async() => {
         try {
-            const authCode = sessionStorage.getItem("authCode"); // 저장된 authCode 가져오기
+            // const authCode = sessionStorage.getItem("authCode"); // 저장된 authCode 가져오기
 
             // FormData 객체 생성
             const formData = new FormData();
-            formData.append("code", authCode); // key: 'code', value: authCode
+            // formData.append("code", authCode); // key: 'code', value: authCode
 
             const response = await axios.post("https://api.euphoriacard.co.kr/api/oauth", formData, {
-            headers: {
-                "Content-Type": "multipart/form-data", // form-data 전송을 위한 헤더
-            },
+                headers: {
+                    "Content-Type": "multipart/form-data", // form-data 전송을 위한 헤더
+                },
             });
         
             console.log("Response Data: ", response.data);
 
-            handleDialogConfirm({
+            andleDialogConfirm({
                 ordererName: sessionStorage.getItem('ordererName'),
                 ordererCall: sessionStorage.getItem('ordererCall'),
             });
         } catch (error) {
-            console.error("엑세스토큰 에러: ", error);
+            console.error("엑세스 토큰 에러: ", error);
 
-        }
+        }h
     }
     // 주문자정보로 청첩장 제작 목록 가져오기 
     const handleDialogConfirm = async (data) => {
@@ -74,7 +74,9 @@ function ProductionList() {
             }
             
         } catch (error) {
-            console.error("리스트 가져오기 에러: ", error);
+            console.error("리스트 가져오기 에러1: ", error);
+            console.error("리스트 가져오기 에러2: ", error.error);
+            console.error("리스트 가져오기 에러3: ", error.error.errorCode);
 
             handleAuthCode();
             
