@@ -29,6 +29,7 @@ function Header() {
         try {
             const authCode = sessionStorage.getItem("authCode"); // 저장된 authCode 가져오기
 
+            console.log('만료 테스트 실행');
             // FormData 객체 생성
             const formData = new FormData();
             formData.append("code", authCode); // key: 'code', value: authCode
