@@ -266,9 +266,9 @@ const handleMainTxtRangeChange = (value) => {
     useEffect(() => {
         // AOS 초기화
         AOS.init({
-          offset: 100,
-          duration: 1000,
-          once: true, // 애니메이션을 한 번만 실행
+          offset: 0,
+          duration: 100,
+          once: false, // 애니메이션을 한 번만 실행
         });
       
         // 스크롤 이벤트에서 AOS.refresh() 호출
@@ -744,7 +744,7 @@ const handleMainTxtRangeChange = (value) => {
                                 {/* useProfile 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
                                 {invitationState.useProfile && (
                                 <section className="profile"> 
-                                    <div className="profile-wrap" data-aos="fade-up" data-aos-duration="600">
+                                    <div className="profile-wrap" data-aos="fade-up" data-aos-duration="100">
                                         <div className="item">
                                             <div className="thumb">
                                                 <img 
@@ -828,7 +828,7 @@ const handleMainTxtRangeChange = (value) => {
 
 
 
-                                    <div className="month" data-aos="fade-up" data-aos-duration="600">
+                                    <div className="month" data-aos="fade-up" data-aos-duration="100">
                                         <span className="month-title">{parseInt(invitationState.weddingDate.split("-")[1], 10)}월</span>
                                         <table>
                                             <thead>
@@ -866,11 +866,11 @@ const handleMainTxtRangeChange = (value) => {
                                         className={`d-day ${invitationState.useDday ? '' : 'hidden'}`}
                                         style={{ display: invitationState.useDday ? 'block' : 'none' }}
                                     >
-                                        <p className="point" data-aos="fade-up" data-aos-duration="600">
+                                        <p className="point" data-aos="fade-up" data-aos-duration="100">
                                             <span>{invitationState.groomLastName || "신랑"}</span>♥
                                             <span>{invitationState.brideLastName || "신부"}</span> 결혼식까지
                                         </p>
-                                        <ul className="timer" data-aos="fade-up" data-aos-duration="600">
+                                        <ul className="timer" data-aos="fade-up" data-aos-duration="100">
                                             <li><span>{timeLeft.days}</span>Days</li>
                                             <li><span>{timeLeft.hours}</span>Hours</li>
                                             <li><span>{timeLeft.minutes}</span>Minutes</li>
@@ -883,8 +883,8 @@ const handleMainTxtRangeChange = (value) => {
                                 {/* useGallery 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
                                 {invitationState.useGallery && (
                                 <section className="gallery">
-                                    <strong className="title" data-aos="fade-up" data-aos-duration="600">{invitationState.galleryTitle || "갤러리"}</strong>
-                                    <div className="gallery-list" data-aos="fade-up" data-aos-duration="600">
+                                    <strong className="title" data-aos="fade-up" data-aos-duration="100">{invitationState.galleryTitle || "갤러리"}</strong>
+                                    <div className="gallery-list" data-aos="fade-up" data-aos-duration="100">
                                         {invitationState.galleryImages &&
                                             invitationState.galleryImages.map((image, index) => (
                                                 <div className="gallery-item" key={index}>
@@ -900,7 +900,7 @@ const handleMainTxtRangeChange = (value) => {
                                 {/*useNotice 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
                                 {invitationState.useNotice && (
                                 <section className="infomation">
-                                    <div className="infomation-box" data-aos="fade-up" data-aos-duration="600">
+                                    <div className="infomation-box" data-aos="fade-up" data-aos-duration="100">
                                         <strong className="title">{invitationState.noticeTitle || "안내문"}</strong>
                                         <p>
                                             {invitationState.noticeContent}
@@ -914,7 +914,7 @@ const handleMainTxtRangeChange = (value) => {
                                 {/* useFlower 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
                                 {invitationState.useFlower && (
                                 <section className="flower">
-                                    <div className="flower-box" data-aos="fade-up" data-aos-duration="600">
+                                    <div className="flower-box" data-aos="fade-up" data-aos-duration="100">
                                         <img src={flower} alt="화환"/>
                                         <div className="text">
                                             <strong className="title">축하 화환 보내기</strong>
@@ -930,9 +930,9 @@ const handleMainTxtRangeChange = (value) => {
                                 {/* useFirstMeetTime 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
                                 {invitationState.useFirstMeetTime && (
                                 <section className="our-time">
-                                    <span className="title" data-aos="fade-up" data-aos-duration="600">함께한 시간</span>
+                                    <span className="title" data-aos="fade-up" data-aos-duration="100">함께한 시간</span>
                                     {/* <p className="timer" data-aos="fade-up" data-aos-duration="1000">“25년 1개월 17시간 42분 7초”</p> */}
-                                    <p className="timer" data-aos="fade-up" data-aos-duration="600">{elapsedTime}</p>
+                                    <p className="timer" data-aos="fade-up" data-aos-duration="100">{elapsedTime}</p>
                                 </section>
                                 )}
 
@@ -942,8 +942,8 @@ const handleMainTxtRangeChange = (value) => {
                                 {/* useDirections 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
                                 {invitationState.useDirections && (
                                 <section className="directions">
-                                    <strong className="title" data-aos="fade-up" data-aos-duration="600">오시는 길</strong>
-                                    <div className="info" data-aos="fade-up" data-aos-duration="600">
+                                    <strong className="title" data-aos="fade-up" data-aos-duration="100">오시는 길</strong>
+                                    <div className="info" data-aos="fade-up" data-aos-duration="100">
                                         <strong className="name">
                                             {invitationState.weddingHallName || "예식장 이름"}
                                             {/* <a href="#" className="call"></a> */}
@@ -978,7 +978,7 @@ const handleMainTxtRangeChange = (value) => {
 
                                 {/* useEnding 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
                                 {invitationState.useEnding && (
-                                <section className="land" data-aos="fade-up" data-aos-duration="600">
+                                <section className="land" data-aos="fade-up" data-aos-duration="100">
                                     <img className="bg" src={invitationState.endingImage ||bgimg} alt="bg" />
                                     <p className="text">
                                         {invitationState.endingContent}
