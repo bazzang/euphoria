@@ -26,45 +26,40 @@ function Header() {
         console.log('코드 확인', sessionStorage.getItem("authCode"));
 
 
-        try {
-            const authCode = sessionStorage.getItem("authCode"); // 저장된 authCode 가져오기
-
-            console.log('만료 테스트 실행');
-            // FormData 객체 생성
-            const formData = new FormData();
-            formData.append("code", authCode); // key: 'code', value: authCode
-
-            const response = await axios.post("https://api.euphoriacard.co.kr/api/oauth", formData, {
-            headers: {
-                "Content-Type": "multipart/form-data", // form-data 전송을 위한 헤더
-            },
-            });
         
-            console.log("Response Data: ", response.data);
 
-            handleDialogConfirm({
-                ordererName: sessionStorage.getItem('ordererName'),
-                ordererCall: sessionStorage.getItem('ordererCall'),
-            });
-        } catch (error) {
-            console.error("엑세스토큰 에러: ", error);
-            redirectToAuth(); // code가 없으면 인증 URL로 이동
-
-        }
-
-
-
-        // if(sessionStorage.getItem("authCode")){
-        //     return;
-        // }else{
-        //     if (code) {
-        //         sessionStorage.setItem('authCode', code);
-        //         console.log('세션스토리지 저장된 code :', code);
+        if(sessionStorage.getItem("authCode")){
+            try {
+                const authCode = sessionStorage.getItem("authCode"); // 저장된 authCode 가져오기
+    
+                console.log('만료 테스트 실행');
+                // FormData 객체 생성
+                const formData = new FormData();
+                formData.append("code", authCode); // key: 'code', value: authCode
+    
+                const response = await axios.post("https://api.euphoriacard.co.kr/api/oauth", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data", // form-data 전송을 위한 헤더
+                },
+                });
+                console.log("Response Data: ", response.data);
+                return;
+            } catch (error) {
+                console.error("엑세스토큰 에러: ", error);
+                redirectToAuth(); // code가 없으면 인증 URL로 이동
+    
+            }
+    
+            
+        }else{
+            if (code) {
+                sessionStorage.setItem('authCode', code);
+                console.log('세션스토리지 저장된 code :', code);
                 
-        //     } else {
-        //         redirectToAuth(); // code가 없으면 인증 URL로 이동
-        //     }    
-        // }
+            } else {
+                redirectToAuth(); // code가 없으면 인증 URL로 이동
+            }    
+        }
     };
     
     useEffect(() => {
