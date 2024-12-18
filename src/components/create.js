@@ -586,10 +586,9 @@ const handleMainTxtRangeChange = (value) => {
       });
 
     const handleOpenDialog = () => {
-        // if (validateInvitationForm()) {
-        //     openDialog(); // 유효성 검사 통과 시 Dialog 실행
-        // }
-        fetchInv();
+        if (validateInvitationForm()) {
+            openDialog(); // 유효성 검사 통과 시 Dialog 실행
+        }
     };
 
     const handleDialogSave = (data) => {
@@ -646,7 +645,7 @@ const handleMainTxtRangeChange = (value) => {
     const fetchInv = async (res) => {
         invitationState.transportationList = transportationList;
         // SaveInvitationReqVo에 맞게 데이터 구성
-        var gids = [];
+        let gids = [];
         if(res){
             gids = res.result;
         }
