@@ -916,7 +916,7 @@ const handleMainTxtRangeChange = (value) => {
                                         {invitationState.galleryImages &&
                                             invitationState.galleryImages.map((image, index) => (
                                                 <div className="gallery-item" key={index}>
-                                                    <img src={image} alt={`gallery-${index}`} />
+                                                    <img src={image.previewUrl} alt={`gallery-${index}`} />
                                                 </div>
                                         ))}
                                         
