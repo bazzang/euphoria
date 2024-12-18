@@ -96,6 +96,8 @@ function Create() {
     // 각 카테고리의 열림 상태를 관리하는 상태
     const [categories, setCategories] = useState({
         main: true, // 메인 카테고리를 초기 상태에서 열림으로 설정
+        bride: true,
+        groom: true,
     });
 
     // 특정 카테고리의 열림 상태를 토글하는 함수
@@ -530,18 +532,19 @@ const handleMainTxtRangeChange = (value) => {
     };
 
     //test
-    // const handleGalleryImageUpload = (event) => {
-    //     const files = Array.from(event.target.files);
-    //     const newImages = files.map((file) => ({
-    //         file: file, // 원본 파일 저장
-    //         previewUrl: URL.createObjectURL(file), // 미리보기 URL 생성
-    //     }));
+    const handleGalleryImageUpload = (event) => {
+        console.log('갤러리 업로드 이미지11');
+        const files = Array.from(event.target.files);
+        const newImages = files.map((file) => ({
+            file: file, // 원본 파일 저장
+            previewUrl: URL.createObjectURL(file), // 미리보기 URL 생성
+        }));
     
-    //     setInvitationState((prevState) => ({
-    //         ...prevState,
-    //         galleryImages: [...(prevState.galleryImages || []), ...newImages], // 기존 이미지와 합침
-    //     }));
-    // };
+        setInvitationState((prevState) => ({
+            ...prevState,
+            galleryImages: [...(prevState.galleryImages || []), ...newImages], // 기존 이미지와 합침
+        }));
+    };
 
     const handleGalleryImageDelete = (index) => {
         setInvitationState((prevState) => ({
@@ -566,13 +569,13 @@ const handleMainTxtRangeChange = (value) => {
     };
 
     // 갤러리 
-    const handleGalleryImageUpload = (event) => {
-        const files = Array.from(event.target.files); // 다중 파일 입력 처리
-        setInvitationState((prevState) => ({
-            ...prevState,
-            galleryImages: [...(prevState.galleryImages || []), ...files], // 기존 이미지와 합침
-        }));
-    };
+    // const handleGalleryImageUpload = (event) => {
+    //     const files = Array.from(event.target.files); // 다중 파일 입력 처리
+    //     setInvitationState((prevState) => ({
+    //         ...prevState,
+    //         galleryImages: [...(prevState.galleryImages || []), ...files], // 기존 이미지와 합침
+    //     }));
+    // };
 
 
     // -------------------------------------------------------------------------------------------------
@@ -2151,7 +2154,7 @@ const handleMainTxtRangeChange = (value) => {
                                         <div className="option-label">사진</div>
                                         <div className="option-contents">
                                             <div className="img-uploader2">
-                                                {/* <input
+                                                <input
                                                     type="file"
                                                     multiple
                                                     accept="image/*"
@@ -2165,9 +2168,9 @@ const handleMainTxtRangeChange = (value) => {
                                                     onClick={() => document.getElementById("galleryfileInput").click()} // Input 파일 선택 창 열기
                                                     >
                                                     업로드
-                                                </button> */}
+                                                </button>
 
-                                                <input
+                                                {/* <input
                                                     type="file"
                                                     multiple
                                                     accept="image/*"
@@ -2181,11 +2184,11 @@ const handleMainTxtRangeChange = (value) => {
                                                     onClick={() => document.getElementById("galleryfileInput").click()}
                                                 >
                                                     업로드
-                                                </button>
+                                                </button> */}
                                                 <div className="img-uploader2-area">
 
                                                     {/* img for문 */}
-                                                    {invitationState.galleryImages &&
+                                                    {/* {invitationState.galleryImages &&
                                                         invitationState.galleryImages.map((image, index) => (
                                                         <div className="img-uploader2-item" key={index}>
                                                             <img src={image} alt={`gallery-${index}`} />
@@ -2196,14 +2199,14 @@ const handleMainTxtRangeChange = (value) => {
                                                             삭제
                                                             </button>
                                                         </div>
-                                                    ))}
-                                                    {/* {invitationState.galleryImages &&
+                                                    ))} */}
+                                                    {invitationState.galleryImages &&
                                                         invitationState.galleryImages.map((image, index) => (
                                                             <div className="gallery-item" key={index}>
                                                                 <img src={image.previewUrl} alt={`gallery-${index}`} />
                                                                 <button onClick={() => handleGalleryImageDelete(index)}>삭제</button>
                                                             </div>
-                                                    ))} */}
+                                                    ))}
 
 
                                                 </div>
