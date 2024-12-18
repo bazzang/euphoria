@@ -586,9 +586,10 @@ const handleMainTxtRangeChange = (value) => {
       });
 
     const handleOpenDialog = () => {
-        if (validateInvitationForm()) {
-            openDialog(); // 유효성 검사 통과 시 Dialog 실행
-        }
+        // if (validateInvitationForm()) {
+        //     openDialog(); // 유효성 검사 통과 시 Dialog 실행
+        // }
+        fetchInv();
     };
 
     const handleDialogSave = (data) => {
