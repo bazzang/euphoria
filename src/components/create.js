@@ -19,6 +19,7 @@ import { axiosPost } from './common/common.js';
 import FormDialog, { openDialog } from "./dialog.js";
 import PositionedSnackbar from "./PositionedSnackbar";
 import ribon from '../images/ribbon.png';
+import noimg from '../images/defaultimg.png';
 
 function Create() {
     const navigate = useNavigate(); 
@@ -528,6 +529,27 @@ const handleMainTxtRangeChange = (value) => {
         }));
     };
 
+    //test
+    const handleGalleryImageUpload = (event) => {
+        const files = Array.from(event.target.files);
+        const newImages = files.map((file) => ({
+            file: file, // 원본 파일 저장
+            previewUrl: URL.createObjectURL(file), // 미리보기 URL 생성
+        }));
+    
+        setInvitationState((prevState) => ({
+            ...prevState,
+            galleryImages: [...(prevState.galleryImages || []), ...newImages], // 기존 이미지와 합침
+        }));
+    };
+
+    const handleGalleryImageDelete = (index) => {
+        setInvitationState((prevState) => ({
+            ...prevState,
+            galleryImages: prevState.galleryImages.filter((_, i) => i !== index),
+        }));
+    };
+
     // -------------------------------------------------------------------------------------------------
 
     // *********************************[저장] 사진 저장 ************************************************
@@ -544,13 +566,13 @@ const handleMainTxtRangeChange = (value) => {
     };
 
     // 갤러리 
-    const handleGalleryImageUpload = (event) => {
-        const files = Array.from(event.target.files); // 다중 파일 입력 처리
-        setInvitationState((prevState) => ({
-            ...prevState,
-            galleryImages: [...(prevState.galleryImages || []), ...files], // 기존 이미지와 합침
-        }));
-    };
+    // const handleGalleryImageUpload = (event) => {
+    //     const files = Array.from(event.target.files); // 다중 파일 입력 처리
+    //     setInvitationState((prevState) => ({
+    //         ...prevState,
+    //         galleryImages: [...(prevState.galleryImages || []), ...files], // 기존 이미지와 합침
+    //     }));
+    // };
 
 
     // -------------------------------------------------------------------------------------------------
@@ -1803,7 +1825,7 @@ const handleMainTxtRangeChange = (value) => {
                                                     <div className="img-upload fin">
                                                         <div className="img-upload-thumb">
                                                             <img 
-                                                                src={invitationState.groomPhotoUrl || ""} 
+                                                                src={invitationState.groomPhotoUrl || noimg} 
                                                                 alt="신랑이미지" 
                                                             />
                                                         </div>
@@ -1858,8 +1880,8 @@ const handleMainTxtRangeChange = (value) => {
                                                     <div className="img-upload fin">
                                                         <div className="img-upload-thumb">
                                                             <img 
-                                                                src={invitationState.bridePhotoUrl || ""} 
-                                                                alt="신랑이미지" 
+                                                                src={invitationState.bridePhotoUrl || noimg} 
+                                                                alt="신부부이미지" 
                                                             />
                                                         </div>
                                                         <button className="img-upload-cancel" onClick={() =>invitationState.bridePhotoUrl = "" }>삭제</button>
@@ -2118,7 +2140,7 @@ const handleMainTxtRangeChange = (value) => {
                                         <div className="option-label">사진</div>
                                         <div className="option-contents">
                                             <div className="img-uploader2">
-                                                <input
+                                                {/* <input
                                                     type="file"
                                                     multiple
                                                     accept="image/*"
@@ -2132,11 +2154,27 @@ const handleMainTxtRangeChange = (value) => {
                                                     onClick={() => document.getElementById("galleryfileInput").click()} // Input 파일 선택 창 열기
                                                     >
                                                     업로드
+                                                </button> */}
+
+                                                <input
+                                                    type="file"
+                                                    multiple
+                                                    accept="image/*"
+                                                    style={{ display: "none" }}
+                                                    id="galleryfileInput"
+                                                    onChange={handleGalleryImageUpload} // 파일 선택 시 호출
+                                                />
+
+                                                <button
+                                                    className="img-uploader2-btn"
+                                                    onClick={() => document.getElementById("galleryfileInput").click()}
+                                                >
+                                                    업로드
                                                 </button>
                                                 <div className="img-uploader2-area">
 
                                                     {/* img for문 */}
-                                                    {invitationState.galleryImages &&
+                                                    {/* {invitationState.galleryImages &&
                                                         invitationState.galleryImages.map((image, index) => (
                                                         <div className="img-uploader2-item" key={index}>
                                                             <img src={image} alt={`gallery-${index}`} />
@@ -2147,8 +2185,14 @@ const handleMainTxtRangeChange = (value) => {
                                                             삭제
                                                             </button>
                                                         </div>
+                                                    ))} */}
+                                                    {invitationState.galleryImages &&
+                                                        invitationState.galleryImages.map((image, index) => (
+                                                            <div className="gallery-item" key={index}>
+                                                                <img src={image.previewUrl} alt={`gallery-${index}`} />
+                                                                <button onClick={() => handleGalleryImageDelete(index)}>삭제</button>
+                                                            </div>
                                                     ))}
-
 
 
                                                 </div>
