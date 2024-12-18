@@ -10,7 +10,6 @@ import wd_option_icon_3 from '../images/list/wd_option_icon_3.svg';
 import wd_option_icon_4 from '../images/list/wd_option_icon_4.svg';
 import wd_option_icon_5 from '../images/list/wd_option_icon_5.svg';
 import FormDialog, { openDialog } from "./dialog.js";
-import { handleAuthCode } from "./header/header.js";
 function ProductionList() {
     const navigate = useNavigate();
     const location = useLocation();
@@ -79,9 +78,13 @@ function ProductionList() {
             console.error("리스트 가져오기 에러1: ", error.response.data.error.errorCode);
 
             if(error.response.data.error.errorCode === 30102 || error.response.data.error.errorCode === "30102"){
-                await handleAuthCode();
+                const authUrl =
+                'https://openapi.imweb.me/oauth2/authorize?responseType=code&clientId=aaa77bb6-2ab9-4836-8a26-8c58079959dc&redirectUri=https://euphoria-psi.vercel.app/&scope=member-info:read order:read&siteCode=S2024082926c7c40e12877';
+            
+                window.location.href = authUrl;
+            }else{
+                alert("오류가 발생하였습니다.")
             }
-            handleAuthCode();
             
         }
     }

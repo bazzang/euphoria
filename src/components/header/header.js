@@ -11,7 +11,7 @@ function Header() {
     const location = useLocation();
 
     // 인가코드 콜 
-    const redirectToAuth = () => {
+    function redirectToAuth(){
         const authUrl =
           'https://openapi.imweb.me/oauth2/authorize?responseType=code&clientId=aaa77bb6-2ab9-4836-8a26-8c58079959dc&redirectUri=https://euphoria-psi.vercel.app/&scope=member-info:read order:read&siteCode=S2024082926c7c40e12877';
     
