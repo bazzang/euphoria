@@ -126,7 +126,7 @@ export const InvitationProvider = ({ children }) => {
     sendWreathUrl : "https://www.99flower.co.kr/", // 화환 보내기에 연결 될 url 
     
     // 함께한 시간
-    firstMeetTime: "", // 첫 만남 날짜 및 시간
+    firstMeetTime: null, // 첫 만남 날짜 및 시간
     
     // 엔딩 섹션
     endingImage: "", // 엔딩 사진 URL
