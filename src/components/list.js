@@ -25,6 +25,7 @@ function ProductionList() {
 
 
     const handleAuthCode = async() => {
+        console.log("handleAuthCode 실행  @@@ ");
         try {
             // const authCode = sessionStorage.getItem("authCode"); // 저장된 authCode 가져오기
 
