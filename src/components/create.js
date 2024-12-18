@@ -606,29 +606,37 @@ const handleMainTxtRangeChange = (value) => {
     const [errorMessage, setErrorMessage] = useState(""); // 에러 메시지 상태
     const validateInvitationForm = () => {
         const requiredFields = [
-          { key: "mainType", label: "메인 타입" },
-          { key: "mainPhotoFile", label: "메인 사진" },
-          { key: "letteringMsg", label: "레터링 문구" },
-          { key: "letteringClr", label: "레터링 색상" },
-          { key: "mainTxtClr", label: "메인 텍스트 색상" },
-          { key: "groomFirstName", label: "신랑 성" },
-          { key: "groomLastName", label: "신랑 이름" },
-          { key: "brideFirstName", label: "신부 성" },
-          { key: "brideLastName", label: "신부 이름" },
-          { key: "weddingDate", label: "예식 날짜" },
-          { key: "weddingHallName", label: "예식장 명" },
+            { key: "mainType", label: "메인 타입" },
+            { key: "mainPhotoFile", label: "메인 사진", type: "file" }, // 파일 타입 지정
+            { key: "letteringMsg", label: "레터링 문구" },
+            { key: "letteringClr", label: "레터링 색상" },
+            { key: "mainTxtClr", label: "메인 텍스트 색상" },
+            { key: "groomFirstName", label: "신랑 성" },
+            { key: "groomLastName", label: "신랑 이름" },
+            { key: "brideFirstName", label: "신부 성" },
+            { key: "brideLastName", label: "신부 이름" },
+            { key: "weddingDate", label: "예식 날짜" },
+            { key: "weddingHallName", label: "예식장 명" },
         ];
-      
-        // 필수 값 확인
+    
         for (let field of requiredFields) {
-          if (!invitationState[field.key] || invitationState[field.key].trim() === "") {
-            setErrorMessage(`필수 입력 항목 "${field.label}"을(를) 입력해 주세요.`);
-            return false; // 유효성 검사 실패
-          }
+            const value = invitationState[field.key];
+    
+            // 파일 타입 처리
+            if (field.type === "file") {
+                if (!value || !(value instanceof File)) {
+                    setErrorMessage(`필수 입력 항목 "${field.label}"을(를) 업로드해 주세요.`);
+                    return false;
+                }
+            } 
+            // 문자열 타입 처리
+            else if (!value || (typeof value === "string" && value.trim() === "")) {
+                setErrorMessage(`필수 입력 항목 "${field.label}"을(를) 입력해 주세요.`);
+                return false;
+            }
         }
         return true; // 유효성 검사 통과
     };
-
     // -------------------------------------------------------------------------------------------------
 
     // *********************************[저장] 저장 버튼 클릭 이벤트 핸들러 *******************************
@@ -1826,7 +1834,6 @@ const handleMainTxtRangeChange = (value) => {
                                                         <div className="img-upload-thumb">
                                                             <img 
                                                                 src={invitationState.groomPhotoUrl || noimg} 
-                                                                alt="신랑이미지" 
                                                             />
                                                         </div>
                                                         <button className="img-upload-cancel" onClick={() =>invitationState.groomPhotoUrl = "" }>삭제</button>
