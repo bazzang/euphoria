@@ -77,27 +77,7 @@ function ProductionList() {
             console.error("리스트 가져오기 에러: ", error);
 
             handleAuthCode();
-            // // 에러 응답에서 statusCode가 401인지 확인
-            // if (error.response && error.response.status === 401) {
-            //     console.log("토큰만료"); // 토큰 만료 메시지 출력
-            //     const response = await axios.post("https://api.euphoriacard.co.kr/api/list",{
-            //     ordererNm: data.ordererName,
-            //     ordererCall: data.ordererCall,
-            //   },
-            //   {
-            //     headers: {
-            //       "Content-Type": "application/json",
-            //     },
-            //   }
-            // );
-
-            // } else if (error.response && error.response.data) {
-            //     // 에러 응답 데이터가 있을 경우 추가 로그
-            //     console.log("Error Code:", error.response.data.errorCode);
-            //     console.log("Error Message:", error.response.data.message);
-            // } else {
-            //     console.log("An unknown error occurred");
-            // }
+            
         }
     }
 

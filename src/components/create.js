@@ -18,6 +18,7 @@ import { Map, Polyline, MapMarker, CustomOverlayMap } from "react-kakao-maps-sdk
 import { axiosPost } from './common/common.js';
 import FormDialog, { openDialog } from "./dialog.js";
 import PositionedSnackbar from "./PositionedSnackbar";
+import ribon from '../images/ribbon.png';
 
 function Create() {
     const navigate = useNavigate(); 
@@ -84,6 +85,7 @@ function Create() {
 
     const handleSelectChange = (e) => {
         setVal1(e.target.value); // 선택한 옵션 값을 상태에 저장
+        
     };
 
 
@@ -92,16 +94,18 @@ function Create() {
     };
     ////////////////////////////////testend//////////////////////////////
 
-    // 메뉴 접기 열기 함수 컴포넌트로 빼기 ***********
-    const [isBodyVisible, setIsBodyVisible] = useState(true);
-    const [isButtonActive, setIsButtonActive] = useState(false);
+    // 각 카테고리의 열림 상태를 관리하는 상태
+    const [categories, setCategories] = useState({});
 
-    // 버튼 클릭 시 실행되는 함수 (메뉴 접기)
-    const toggleCategory = () => {
-        setIsBodyVisible(!isBodyVisible);  // category-body 가시성 토글
-        setIsButtonActive(!isButtonActive); // 버튼의 active 클래스 토글
+    // 특정 카테고리의 열림 상태를 토글하는 함수
+    const toggleCategory = (categoryName) => {
+        setCategories((prevCategories) => ({
+            ...prevCategories,
+            [categoryName]: !prevCategories[categoryName], // 해당 카테고리 상태 반전
+        }));
     };
 
+    
 
     // -------------------------------------------------------------------------------------------------
 
@@ -166,21 +170,16 @@ function Create() {
         }));
         
         // 위치 저장 
-        handleChange("letteringHg", value);
+        handleChange("letteringHg", `${value}%`);
     };
 
-    const [maintxtHg, setMaintxtHg] = useState(50);
+    const [maintxtHg, setMaintxtHg] = useState("50%");
 
-    const handleMainTxtRangeChange = (type, value) => {
-        setMaintxtHg((prev) => ({
-          ...prev,
-          [type]: `${value}%`, // 값에 % 추가
-        }));
-        
-        // 위치 저장 
-        handleChange("mainTxtHg", value);
-    };
-
+const handleMainTxtRangeChange = (value) => {
+    setMaintxtHg(`${value}%`); 
+    
+    handleChange("mainTxtHg", `${value}%`);
+};
     // -------------------------------------------------------------------------------------------------
 
     // *********************************[지도] 지도 api  ******************************************
@@ -740,7 +739,11 @@ function Create() {
                                 </div>
                                 </section>
 
-                                <section className="profile">
+
+
+                                {/* useProfile 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
+                                {invitationState.useProfile && (
+                                <section className="profile"> 
                                     <div className="profile-wrap" data-aos="fade-up" data-aos-duration="600">
                                         <div className="item">
                                             <div className="thumb">
@@ -755,15 +758,18 @@ function Create() {
 
                                                 <p className="t3">
                                                     <span>
+
+                                                        
                                                         {invitationState.groomFatherFirstName}{invitationState.groomFatherLastName}
 
                                                         {invitationState.groomFatherFirstName && (
                                                             <span>•</span> 
                                                         )}
 
+                                                        
                                                         {invitationState.groomMotherFirstName}{invitationState.groomMotherLastName}
                                                     </span>
-                                                    {invitationState.groomFatherFirstName &&(<>의</> )} {invitationState.groomRelationship}
+                                                    {invitationState.groomFatherFirstName&&(<>의</> )} {invitationState.groomRelationship}
                                                 </p>
                                             
                                         </div>
@@ -779,21 +785,26 @@ function Create() {
                                             <p className="t2">{invitationState.brideIntroduction}</p>
                                                 <p className="t3">
                                                     <span>
+                                                        
                                                         {invitationState.brideFatherFirstName}{invitationState.brideFatherLastName}
                                                         {invitationState.brideFatherFirstName && (
                                                             <span>•</span> 
                                                         )}
+                                                        
                                                         {invitationState.brideMotherFirstName}{invitationState.brideMotherLastName}
                                                     </span>
-                                                    {invitationState.brideFatherFirstName &&(<>의</> )} {invitationState.brideRelationship}
+                                                    {invitationState.brideFatherFirstName&&(<>의</> )} {invitationState.brideRelationship}
                                                 </p>
                                         </div>
                                     </div>
                                     {/* 목요일 이후 / 팝업 디자인 및 퍼블리싱 없음 */}
                                     {/* <button className="btn">혼주에게 연락하기</button> */}
                                 </section>
+                                )}
                             
 
+                                {/* useCalendar 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
+                                {invitationState.useCalendar && (
                                 <section className="calendar">
                                     
                                     <strong className="title">{invitationState.calendarTitle || "예식 안내"}</strong>
@@ -867,7 +878,10 @@ function Create() {
                                         </ul>
                                     </div>
                                 </section>
+                                )}
 
+                                {/* useGallery 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
+                                {invitationState.useGallery && (
                                 <section className="gallery">
                                     <strong className="title" data-aos="fade-up" data-aos-duration="600">{invitationState.galleryTitle || "갤러리"}</strong>
                                     <div className="gallery-list" data-aos="fade-up" data-aos-duration="600">
@@ -880,7 +894,11 @@ function Create() {
                                         
                                     </div>
                                 </section>
+                                )}
 
+
+                                {/*useNotice 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
+                                {invitationState.useNotice && (
                                 <section className="infomation">
                                     <div className="infomation-box" data-aos="fade-up" data-aos-duration="600">
                                         <strong className="title">{invitationState.noticeTitle || "안내문"}</strong>
@@ -891,6 +909,10 @@ function Create() {
                                         {/* <a href="#" className="btn">버튼</a> */}
                                     </div>
                                 </section>
+                                )}
+
+                                {/* useFlower 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
+                                {invitationState.useFlower && (
                                 <section className="flower">
                                     <div className="flower-box" data-aos="fade-up" data-aos-duration="600">
                                         <img src={flower} alt="화환"/>
@@ -900,12 +922,25 @@ function Create() {
                                         </div>
                                     </div>
                                 </section>
+                                )}
+
+
+
+
+                                {/* useFirstMeetTime 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
+                                {invitationState.useFirstMeetTime && (
                                 <section className="our-time">
                                     <span className="title" data-aos="fade-up" data-aos-duration="600">함께한 시간</span>
                                     {/* <p className="timer" data-aos="fade-up" data-aos-duration="1000">“25년 1개월 17시간 42분 7초”</p> */}
                                     <p className="timer" data-aos="fade-up" data-aos-duration="600">{elapsedTime}</p>
                                 </section>
-                                
+                                )}
+
+
+
+
+                                {/* useDirections 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
+                                {invitationState.useDirections && (
                                 <section className="directions">
                                     <strong className="title" data-aos="fade-up" data-aos-duration="600">오시는 길</strong>
                                     <div className="info" data-aos="fade-up" data-aos-duration="600">
@@ -924,7 +959,10 @@ function Create() {
                                         </div> */}
                                     </div>
                                 </section>
-                                
+                                )}
+
+                                {/* useTransportation 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
+                                {invitationState.useTransportation && (
                                 <section className="transportion">
                                 {transportationList &&
                                     transportationList.map((list, index) => (
@@ -936,14 +974,17 @@ function Create() {
                                         </div>
                                 ))}
                                 </section>
+                                )}
 
-
+                                {/* useEnding 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
+                                {invitationState.useEnding && (
                                 <section className="land" data-aos="fade-up" data-aos-duration="600">
                                     <img className="bg" src={invitationState.endingImage ||bgimg} alt="bg" />
                                     <p className="text">
                                         {invitationState.endingContent}
                                     </p>
                                 </section>
+                                )}
 
                             </div>
 
@@ -973,15 +1014,16 @@ function Create() {
                     </div>
 
                     <div className="create-contents">
+
                             <div className="category">
-                                <div className="category-head">
+                                <div className="category-head" onClick={() => toggleCategory('main')}>
                                     <strong>메인</strong>
                                     <button 
-                                        className={`btn-toggle ${isButtonActive ? 'active' : ''}`} 
-                                        onClick={toggleCategory}
+                                        className={`btn-toggle ${categories['main'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('main')}
                                     >여닫기</button>
                                 </div>
-                                {isBodyVisible && (
+                                {categories['main'] && (
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">타입 <sup>필수</sup></div>
@@ -989,7 +1031,8 @@ function Create() {
                                             <div className="input-change">
                                                 {/* <input className="input-sts" type="text" value="포스터 (풀페이지)" readonly /> */}
                                                 {/* HERE */}
-                                                <select className="input-sts" value={val1} onChange={handleSelectChange}>
+                                                <select className="input-sts" value={invitationState.mainType || ""} 
+                                                onChange={(e) => handleChange("mainType", e.target.value)}>
                                                     <option value="포스터(풀페이지)">포스터(풀페이지)</option>
                                                     {/* <option value="포토그라피(풀페이지) - 디자인없음">포토그라피(풀페이지) - 디자인없음</option>
                                                     <option value="오리지널(풀페이지) - 디자인없음">오리지널(풀페이지) - 디자인없음</option>
@@ -1158,16 +1201,16 @@ function Create() {
                                         <div className="option-contents">
                                             {/* <input type="range" /> */}
                                             <input
-                                            type="range"
-                                            min="10"
-                                            max="80"
-                                            value={parseInt(maintxtHg)}
-                                            onChange={(e) => handleMainTxtRangeChange("mainTxtHg", e.target.value)}
+                                                type="range"
+                                                min="10"
+                                                max="80"
+                                                value={parseInt(maintxtHg)} // Parse to integer for the range input
+                                                onChange={(e) => handleMainTxtRangeChange(e.target.value)}
                                             />
                                         </div>
                                     </div>
-
-                                    <div className="option">
+                                        {/* 기능이해못함 */}
+                                    {/* <div className="option">
                                         <div className="option-label">메인 하단 예식 정보 <sup>필수</sup></div>
                                         <div className="option-contents">
                                             <div className="radio-wrap">
@@ -1181,8 +1224,9 @@ function Create() {
                                                 </span>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className="option">
+                                    </div> */}
+                                    
+                                    {/* <div className="option">
                                         <div className="option-label">스크롤 안내 <sup>필수</sup></div>
                                         <div className="option-contents">
                                             <div className="radio-wrap">
@@ -1196,15 +1240,22 @@ function Create() {
                                                 </span>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                                 )}
                             </div>
+
                             <div className="category">
-                                <div className="category-head">
+                                <div className="category-head" onClick={() => toggleCategory('groom')}>
                                     <strong>신랑측 정보</strong>
-                                    <button className="btn-toggle">여닫기</button>
+                                    <button
+                                        className={`btn-toggle ${categories['groom'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('groom')}
+                                    >
+                                        여닫기
+                                    </button>
                                 </div>
+                                {categories['groom'] && (
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">신랑 <sup>필수</sup></div>
@@ -1250,7 +1301,10 @@ function Create() {
                                                 />
 
                                                 <span className="check">
-                                                    <input type="checkbox" id="ct2_1"/>
+                                                    <input type="checkbox" id="ct2_1"
+                                                    value={invitationState.groomFatherDeceased || false }
+                                                    onChange={(e) => handleChange("groomFatherDeceased", e.target.checked)}
+                                                    />
                                                     <label for="ct2_1"><i></i>고인</label>
                                                 </span>
                                             </div>
@@ -1275,7 +1329,8 @@ function Create() {
                                                     onChange={(e) => handleChange("groomMotherLastName", e.target.value)} // Update state
                                                 />
                                                 <span className="check">
-                                                    <input type="checkbox" id="ct2_1" />
+                                                    <input type="checkbox" id="ct2_1" value={invitationState.groomMotherDeceased || false }
+                                                    onChange={(e) => handleChange("groomMotherDeceased", e.target.checked)}/>
                                                     <label for="ct2_1"><i></i>고인</label>
                                                 </span>
                                             </div>
@@ -1296,12 +1351,17 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
+                                )}
                             </div>
                             <div className="category">
-                                <div className="category-head">
+                                <div className="category-head" onClick={() => toggleCategory('bride')}>
                                     <strong>신부측 정보</strong>
-                                    <button className="btn-toggle">여닫기</button>
+                                    <button 
+                                        className={`btn-toggle ${categories['bride'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('bride')}
+                                    >여닫기</button>
                                 </div>
+                                {categories['bride'] && (
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">신부 <sup>필수</sup></div>
@@ -1343,7 +1403,10 @@ function Create() {
                                                     onChange={(e) => handleChange("brideFatherLastName", e.target.value)} // Update state
                                                 />
                                                 <span className="check">
-                                                    <input type="checkbox" id="ct2_1"/>
+                                                    <input type="checkbox" id="ct2_1"
+                                                    value={invitationState.brideFatherDeceased || false }
+                                                    onChange={(e) => handleChange("brideFatherDeceased", e.target.checked)}
+                                                    />
                                                     <label for="ct2_1"><i></i>고인</label>
                                                 </span>
                                             </div>
@@ -1368,7 +1431,10 @@ function Create() {
                                                     onChange={(e) => handleChange("brideMotherLastName", e.target.value)} // Update state
                                                 />
                                                 <span className="check">
-                                                    <input type="checkbox" id="ct2_1" />
+                                                    <input type="checkbox" id="ct2_1" 
+                                                    value={invitationState.brideMotherDeceased || false }
+                                                    onChange={(e) => handleChange("brideMotherDeceased", e.target.checked)}
+                                                    />
                                                     <label for="ct2_1"><i></i>고인</label>
                                                 </span>
                                             </div>
@@ -1389,12 +1455,18 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
+                                )}
                             </div>
+
                             <div className="category">
-                                <div className="category-head">
+                                <div className="category-head" onClick={() => toggleCategory('weddingDate')}>
                                     <strong>예식일자</strong>
-                                    <button className="btn-toggle">여닫기</button>
+                                    <button 
+                                        className={`btn-toggle ${categories['weddingDate'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('weddingDate')}
+                                    >여닫기</button>
                                 </div>
+                                {categories['weddingDate'] && (
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">일자<sup>필수</sup></div>
@@ -1408,12 +1480,19 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
+                                )}
                             </div>
+
+
                             <div className="category">
-                                <div className="category-head">
+                                <div className="category-head" onClick={() => toggleCategory('weddingHall')}>
                                     <strong>예식장</strong>
-                                    <button className="btn-toggle">여닫기</button>
+                                    <button 
+                                        className={`btn-toggle ${categories['weddingHall'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('weddingHall')}
+                                    >여닫기</button>
                                 </div>
+                                {categories['weddingHall'] && (
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">예식장 명<sup>필수</sup></div>
@@ -1470,15 +1549,29 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
+                                )}
                             </div>
+
+                            
                             <div className="category">
-                                <div className="category-head">
-                                    <label for="" className="switch">
-                                        <input type="checkbox" checked />
+                                <div className="category-head" onClick={() => toggleCategory('calendar')}>
+
+                                    {/*value=useCalendar */}
+                                    <label className="switch">
+                                        <input 
+                                            type="checkbox" 
+                                            checked={invitationState.useCalendar} 
+                                            onChange={(e) => handleChange('useCalendar', e.target.checked)}
+                                        />
                                     </label>
+
                                     <strong>달력</strong>
-                                    <button className="btn-toggle">여닫기</button>
+                                    <button 
+                                        className={`btn-toggle ${categories['calendar'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('calendar')}
+                                    >여닫기</button>
                                 </div>
+                                {categories['calendar'] && (
                                 <div className="category-body">
                                     {/* 목요일 이후 구현 */}
                                     {/* <div className="option">
@@ -1548,7 +1641,10 @@ function Create() {
                                         </div>
                                     </div> */}
                                 </div>
+                                )}
                             </div>
+
+
                             {/* 목요일 이후 구현 (퍼블리싱 없음) */}
                             {/* <div className="category">
                                 <div className="category-head">
@@ -1556,8 +1652,12 @@ function Create() {
                                         <input type="checkbox" checked />
                                     </label>
                                     <strong>글귀</strong>
-                                    <button className="btn-toggle">여닫기</button>
+                                    <button 
+                                        className={`btn-toggle ${categories['phrases '] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('phrases ')}
+                                    >여닫기</button>
                                 </div>
+                                {categories['phrases '] && (
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">글귀</div>
@@ -1578,7 +1678,11 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
+                                )  }
                             </div> */}
+
+
+
                             {/* 목요일 이후 구현 (퍼블리싱 없음) */}
                             {/* <div className="category">
                                 <div className="category-head">
@@ -1586,8 +1690,12 @@ function Create() {
                                         <input type="checkbox" checked />
                                     </label>
                                     <strong>인사말</strong>
-                                    <button className="btn-toggle">여닫기</button>
+                                    <button 
+                                        className={`btn-toggle ${categories['salutations'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('salutations')}
+                                    >여닫기</button>
                                 </div>
+                                {categories['salutations'] && (
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">제목</div>
@@ -1625,15 +1733,30 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
+                            )}
                             </div> */}
+
+
                             <div className="category">
-                                <div className="category-head">
-                                    <label for="" className="switch">
-                                        <input type="checkbox" checked />
+                                <div className="category-head" onClick={() => toggleCategory('prof')}>
+
+                                    {/* value=useProfile */}
+                                    <label className="switch">
+                                        <input 
+                                            type="checkbox" 
+                                            checked={invitationState.useProfile} 
+                                            onChange={(e) => handleChange('useProfile', e.target.checked)}
+                                        />
                                     </label>
+
+
                                     <strong>프로필형 소개</strong>
-                                    <button className="btn-toggle">여닫기</button>
+                                    <button 
+                                        className={`btn-toggle ${categories['prof'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('prof')}
+                                    >여닫기</button>
                                 </div>
+                                {categories['prof'] && (
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">신랑 사진<sup>필수</sup></div>
@@ -1744,15 +1867,29 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
+                                )}
                             </div>
+
+                            
                             <div className="category">
-                                <div className="category-head">
-                                    <label for="" className="switch">
-                                        <input type="checkbox" checked />
+                                <div className="category-head" onClick={() => toggleCategory('contactBrideAndGroom')}>
+
+                                    {/* value=useContactBrideAndGroom */}
+                                    <label className="switch">
+                                        <input 
+                                            type="checkbox" 
+                                            checked={invitationState.useContactBrideAndGroom} 
+                                            onChange={(e) => handleChange('useContactBrideAndGroom', e.target.checked)}
+                                        />
                                     </label>
+
                                     <strong>신랑신부 연락하기</strong>
-                                    <button className="btn-toggle">여닫기</button>
+                                    <button 
+                                        className={`btn-toggle ${categories['contactBrideAndGroom'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('contactBrideAndGroom')}
+                                    >여닫기</button>
                                 </div>
+                                {categories['contactBrideAndGroom'] && (
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">신랑 전화번호</div>
@@ -1779,7 +1916,10 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
+                                )}
                             </div>
+
+
                             {/* 목요일 이후 구현 (퍼블리싱 없음) */}
                             {/* <div className="category">
                                 <div className="category-head">
@@ -1787,8 +1927,12 @@ function Create() {
                                         <input type="checkbox" checked />
                                     </label>
                                     <strong>혼주 연락하기</strong>
-                                    <button className="btn-toggle">여닫기</button>
+                                    <button 
+                                        className={`btn-toggle ${categories['parentsContactInfo'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('parentsContactInfo')}
+                                    >여닫기</button>
                                 </div>
+                                {categories['parentsContactInfo'] && (
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">신랑 아버지</div>
@@ -1815,7 +1959,9 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
+                            )}
                             </div> */}
+
                             {/* 목요일 이후 구현 (퍼블리싱 없음) */}
                             {/* <div className="category">
                                 <div className="category-head">
@@ -1823,7 +1969,12 @@ function Create() {
                                         <input type="checkbox" checked/>
                                     </label>
                                     <strong>타임라인</strong>
-                                    <button className="btn-toggle">여닫기</button>
+                                    <button 
+                                        className={`btn-toggle ${categories['timeLine'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('timeLine')}
+                                    >여닫기</button>
+                                </div>
+                                {categories['timeLine'] && (
                                 </div>
                                 <div className="category-body">
                                     <div className="option">
@@ -1895,15 +2046,30 @@ function Create() {
                                         <button className="add-box-add">타임라인 추가</button>
                                     </div>
                                 </div>
+                            )}
                             </div> */}
-                            <div className="category">
-                                <div className="category-head">
-                                    <label for="" className="switch">
-                                        <input type="checkbox" checked/>
+
+
+
+                            <div className="category" >
+                                <div className="category-head" onClick={() => toggleCategory('gallery')}>
+
+                                    {/* value=useGallery */}
+                                    <label className="switch">
+                                        <input 
+                                            type="checkbox" 
+                                            checked={invitationState.useGallery} 
+                                            onChange={(e) => handleChange('useGallery', e.target.checked)}
+                                        />
                                     </label>
+
                                     <strong>갤러리</strong>
-                                    <button className="btn-toggle">여닫기</button>
+                                    <button 
+                                        className={`btn-toggle ${categories['gallery'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('gallery')}
+                                    >여닫기</button>
                                 </div>
+                                {categories['gallery'] && (
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">타이틀</div>
@@ -2000,7 +2166,11 @@ function Create() {
                                         </div>
                                     </div> */}
                                 </div>
+                                )}
                             </div>
+
+
+
                             {/* 목요일 이후 구현 (퍼블리싱 없음) */}
                             {/* <div className="category">
                                 <div className="category-head">
@@ -2008,8 +2178,12 @@ function Create() {
                                         <input type="checkbox" checked/>
                                     </label>
                                     <strong>영상</strong>
-                                    <button className="btn-toggle">여닫기</button>
+                                    <button 
+                                        className={`btn-toggle ${categories['video'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('video')}
+                                    >여닫기</button>
                                 </div>
+                                {categories['video'] && (
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">유튜브 URL<sup>필수</sup></div>
@@ -2024,6 +2198,7 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
+                            )}
                             </div> */}
 
                             {/* 목요일 이후 구현 (퍼블리싱 없음) */}
@@ -2033,8 +2208,14 @@ function Create() {
                                         <input type="checkbox" checked/>
                                     </label>
                                     <strong>웨딩 인터뷰</strong>
-                                    <button className="btn-toggle">여닫기</button>
+
+                                    <button 
+                                        className={`btn-toggle ${categories['interview'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('interview')}
+                                    >여닫기</button>
                                 </div>
+                                {categories['interview'] && (
+
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">보여주기 방식</div>
@@ -2079,6 +2260,7 @@ function Create() {
                                         <button className="add-box-add">인터뷰 추가</button>
                                     </div>
                                 </div>
+                            )}
                             </div> */}
 
                             {/* 목요일 이후 > 지도 안나옴  */}
@@ -2088,8 +2270,13 @@ function Create() {
                                         <input type="checkbox" checked/>
                                     </label>
                                     <strong>지도</strong>
-                                    <button className="btn-toggle">여닫기</button>
+                                    <button 
+                                        className={`btn-toggle ${categories['map'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('map')}
+                                    >여닫기</button>
                                 </div>
+                                {categories['map'] && (
+
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">지도 마커</div>
@@ -2158,16 +2345,29 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
+                            )}
                             </div> */}
 
                             <div className="category">
-                                <div className="category-head">
-                                    <label for="" className="switch">
-                                        <input type="checkbox" checked/>
+                                <div className="category-head" onClick={() => toggleCategory('trnspt')}>
+
+                                    {/* value=useTransportation */}
+                                    <label className="switch">
+                                        <input 
+                                            type="checkbox" 
+                                            checked={invitationState.useTransportation} 
+                                            onChange={(e) => handleChange('useTransportation', e.target.checked)}
+                                        />
                                     </label>
+
                                     <strong>교통수단</strong>
-                                    <button className="btn-toggle">여닫기</button>
+
+                                    <button 
+                                        className={`btn-toggle ${categories['trnspt'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('trnspt')}
+                                    >여닫기</button>
                                 </div>
+                                {categories['trnspt'] && (
                                 <div className="category-body">
                                 {transportationList.map((transport, index) => (
                                     <div className="add-box" key={index} >
@@ -2224,6 +2424,7 @@ function Create() {
                                         <button className="add-box-add" onClick={addTransportation}>교통수단 추가</button>
                                     </div>
                                 </div>
+                                )}
                             </div>
 
                             {/* 목요일 이후 구현 (퍼블리싱 없음) */}
@@ -2233,8 +2434,12 @@ function Create() {
                                         <input type="checkbox" checked/>
                                     </label>
                                     <strong>안내사항</strong>
-                                    <button className="btn-toggle">여닫기</button>
+                                    <button 
+                                        className={`btn-toggle ${categories['info'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('info')}
+                                    >여닫기</button>
                                 </div>
+                                {categories['info'] && (
                                 <div className="category-body">
                                     <div className="add-box">
                                         <div className="add-head">
@@ -2292,15 +2497,27 @@ function Create() {
                                         <button className="add-box-add">안내사항 추가</button>
                                     </div>
                                 </div>
+                            )}
                             </div> */}
                             <div className="category">
-                                <div className="category-head">
-                                    <label for="" className="switch">
-                                        <input type="checkbox" checked/>
+                                <div className="category-head" onClick={() => toggleCategory('noticeMessage')}>
+
+                                    {/* value=useNotice */}
+                                    <label className="switch">
+                                        <input 
+                                            type="checkbox" 
+                                            checked={invitationState.useNotice} 
+                                            onChange={(e) => handleChange('useNotice', e.target.checked)}
+                                        />
                                     </label>
+
                                     <strong>안내문</strong>
-                                    <button className="btn-toggle">여닫기</button>
+                                    <button 
+                                        className={`btn-toggle ${categories['noticeMessage'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('noticeMessage')}
+                                    >여닫기</button>
                                 </div>
+                                {categories['noticeMessage'] && (
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">제목</div>
@@ -2366,7 +2583,10 @@ function Create() {
 
 
                                 </div>
+                                )}
                             </div>
+
+
                             {/* 목요일 이후 구현 (퍼블리싱 없음) */}
                             {/* <div className="category">
                                 <div className="category-head">
@@ -2374,8 +2594,12 @@ function Create() {
                                         <input type="checkbox" checked/>
                                     </label>
                                     <strong>참석여부 RSVP</strong>
-                                    <button className="btn-toggle">여닫기</button>
+                                    <button 
+                                        className={`btn-toggle ${categories['rsvpRes'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('rsvpRes')}
+                                    >여닫기</button>
                                 </div>
+                                {categories['rsvpRes'] && (
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">타이틀</div>
@@ -2473,7 +2697,9 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
+                            )}
                             </div> */}
+
                             {/* 목요일 이후 구현 (퍼블리싱 없음) */}
                             {/* <div className="category">
                                 <div className="category-head">
@@ -2481,8 +2707,13 @@ function Create() {
                                         <input type="checkbox" checked/>
                                     </label>
                                     <strong>계좌번호</strong>
-                                    <button className="btn-toggle">여닫기</button>
+                                    <button 
+                                        className={`btn-toggle ${categories['paymentAccount'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('paymentAccount')}
+                                    >여닫기</button>
                                 </div>
+                                {categories['paymentAccount'] && (
+
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">타이틀</div>
@@ -2639,6 +2870,7 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
+                            )}
                             </div> */}
                             {/* 목요일 이후 구현 (퍼블리싱 없음) */}
                             {/* <div className="category">
@@ -2647,8 +2879,12 @@ function Create() {
                                         <input type="checkbox" checked/>
                                     </label>
                                     <strong>방명록</strong>
-                                    <button className="btn-toggle">여닫기</button>
+                                    <button 
+                                        className={`btn-toggle ${categories['guestbook'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('guestbook')}
+                                    >여닫기</button>
                                 </div>
+                                {categories['guestbook'] && (
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">타이틀</div>
@@ -2683,24 +2919,55 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
+                            )}
                             </div> */}
+
+
+
                             <div className="category">
-                                <div className="category-head">
-                                    <label for="" className="switch">
-                                        <input type="checkbox" checked/>
+                                <div className="category-head" onClick={() => toggleCategory('flowerDelivery')}>
+
+                                    {/* value=useFlower */}
+                                    <label className="switch">
+                                        <input 
+                                            type="checkbox" 
+                                            checked={invitationState.useFlower} 
+                                            onChange={(e) => handleChange('useFlower', e.target.checked)}
+                                        />
                                     </label>
+
+
                                     <strong>화환 보내기</strong>
-                                    <button className="btn-toggle" style={{display : "none"}} on>여닫기</button>
+                                    <button 
+                                        className={`btn-toggle ${categories['flowerDelivery'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('flowerDelivery')}
+                                    >여닫기</button>
                                 </div>
+                                {categories['flowerDelivery'] && (<></>
+                                )}
                             </div>
+
+
+
                             <div className="category">
-                                <div className="category-head">
-                                    <label for="" className="switch">
-                                        <input type="checkbox" checked/>
+                                <div className="category-head" onClick={() => toggleCategory('timeTogether')}>
+
+                                    {/* value=useFirstMeetTime */}
+                                    <label className="switch">
+                                        <input 
+                                            type="checkbox" 
+                                            checked={invitationState.useFirstMeetTime} 
+                                            onChange={(e) => handleChange('useFirstMeetTime', e.target.checked)}
+                                        />
                                     </label>
+
                                     <strong>함께한 시간</strong>
-                                    <button className="btn-toggle">여닫기</button>
+                                    <button 
+                                        className={`btn-toggle ${categories['timeTogether'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('timeTogether')}
+                                    >여닫기</button>
                                 </div>
+                                {categories['timeTogether'] && (
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">첫만남</div>
@@ -2715,15 +2982,30 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
+                                )}
                             </div>
+
+
                             <div className="category">
-                                <div className="category-head">
-                                    <label for="" className="switch">
-                                        <input type="checkbox" checked/>
+                                <div className="category-head" onClick={() => toggleCategory('ending')}>
+
+                                    {/* value=useEnding */}
+                                    <label className="switch">
+                                        <input 
+                                            type="checkbox" 
+                                            checked={invitationState.useEnding} 
+                                            onChange={(e) => handleChange('useEnding', e.target.checked)}
+                                        />
                                     </label>
+
+
                                     <strong>엔딩</strong>
-                                    <button className="btn-toggle">여닫기</button>
+                                    <button 
+                                        className={`btn-toggle ${categories['ending'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('ending')}
+                                    >여닫기</button>
                                 </div>
+                                {categories['ending'] && (
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">사진</div>
@@ -2795,8 +3077,14 @@ function Create() {
                                             </div>
                                         </div>
                                     </div> */}
+                                    
                                 </div>
+                                )}
                             </div>
+
+
+
+                            
                             {/* 목요일 이후 구현 (디자인, 퍼블리싱 없음) */}
                             {/* <div className="category">
                                 <div className="category-head">
@@ -2804,8 +3092,14 @@ function Create() {
                                         <input type="checkbox" checked/>
                                     </label>
                                     <strong>로딩화면</strong>
-                                    <button className="btn-toggle">여닫기</button>
+
+                                    <button 
+                                        className={`btn-toggle ${categories['loading'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('loading')}
+                                    >여닫기</button>
                                 </div>
+                                {categories['loading'] && (
+
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">타입<sup>필수</sup></div>
@@ -2851,7 +3145,12 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
+                                )}
                             </div> */}
+
+
+
+
                             {/* 목요일 이후 구현 (디자인, 퍼블리싱 없음) */}
                             {/* <div className="category">
                                 <div className="category-head">
@@ -2859,7 +3158,14 @@ function Create() {
                                         <input type="checkbox" checked/>
                                     </label>
                                     <strong>폰트 및 스타일</strong>
-                                    <button className="btn-toggle">여닫기</button>
+
+                                    <button 
+                                        className={`btn-toggle ${categories['fontStyle'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('fontStyle')}
+                                    >여닫기</button>
+                                </div>
+                                {categories['fontStyle'] && (
+
                                 </div>
                                 <div className="category-body">
                                     <div className="option">
@@ -3069,7 +3375,11 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
+                                )}
                             </div> */}
+
+
+
                             {/* 목요일 이후 구현 (퍼블리싱, 음원 없음) */}
                             {/* <div className="category">
                                 <div className="category-head">
@@ -3077,8 +3387,14 @@ function Create() {
                                         <input type="checkbox" checked/>
                                     </label>
                                     <strong>배경음악</strong>
-                                    <button className="btn-toggle">여닫기</button>
+
+                                    <button 
+                                        className={`btn-toggle ${categories['bgm'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('bgm')}
+                                    >여닫기</button>
                                 </div>
+                                {categories['bgm'] && (
+
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">음악</div>
@@ -3188,7 +3504,11 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
+                                )}
                             </div> */}
+
+
+
                             {/* 목요일 이후 구현 (퍼블리싱, 디자인 없음) */}
                             {/* <div className="category">
                                 <div className="category-head">
@@ -3196,8 +3516,14 @@ function Create() {
                                         <input type="checkbox" checked/>
                                     </label>
                                     <strong>카카오톡 공유 스타일 수정</strong>
-                                    <button className="btn-toggle">여닫기</button>
+
+                                    <button 
+                                        className={`btn-toggle ${categories['kakaoShareOption'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('kakaoShareOption')}
+                                    >여닫기</button>
                                 </div>
+                                {categories['kakaoShareOption'] && (
+
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">썸네일</div>
@@ -3226,7 +3552,11 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
+                                )}
                             </div> */}
+
+
+
                             {/* 목요일 이후 구현 (기획 된 것 없음) */}
                             {/* <div className="category">
                                 <div className="category-head">
@@ -3234,8 +3564,14 @@ function Create() {
                                         <input type="checkbox" checked/>
                                     </label>
                                     <strong>URL 공유 스타일 수정</strong>
-                                    <button className="btn-toggle">여닫기</button>
+
+                                    <button 
+                                        className={`btn-toggle ${categories['shareOption'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('shareOption')}
+                                    >여닫기</button>
                                 </div>
+                                {categories['shareOption'] && (
+
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">썸네일</div>
@@ -3265,7 +3601,11 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
+                                )}
                             </div> */}
+
+
+
                             {/* 목요일 구현 */}
                             {/* <div className="category">
                                 <div className="category-head">
@@ -3273,8 +3613,14 @@ function Create() {
                                         <input type="checkbox" checked/>
                                     </label>
                                     <strong>순서변경</strong>
-                                    <button className="btn-toggle">여닫기</button>
+
+                                    <button 
+                                        className={`btn-toggle ${categories['reorderItems'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('reorderItems')}
+                                    >여닫기</button>
                                 </div>
+                                {categories['reorderItems'] && (
+
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">순서변경</div>
@@ -3336,7 +3682,11 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
+                                )}
                             </div> */}
+
+
+
                             {/* 목요일 이후 구현 (기획 없음) */}
                             {/* <div className="category">
                                 <div className="category-head">
@@ -3344,8 +3694,14 @@ function Create() {
                                         <input type="checkbox" checked/>
                                     </label>
                                     <strong>부가기능</strong>
-                                    <button className="btn-toggle">여닫기</button>
+
+                                    <button 
+                                        className={`btn-toggle ${categories['additionalFeatures'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('additionalFeatures')}
+                                    >여닫기</button>
                                 </div>
+                                {categories['additionalFeatures'] && (
+
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">카카오톡 공유</div>
@@ -3448,7 +3804,12 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
+
+                                )}
                             </div> */}
+
+
+                            
                             {/* <button className="btn-save" onClick={onClickSaveFiles}>저장</button> */}
                             <FormDialog onSave={handleDialogSave} />
                             <button className="btn-save" onClick={handleOpenDialog}>저장</button>

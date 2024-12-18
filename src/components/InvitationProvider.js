@@ -72,7 +72,7 @@ export const InvitationProvider = ({ children }) => {
     weddingHallAddress: "",
 
     // 달력 관련 정보
-    useCalendar: false,
+    
     calendarType: "",
     calendarTitle: "",
     calendarImage: "",
@@ -96,7 +96,7 @@ export const InvitationProvider = ({ children }) => {
     enableContactInfo:false, // 신랑신부 연락하기 활성화 여부
 
     // 갤러리
-    useGallery : false, // 갤러리 사용 여부 
+    
     galleryTitle: "", // 갤러리 제목
     galleryType: "grid", // 갤러리 타입 (grid, slider 등)
     galleryImages: [], // 갤러리 이미지 목록
@@ -112,11 +112,10 @@ export const InvitationProvider = ({ children }) => {
     mapFix: false, // 지도 이동 고정 여부
     
     // 교통수단
-    useTransportation : false, // 교통수단 사용 여부
+    
     transportation: [], // 교통수단 배열 method, details
 
     // 안내문
-    useNotice : false, // 안내문 사용 여부 
     noticeTitle: "", // 안내문 제목
     noticeContent: "", // 안내문 내용
     externalLinkUsage: false, // 외부 링크 버튼 사용 여부
@@ -128,11 +127,9 @@ export const InvitationProvider = ({ children }) => {
     sendWreathUrl : "https://www.99flower.co.kr/", // 화환 보내기에 연결 될 url 
     
     // 함께한 시간
-    useFirstMeetTime : false, // 함께한 사용 여부 
     firstMeetTime: "", // 첫 만남 날짜 및 시간
     
     // 엔딩 섹션
-    useEnding : false, 
     endingImage: "", // 엔딩 사진 URL
     endingContent: "", // 엔딩 글귀
     endingContentPosition: "상단", // 글귀 위치 (상단, 중간, 하단)
@@ -144,8 +141,18 @@ export const InvitationProvider = ({ children }) => {
     bridePhotoFile : "",
     endingPhotoFile : "",
 
-     
-
+    // 사용섹션 
+    useProfile : false, // 프로필형 소개 
+    useCalendar: false, // 달력
+    useGallery : false, // 갤러리 사용 여부 
+    useNotice : false, // 안내문 사용 여부 
+    useFlower : false, // 화환 사용 여부 
+    useFirstMeetTime : false, // 함께한 사용 여부  our-time 함께한 시간
+    useDirections : false, // 오시는길 
+    useTransportation : false, // 교통수단 사용 여부
+    useEnding : false,  // land 
+    useContactBrideAndGroom : false, // 신랑신부 연락하기
+    
 
   });
 
