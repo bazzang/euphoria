@@ -269,9 +269,10 @@ function PreviewPage() {
             <div className="watermark">
                 <p>구매 후 워터마크를 제거해주세요. {confirmCnt}
                 <br/>
-                <br/>2024.10.02 23:59까지 사용 가능합니다.
+                {/* <br/>2024.10.02 23:59까지 사용 가능합니다. */}
                 <br/>
-                <br/>워터마크를 제거하셔도 무제한 수정이 가능합니다.</p>
+                {/* <br/>워터마크를 제거하셔도 무제한 수정이 가능합니다. */}
+                </p>
                 <div className="btn-wrap">
                     <a href="https://euphoriacard.co.kr/shop_view/?idx=3" className="watermark-buy">구매하러 가기</a>
                     <a href="https://euphoriacard.co.kr/shop_view/?idx=3" className="watermark-remove">워터마크 제거하기</a>

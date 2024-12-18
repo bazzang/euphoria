@@ -114,7 +114,7 @@ function ProductionList() {
                     <ul className="using-list">
                         <li>예식 후 <strong>30일까지</strong> 이용 가능합니다.</li>
                         <li>예식일 <strong> 335일(11개월) 전부터</strong> 제작이 가능합니다.</li>
-                        <li>워터마크 미제거 청첩장은 <strong>7일</strong>이 지나면 자동으로 삭제됩니다.</li>
+                        {/* <li>워터마크 미제거 청첩장은 <strong>7일</strong>이 지나면 자동으로 삭제됩니다.</li> */}
                     </ul>
                 </div>
                 <div className="list-btn">
