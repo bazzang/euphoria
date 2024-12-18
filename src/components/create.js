@@ -530,18 +530,18 @@ const handleMainTxtRangeChange = (value) => {
     };
 
     //test
-    const handleGalleryImageUpload = (event) => {
-        const files = Array.from(event.target.files);
-        const newImages = files.map((file) => ({
-            file: file, // 원본 파일 저장
-            previewUrl: URL.createObjectURL(file), // 미리보기 URL 생성
-        }));
+    // const handleGalleryImageUpload = (event) => {
+    //     const files = Array.from(event.target.files);
+    //     const newImages = files.map((file) => ({
+    //         file: file, // 원본 파일 저장
+    //         previewUrl: URL.createObjectURL(file), // 미리보기 URL 생성
+    //     }));
     
-        setInvitationState((prevState) => ({
-            ...prevState,
-            galleryImages: [...(prevState.galleryImages || []), ...newImages], // 기존 이미지와 합침
-        }));
-    };
+    //     setInvitationState((prevState) => ({
+    //         ...prevState,
+    //         galleryImages: [...(prevState.galleryImages || []), ...newImages], // 기존 이미지와 합침
+    //     }));
+    // };
 
     const handleGalleryImageDelete = (index) => {
         setInvitationState((prevState) => ({
@@ -566,13 +566,13 @@ const handleMainTxtRangeChange = (value) => {
     };
 
     // 갤러리 
-    // const handleGalleryImageUpload = (event) => {
-    //     const files = Array.from(event.target.files); // 다중 파일 입력 처리
-    //     setInvitationState((prevState) => ({
-    //         ...prevState,
-    //         galleryImages: [...(prevState.galleryImages || []), ...files], // 기존 이미지와 합침
-    //     }));
-    // };
+    const handleGalleryImageUpload = (event) => {
+        const files = Array.from(event.target.files); // 다중 파일 입력 처리
+        setInvitationState((prevState) => ({
+            ...prevState,
+            galleryImages: [...(prevState.galleryImages || []), ...files], // 기존 이미지와 합침
+        }));
+    };
 
 
     // -------------------------------------------------------------------------------------------------
@@ -924,7 +924,7 @@ const handleMainTxtRangeChange = (value) => {
                                         {invitationState.galleryImages &&
                                             invitationState.galleryImages.map((image, index) => (
                                                 <div className="gallery-item" key={index}>
-                                                    <img src={image.previewUrl} alt={`gallery-${index}`} />
+                                                    <img src={image} alt={`gallery-${index}`} />
                                                 </div>
                                         ))}
                                         
@@ -2181,7 +2181,7 @@ const handleMainTxtRangeChange = (value) => {
                                                 <div className="img-uploader2-area">
 
                                                     {/* img for문 */}
-                                                    {/* {invitationState.galleryImages &&
+                                                    {invitationState.galleryImages &&
                                                         invitationState.galleryImages.map((image, index) => (
                                                         <div className="img-uploader2-item" key={index}>
                                                             <img src={image} alt={`gallery-${index}`} />
@@ -2192,14 +2192,14 @@ const handleMainTxtRangeChange = (value) => {
                                                             삭제
                                                             </button>
                                                         </div>
-                                                    ))} */}
-                                                    {invitationState.galleryImages &&
+                                                    ))}
+                                                    {/* {invitationState.galleryImages &&
                                                         invitationState.galleryImages.map((image, index) => (
                                                             <div className="gallery-item" key={index}>
                                                                 <img src={image.previewUrl} alt={`gallery-${index}`} />
                                                                 <button onClick={() => handleGalleryImageDelete(index)}>삭제</button>
                                                             </div>
-                                                    ))}
+                                                    ))} */}
 
 
                                                 </div>
