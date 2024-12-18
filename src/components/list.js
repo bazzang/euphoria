@@ -10,6 +10,7 @@ import wd_option_icon_3 from '../images/list/wd_option_icon_3.svg';
 import wd_option_icon_4 from '../images/list/wd_option_icon_4.svg';
 import wd_option_icon_5 from '../images/list/wd_option_icon_5.svg';
 import FormDialog, { openDialog } from "./dialog.js";
+import { handleAuthCode } from "./header/header.js";
 function ProductionList() {
     const navigate = useNavigate();
     const location = useLocation();
@@ -74,10 +75,11 @@ function ProductionList() {
             }
             
         } catch (error) {
-            console.error("리스트 가져오기 에러1: ", error);
-            console.error("리스트 가져오기 에러2: ", error.error);
-            console.error("리스트 가져오기 에러3: ", error.error.errorCode);
+            console.error("리스트 가져오기 에러1: ", error.response.data.error.errorCode);
 
+            if(error.response.data.error.errorCode === 30102 || error.response.data.error.errorCode === "30102"){
+                await handleAuthCode();
+            }
             handleAuthCode();
             
         }
