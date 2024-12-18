@@ -23,13 +23,12 @@ function Header() {
         const queryParams = new URLSearchParams(window.location.search);
         const code = queryParams.get('code');
         
-        // console.log('코드 확인', sessionStorage.getItem("authCode"));
-        // if(sessionStorage.getItem("authCode")){
-        //     return;
-        // }else{
             if (code) {
-                sessionStorage.setItem('authCode', code);
                 console.log('세션스토리지 저장된 code :', code);
+
+                var response = axiosPost('/api/oauth', code);
+
+                console.log("response??????@@@@", response);
                 
             } else {
                 redirectToAuth(); // code가 없으면 인증 URL로 이동
@@ -38,7 +37,11 @@ function Header() {
     };
     
     useEffect(() => {
-        handleAuthCode();
+
+        if(localStorage.getItem("authCode") !== 1){
+            handleAuthCode();
+        }
+        
     }, []);
 
     
