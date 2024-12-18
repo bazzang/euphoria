@@ -646,10 +646,14 @@ const handleMainTxtRangeChange = (value) => {
     const fetchInv = async (res) => {
         invitationState.transportationList = transportationList;
         // SaveInvitationReqVo에 맞게 데이터 구성
+        var gids = [];
+        if(res){
+            gids = res.result;
+        }
         let data = {
             invitation: invitationState, // invitationState를 전송
             transportationList : transportationList,
-            galleryIds: "",// res.result, // res.result를 galleryIds로 전송
+            galleryIds: gids,// res.result, // res.result를 galleryIds로 전송
         };
 
         axiosPost("/api/invitation", data).then(response => {
