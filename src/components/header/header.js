@@ -19,33 +19,16 @@ function Header() {
     };
 
     // 인가코드 세션스토리지에 저장 후 백엔드 호출 
-    const handleAuthCode = async() => {
+    const handleAuthCode = () => {
         const queryParams = new URLSearchParams(window.location.search);
         const code = queryParams.get('code');
         
             if (code) {
-                console.log('세션스토리지 저장된 code :', code);
+                console.log('세션스토리지 저장된 code :',  code);
 
-                try {
-                    const authCode = sessionStorage.getItem("authCode"); // 저장된 authCode 가져오기
-        
-                    // FormData 객체 생성
-                    const formData = new FormData();
-                    formData.append("code", code); // key: 'code', value: authCode
-        
-                    const response = await axios.post("https://api.euphoriacard.co.kr/api/oauth", formData, {
-                    headers: {
-                        "Content-Type": "multipart/form-data", // form-data 전송을 위한 헤더
-                    },
-                    });
-                
-                    console.log("Response Data: ", response.data);
+                var response = axiosPost('/api/oauth', {code: code});
 
-                } catch (error) {
-                    console.error("엑세스토큰 에러: ", error);
-        
-                }
-
+                console.log("response??????@@@@", response);
                 
             } else {
                 redirectToAuth(); // code가 없으면 인증 URL로 이동
