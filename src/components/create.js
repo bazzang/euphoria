@@ -36,8 +36,6 @@ function Create() {
           [key]: value,
         }));
 
-        console.log('현재까지 입력된 데이터 : ', invitationState);
-
     };
 
     const [message, setMessage] = useState('');
@@ -95,7 +93,9 @@ function Create() {
     ////////////////////////////////testend//////////////////////////////
 
     // 각 카테고리의 열림 상태를 관리하는 상태
-    const [categories, setCategories] = useState({});
+    const [categories, setCategories] = useState({
+        main: true, // 메인 카테고리를 초기 상태에서 열림으로 설정
+    });
 
     // 특정 카테고리의 열림 상태를 토글하는 함수
     const toggleCategory = (categoryName) => {
@@ -1016,7 +1016,7 @@ const handleMainTxtRangeChange = (value) => {
                     <div className="create-contents">
 
                             <div className="category">
-                                <div className="category-head" onClick={() => toggleCategory('main')}>
+                                <div className="category-head" >
                                     <strong>메인</strong>
                                     <button 
                                         className={`btn-toggle ${categories['main'] ? 'active' : ''}`}
@@ -1246,7 +1246,7 @@ const handleMainTxtRangeChange = (value) => {
                             </div>
 
                             <div className="category">
-                                <div className="category-head" onClick={() => toggleCategory('groom')}>
+                                <div className="category-head">
                                     <strong>신랑측 정보</strong>
                                     <button
                                         className={`btn-toggle ${categories['groom'] ? 'active' : ''}`}
@@ -1354,7 +1354,7 @@ const handleMainTxtRangeChange = (value) => {
                                 )}
                             </div>
                             <div className="category">
-                                <div className="category-head" onClick={() => toggleCategory('bride')}>
+                                <div className="category-head">
                                     <strong>신부측 정보</strong>
                                     <button 
                                         className={`btn-toggle ${categories['bride'] ? 'active' : ''}`}
@@ -1459,7 +1459,7 @@ const handleMainTxtRangeChange = (value) => {
                             </div>
 
                             <div className="category">
-                                <div className="category-head" onClick={() => toggleCategory('weddingDate')}>
+                                <div className="category-head">
                                     <strong>예식일자</strong>
                                     <button 
                                         className={`btn-toggle ${categories['weddingDate'] ? 'active' : ''}`}
@@ -1485,7 +1485,7 @@ const handleMainTxtRangeChange = (value) => {
 
 
                             <div className="category">
-                                <div className="category-head" onClick={() => toggleCategory('weddingHall')}>
+                                <div className="category-head" >
                                     <strong>예식장</strong>
                                     <button 
                                         className={`btn-toggle ${categories['weddingHall'] ? 'active' : ''}`}
@@ -1554,7 +1554,7 @@ const handleMainTxtRangeChange = (value) => {
 
                             
                             <div className="category">
-                                <div className="category-head" onClick={() => toggleCategory('calendar')}>
+                                <div className="category-head" >
 
                                     {/*value=useCalendar */}
                                     <label className="switch">
@@ -1738,7 +1738,7 @@ const handleMainTxtRangeChange = (value) => {
 
 
                             <div className="category">
-                                <div className="category-head" onClick={() => toggleCategory('prof')}>
+                                <div className="category-head" >
 
                                     {/* value=useProfile */}
                                     <label className="switch">
@@ -1872,7 +1872,7 @@ const handleMainTxtRangeChange = (value) => {
 
                             
                             <div className="category">
-                                <div className="category-head" onClick={() => toggleCategory('contactBrideAndGroom')}>
+                                <div className="category-head" >
 
                                     {/* value=useContactBrideAndGroom */}
                                     <label className="switch">
@@ -2052,7 +2052,7 @@ const handleMainTxtRangeChange = (value) => {
 
 
                             <div className="category" >
-                                <div className="category-head" onClick={() => toggleCategory('gallery')}>
+                                <div className="category-head" >
 
                                     {/* value=useGallery */}
                                     <label className="switch">
@@ -2349,7 +2349,7 @@ const handleMainTxtRangeChange = (value) => {
                             </div> */}
 
                             <div className="category">
-                                <div className="category-head" onClick={() => toggleCategory('trnspt')}>
+                                <div className="category-head">
 
                                     {/* value=useTransportation */}
                                     <label className="switch">
@@ -2500,7 +2500,7 @@ const handleMainTxtRangeChange = (value) => {
                             )}
                             </div> */}
                             <div className="category">
-                                <div className="category-head" onClick={() => toggleCategory('noticeMessage')}>
+                                <div className="category-head">
 
                                     {/* value=useNotice */}
                                     <label className="switch">
@@ -2925,7 +2925,7 @@ const handleMainTxtRangeChange = (value) => {
 
 
                             <div className="category">
-                                <div className="category-head" onClick={() => toggleCategory('flowerDelivery')}>
+                                <div className="category-head" >
 
                                     {/* value=useFlower */}
                                     <label className="switch">
@@ -2950,7 +2950,7 @@ const handleMainTxtRangeChange = (value) => {
 
 
                             <div className="category">
-                                <div className="category-head" onClick={() => toggleCategory('timeTogether')}>
+                                <div className="category-head" >
 
                                     {/* value=useFirstMeetTime */}
                                     <label className="switch">
@@ -2987,7 +2987,7 @@ const handleMainTxtRangeChange = (value) => {
 
 
                             <div className="category">
-                                <div className="category-head" onClick={() => toggleCategory('ending')}>
+                                <div className="category-head">
 
                                     {/* value=useEnding */}
                                     <label className="switch">

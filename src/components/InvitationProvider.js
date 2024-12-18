@@ -23,13 +23,12 @@ const InvitationContext = createContext({
 export const InvitationProvider = ({ children }) => {
   const [invitationState, setInvitationState] = useState({
     seq: 0, // 청첩장 seq
-    userId: "wltn", // 유저
 
     ordererNm : "",
     ordererCall : "",
 
     // 메인정보
-    mainType: "", // 메인화면 청첩장 타입
+    mainType: "포스터(풀페이지)", // 메인화면 청첩장 타입
     mainPhotoUrl: "", // 메인사진저장경로
     mainPhotoNm: "", // 메인사진이름
     letteringMsg: 'our wedding day', // 레터링문구
@@ -152,7 +151,7 @@ export const InvitationProvider = ({ children }) => {
     useTransportation : false, // 교통수단 사용 여부
     useEnding : false,  // land 
     useContactBrideAndGroom : false, // 신랑신부 연락하기
-    
+
 
   });
 
