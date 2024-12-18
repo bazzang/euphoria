@@ -649,7 +649,7 @@ const handleMainTxtRangeChange = (value) => {
         let data = {
             invitation: invitationState, // invitationState를 전송
             transportationList : transportationList,
-            galleryIds: res.result, // res.result를 galleryIds로 전송
+            galleryIds: "",// res.result, // res.result를 galleryIds로 전송
         };
 
         axiosPost("/api/invitation", data).then(response => {
