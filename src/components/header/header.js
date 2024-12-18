@@ -26,9 +26,9 @@ function Header() {
             if (code) {
                 console.log('세션스토리지 저장된 code :',  code);
 
-                var response = axiosPost('/api/oauth', {code: code});
+                // var response = axiosPost('/api/oauth', {code: code});
 
-                console.log("response??????@@@@", response);
+                // console.log("response??????@@@@", response);
                 
             } else {
                 redirectToAuth(); // code가 없으면 인증 URL로 이동
