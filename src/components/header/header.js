@@ -24,7 +24,7 @@ function Header() {
         const code = queryParams.get('code');
         
             if (code) {
-                console.log('세션스토리지 저장된 code :', code);
+                console.log('세션스토리지 저장된 code :', {code : code});
 
                 var response = axiosPost('/api/oauth', code);
 
