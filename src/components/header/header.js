@@ -47,6 +47,7 @@ function Header() {
             });
         } catch (error) {
             console.error("엑세스토큰 에러: ", error);
+            redirectToAuth(); // code가 없으면 인증 URL로 이동
 
         }
 
