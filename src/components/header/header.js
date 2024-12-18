@@ -46,7 +46,8 @@ function Header() {
                 return;
             } catch (error) {
                 console.error("엑세스토큰 에러: ", error);
-                redirectToAuth(); // code가 없으면 인증 URL로 이동
+                sessionStorage.setItem('authCode', '');
+                redirectToAuth(); // 인증 URL로 이동
     
             }
     
@@ -57,6 +58,7 @@ function Header() {
                 console.log('세션스토리지 저장된 code :', code);
                 
             } else {
+                sessionStorage.setItem('authCode', '');
                 redirectToAuth(); // code가 없으면 인증 URL로 이동
             }    
         }
