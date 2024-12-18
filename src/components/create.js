@@ -2154,7 +2154,7 @@ const handleMainTxtRangeChange = (value) => {
                                         <div className="option-label">사진</div>
                                         <div className="option-contents">
                                             <div className="img-uploader2">
-                                                <input
+                                                {/* <input
                                                     type="file"
                                                     multiple
                                                     accept="image/*"
@@ -2168,9 +2168,9 @@ const handleMainTxtRangeChange = (value) => {
                                                     onClick={() => document.getElementById("galleryfileInput").click()} // Input 파일 선택 창 열기
                                                     >
                                                     업로드
-                                                </button>
+                                                </button> */}
 
-                                                {/* <input
+                                                <input
                                                     type="file"
                                                     multiple
                                                     accept="image/*"
@@ -2184,7 +2184,7 @@ const handleMainTxtRangeChange = (value) => {
                                                     onClick={() => document.getElementById("galleryfileInput").click()}
                                                 >
                                                     업로드
-                                                </button> */}
+                                                </button>
                                                 <div className="img-uploader2-area">
 
                                                     {/* img for문 */}
