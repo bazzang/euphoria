@@ -54,17 +54,17 @@ function Header() {
 
 
 
-        if(sessionStorage.getItem("authCode")){
-            return;
-        }else{
-            if (code) {
-                sessionStorage.setItem('authCode', code);
-                console.log('세션스토리지 저장된 code :', code);
+        // if(sessionStorage.getItem("authCode")){
+        //     return;
+        // }else{
+        //     if (code) {
+        //         sessionStorage.setItem('authCode', code);
+        //         console.log('세션스토리지 저장된 code :', code);
                 
-            } else {
-                redirectToAuth(); // code가 없으면 인증 URL로 이동
-            }    
-        }
+        //     } else {
+        //         redirectToAuth(); // code가 없으면 인증 URL로 이동
+        //     }    
+        // }
     };
     
     useEffect(() => {
