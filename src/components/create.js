@@ -3187,6 +3187,8 @@ function Create() {
                                                 onChange={(e) => handleChange("endingContent", e.target.value)} // Update state
                                             ></textarea>
                                         </div>
+                                    </div>
+                                    <div className="option">
                                         <div className="option-label">엔딩 글귀 위치</div>
                                         <div className="option-contents">
                                             {/* <input type="range" /> */}
