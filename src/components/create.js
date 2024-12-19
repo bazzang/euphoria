@@ -3153,18 +3153,19 @@ function Create() {
                                                 onChange={(e) => handleChange("endingContent", e.target.value)} // Update state
                                             ></textarea>
                                         </div>
+                                        <div className="option-label">엔딩 글귀 위치</div>
+                                        <div className="option-contents">
+                                            {/* <input type="range" /> */}
+                                            <input
+                                                type="range"
+                                                min="10"
+                                                max="80"
+                                                value={parseInt(endingHg)} // Parse to integer for the range input
+                                                onChange={(e) => handleEndingRangeChange(e.target.value)}
+                                            />
+                                        </div>
                                     </div>
-                                    <div className="option-label">엔딩 글귀 위치</div>
-                                    <div className="option-contents">
-                                        {/* <input type="range" /> */}
-                                        <input
-                                            type="range"
-                                            min="10"
-                                            max="80"
-                                            value={parseInt(endingHg)} // Parse to integer for the range input
-                                            onChange={(e) => handleEndingRangeChange(e.target.value)}
-                                        />
-                                    </div>
+                                    
                                     {/* 목요일 */}
                                     {/* <div className="option">
                                         <div className="option-label">글귀</div>
