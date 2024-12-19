@@ -17,7 +17,7 @@ import DaumPostcode from 'react-daum-postcode';
 import { Map, Polyline, MapMarker, CustomOverlayMap } from "react-kakao-maps-sdk";
 import { axiosPost } from './common/common.js';
 import FormDialog, { openDialog } from "./dialog.js";
-import PositionedSnackbar from "./PositionedSnackbar";
+import PositionedSnackbar from "./PositionedSnackbar.js";
 import ribon from '../images/ribbon.png';
 import noimg from '../images/defaultimg.png';
 import callIcon from '../images/create/call.png'; 
@@ -548,16 +548,19 @@ function Create() {
     const [previewGallery, setPreviewGallery] = useState([]);
 
     const handleGalleryImageUpload = (event) => {
-        const files = Array.from(event.target.files); // 다중 파일 업로드 처리
+        console.log('갤러리 업로드 이미지11');
+        const files = Array.from(event.target.files);
         const newImages = files.map((file) => ({
-            file, // 파일 객체 저장
+            file: file, // 원본 파일 저장
             previewUrl: URL.createObjectURL(file), // 미리보기 URL 생성
         }));
     
         setInvitationState((prevState) => ({
             ...prevState,
-            galleryImages: [...(prevState.galleryImages || []), ...newImages],
+            galleryImages: [...(prevState.galleryImages || []), ...files], // 기존 이미지와 합침
         }));
+
+        console.log('갤러리 테스트', invitationState.galleryImage);
     };
 
     const handleGalleryImageDelete = (index) => {
@@ -957,7 +960,7 @@ function Create() {
                                         {invitationState.galleryImages &&
                                             invitationState.galleryImages.map((image, index) => (
                                                 <div className="gallery-item" key={index}>
-                                                    <img src={image.previewUrl} alt={`gallery-${index}`} />
+                                                    <img src={image} alt={`gallery-${index}`} />
                                                 </div>
                                         ))}
                                         
@@ -2241,10 +2244,10 @@ function Create() {
                                                     {invitationState.galleryImages &&
                                                         invitationState.galleryImages.map((image, index) => (
                                                             <div className="gallery-item" key={index}>
-                                                                <img src={image.previewUrl} alt={`gallery-${index}`} />
+                                                                <img src={image} alt={`gallery-${index}`} />
                                                                 <button onClick={() => handleGalleryImageDelete(index)}>삭제</button>
                                                             </div>
-                                                        ))}
+                                                    ))}
 
 
                                                 </div>
