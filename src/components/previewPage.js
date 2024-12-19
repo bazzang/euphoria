@@ -96,6 +96,13 @@ function PreviewPage() {
             }
         });
     }, [address]);
+
+
+    const onClickFlower = () => {
+        var url = inv.sendWreathUrl 
+        window.location.href = url;
+    }
+
     // -------------------------------------------------------------------------------------------------
     // *********************************[함께한 시간] 함께한 시간 계산 ***********************************
     // -------------------------------------------------------------------------------------------------
@@ -366,6 +373,7 @@ function PreviewPage() {
                         </section>
 
                         {/* 프로필  */}
+                        {inv.useProfile ? (
                         <section className="profile" id="profile">
                             <div className="profile-wrap" style={{marginTop : "70px"}}>
                                 <div className="item">
@@ -420,8 +428,11 @@ function PreviewPage() {
                             {/* 목요일 이후 / 팝업 디자인 및 퍼블리싱 없음 */}
                             {/* <button className="btn">혼주에게 연락하기</button> */}
                         </section>
-                        
+                        ) : null}
 
+
+                        {/* 캘린더 */}
+                        {inv.useCalendar ? (
                         <section className="calendar" id="calendar">
                                     
                             <strong className="title">{inv.calendarTitle || "예식 안내"}</strong>
@@ -506,8 +517,11 @@ function PreviewPage() {
                                 </ul>
                             </div>
                         </section>
+                        ) : null}
 
 
+                        {/* 갤러리 */}
+                        {inv.useGallery ? (
                         <section className="gallery">
                             {/* <strong className="title" data-aos="fade-up" data-aos-duration="600"> */}
                             <strong className="title">
@@ -524,8 +538,13 @@ function PreviewPage() {
                                 
                             </div>
                         </section>
+                        ) : null}
                         
+
+
+
                         {/* 안내문 */}
+                        {inv.useNotice ? (
                         <section className="infomation">
                             {/* <div className="infomation-box" data-aos="fade-up" data-aos-duration="600"> */}
                             <div className="infomation-box">
@@ -537,11 +556,15 @@ function PreviewPage() {
                                 {/* <a href="#" className="btn">버튼</a> */}
                             </div>
                         </section>
+                        ) : null}
                         
+
+
                         {/* 화환보내기 */}
+                        {inv.useFlower ? (
                         <section className="flower">
                             {/* <div className="flower-box" data-aos="fade-up" data-aos-duration="600"> */}
-                            <div className="flower-box">
+                            <div className="flower-box" onClick={onClickFlower}>
                                 <img src={flower} alt="화환"/>
                                 <div className="text">
                                     <strong className="title">축하 화환 보내기</strong>
@@ -549,18 +572,23 @@ function PreviewPage() {
                                 </div>
                             </div>
                         </section>
+                        ) : null}
 
-                                {/* 함꼐한 시간 */}
+
+                        {/* 함꼐한 시간 */}
+                        {inv.useFirstMeetTime ? (
                         <section className="our-time">
                             {/* <span className="title" data-aos="fade-up" data-aos-duration="600">함께한 시간</span>
                             <p className="timer" data-aos="fade-up" data-aos-duration="600">{elapsedTime}</p> */}
                             <strong className="title">함께한 시간</strong>
                             <p className="timer" >{elapsedTime}</p>
                         </section>
+                        ) : null}
 
 
 
-                                {/* 오시는길 */}
+                        {/* 오시는길 */}
+                        {inv.useDirections ? (
                         <section className="directions">
                             {/* <strong className="title" data-aos="fade-up" data-aos-duration="600">오시는 길</strong>
                             <div className="info" data-aos="fade-up" data-aos-duration="600"> */}
@@ -597,10 +625,12 @@ function PreviewPage() {
                                 </div> */}
                             </div>
                         </section>
+                        ) : null}
 
 
 
-                                {/* 교통수단 */}
+                        {/* 교통수단 */}
+                        {inv.useTransportation ? (
                         <section className="transportion">
                             {trsptList &&
                                 trsptList.map((list, index) => (
@@ -612,16 +642,19 @@ function PreviewPage() {
                                     </div>
                             ))}
                         </section>
-                        
+                        ) : null}
+
+
                         {/* 엔딩 */}
                         {/* <section className="land" data-aos="fade-up" data-aos-duration="600"> */}
+                        {inv.useEnding ? (
                         <section className="land">
                             <img className="bg" src={endingImg || ""} alt="bg" />
                             <p className="text">
                                 {inv.endingContent}😂😂😂😂😂😂
                             </p>
                         </section>
-
+                        ) : null}
 
                     </div>    
             {/* </div>         
