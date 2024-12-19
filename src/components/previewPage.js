@@ -352,7 +352,7 @@ function PreviewPage() {
                                     className="lettering type1"
                                     style={{
                                         color: inv.letteringClr,
-                                        top: '18%',
+                                        top: inv.letteringHg,
                                         display: inv.letteringMsg === 'our wedding day' ? 'block' : 'none',
                                     }}
                                     >
@@ -362,7 +362,7 @@ function PreviewPage() {
                                     className="lettering type2"
                                     style={{
                                         color: inv.letteringClr,
-                                        top: '22%',
+                                        top: inv.letteringHg,
                                         display: inv.letteringMsg === "We're getting married_1" ? 'block' : 'none',
                                     }}
                                     >
@@ -372,7 +372,7 @@ function PreviewPage() {
                                     className="lettering type3"
                                     style={{
                                         color: inv.letteringClr,
-                                        top: '26%',
+                                        top: inv.letteringHg,
                                         display: inv.letteringMsg === 'Just married' ? 'block' : 'none',
                                     }}
                                     >
@@ -383,7 +383,7 @@ function PreviewPage() {
                                     className="text"
                                     style={{
                                         color : inv.mainTxtClr,
-                                        top: "55%",
+                                        top: inv.mainTxtHg,
                                         wordWrap: "break-word", // 긴 단어를 자동으로 줄바꿈
                                         overflowWrap: "break-word", // 긴 단어가 깨지도록 줄바꿈
                                         whiteSpace: "normal", // 일반 줄바꿈 허용
@@ -420,21 +420,23 @@ function PreviewPage() {
 
                                         <p className="t3">
                                             <span>
-                                                {inv.groomFatherFirstName}{inv.groomFatherLastName}
                                                 {/* 고인표시 */}
                                                 {inv.groomFatherDeceased ? (
-                                                            <span>故人</span> 
+                                                            <span>故</span> 
                                                 ) : null}
+                                                {inv.groomFatherFirstName}{inv.groomFatherLastName}
+                                                
 
                                                 {inv.groomFatherFirstName && (
                                                     <span>•</span> 
                                                 )}
 
-                                                {inv.groomMotherFirstName}{inv.groomMotherLastName}
                                                 {/* 고인표시 */}
                                                 {inv.groomMotherDeceased ? (
-                                                    <span>故人</span> 
+                                                    <span>故</span> 
                                                 ) : null}
+                                                {inv.groomMotherFirstName}{inv.groomMotherLastName}
+                                                
 
                                             </span>
                                             {inv.groomFatherFirstName &&(<>의</> )} {inv.groomRelationship}
@@ -454,20 +456,22 @@ function PreviewPage() {
                                     <p className="t2">{inv.brideIntroduction}</p>
                                         <p className="t3">
                                             <span>
-                                                {inv.brideFatherFirstName}{inv.brideFatherLastName}
                                                 {/* 고인표시 */}
                                                 {inv.brideFatherDeceased ? (
-                                                    <span>故人</span> 
+                                                    <span>故</span> 
                                                 ) : null}
+                                                {inv.brideFatherFirstName}{inv.brideFatherLastName}
+                                                
 
                                                 {inv.brideFatherFirstName && (
                                                     <span>•</span> 
                                                 )}
-                                                {inv.brideMotherFirstName}{inv.brideMotherLastName}
                                                 {/* 고인표시 */}
                                                 {inv.brideMotherDeceased ? (
-                                                    <span>故人</span> 
+                                                    <span>故</span> 
                                                 ) : null}
+                                                {inv.brideMotherFirstName}{inv.brideMotherLastName}
+                                                
                                             </span>
                                             {inv.brideFatherFirstName &&(<>의</> )} {inv.brideRelationship}
                                         </p>
@@ -703,7 +707,8 @@ function PreviewPage() {
                         {inv.useEnding ? (
                         <section className="land">
                             <img className="bg" src={endingImg || ""} alt="bg" />
-                            <p className="text">
+                            <p className="text" 
+                                style={{top: inv.endingHg}}>
                                 {inv.endingContent}
                             </p>
                         </section>

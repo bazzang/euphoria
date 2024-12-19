@@ -622,7 +622,7 @@ function Create() {
     const [previewGallery, setPreviewGallery] = useState([]);
     
     const handleGalleryImageUpload = (event) => {
-        console.log('갤러리 업로드 이미지11');
+        console.log('갤러리 업로드');
         const files = Array.from(event.target.files);
         const newImages = files.map((file) => ({
             file: file, // 원본 파일 저장
@@ -636,7 +636,10 @@ function Create() {
             galleryImages: [...(prevState.galleryImages || []), ...files], // 기존 이미지와 합침
         }));
 
-        console.log('갤러리 테스트', invitationState);
+        console.log('업로드 후 갤러리 상태:', {
+            previewGallery,
+            galleryImages: invitationState.galleryImages,
+        });
     };
 
     useEffect(() => {
