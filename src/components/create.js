@@ -817,6 +817,9 @@ function Create() {
                                             <p className="t1"><span className="blue">신랑</span>
                                             <strong>
                                                 {invitationState.groomFirstName}{invitationState.groomLastName}
+                                                {invitationState.groomPhoneNumber && (
+                                                    <strong>📞</strong>
+                                                )}
                                             </strong>
                                             
                                             </p>
@@ -851,7 +854,9 @@ function Create() {
                                             <p className="t1"><span className="pink">신부</span>
                                             <strong>
                                                 {invitationState.brideFirstName}{invitationState.brideLastName}
-                                                
+                                                {invitationState.bridePhoneNumber && (
+                                                    <strong>📞</strong>
+                                                )}
                                             </strong>
                                                         
                                             
@@ -868,10 +873,11 @@ function Create() {
                                                         {invitationState.brideMotherFirstName}{invitationState.brideMotherLastName}
                                                     </span>
                                                     {invitationState.brideFatherFirstName&&(<>의</> )} {invitationState.brideRelationship}
+                                                    
                                                 </p>
                                         </div>
                                     </div>
-                                    {/* 목요일 이후 / 팝업 디자인 및 퍼블리싱 없음 */}
+                                    {/* 목요일 이후 / 팝업 디자인 및 퍼블리싱 없음  故人*/}
                                     {/* <button className="btn">혼주에게 연락하기</button> */}
                                 </section>
                                 )}
