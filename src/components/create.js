@@ -1054,14 +1054,14 @@ const handleMainTxtRangeChange = (value) => {
 
 
                         </div>
-
-                        <div className="preview-focus">
+{/* TODO */}
+                        {/* <div className="preview-focus">
                             <label for="" className="switch">
                                 <input type="checkbox" checked />
                             </label>
                             <strong>자동 포커스</strong>
                             <span>(사용하시면 제작하실때 편리합니다.)</span>
-                        </div>
+                        </div> */}
 
                     </div>
 
@@ -3011,10 +3011,10 @@ const handleMainTxtRangeChange = (value) => {
 
 
                                     <strong>화환 보내기</strong>
-                                    <button 
+                                    {/* <button 
                                         className={`btn-toggle ${categories['flowerDelivery'] ? 'active' : ''}`}
                                         onClick={() => toggleCategory('flowerDelivery')}
-                                    >여닫기</button>
+                                    >여닫기</button> */}
                                 </div>
                                 {categories['flowerDelivery'] && (<></>
                                 )}
