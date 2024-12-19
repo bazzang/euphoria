@@ -60,6 +60,7 @@ function ProductionList() {
                 localStorage.setItem("isAccessToken", 0);
                 
             }else{
+                console.log('리스트 가져오기 에러2: ', error)
                 alert("오류가 발생하였습니다.")
             }
             
