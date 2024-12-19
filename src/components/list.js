@@ -87,6 +87,18 @@ function ProductionList() {
         return createdDate.toISOString().replace("T", " ").slice(0, 19);
     }
 
+    // url 복사하기 
+    const copyToClipboard = (url) => {
+        navigator.clipboard
+            .writeText(url)
+            .then(() => {
+                alert("URL이 클립보드에 복사되었습니다!");
+            })
+            .catch((err) => {
+                console.error("클립보드 복사 실패: ", err);
+                alert("URL 복사에 실패했습니다.");
+            });
+    };
 
     
   return (
@@ -185,7 +197,14 @@ function ProductionList() {
                                         <img src={wd_option_icon_1} alt="" />청첩장 확인하기
                                     </button>
                                     {/* <button className="wd-option-btn"><img src={wd_option_icon_2} alt=""/>참석여부 확인</button> */}
-                                    <button className="wd-option-btn"><img src={wd_option_icon_3} alt=""/>URL 복사하기</button>
+                                    <button className="wd-option-btn"
+                                        onClick={() => {
+                                            const url = `${window.location.origin}/preview?itemId=${item.invSeq}&index=${index}&confirm=${item.confirmYn}`;
+                                            copyToClipboard(url);
+                                        }}
+                                    >
+                                        <img src={wd_option_icon_3} alt=""/>URL 복사하기
+                                    </button>
                                     {/* <button className="wd-option-btn"><img src={wd_option_icon_4} alt=""/>카톡 공유하기</button> */}
                                     {/* <button className="wd-option-btn"><img src={wd_option_icon_5} alt=""/>QR코드</button> */}
                                 </div>

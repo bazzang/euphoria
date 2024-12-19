@@ -408,19 +408,34 @@ function PreviewPage() {
                                             alt="신랑이미지" 
                                         />
                                     </div>
-                                    <p className="t1"><span className="blue">신랑</span><strong>{inv.groomFirstName}{inv.groomLastName}</strong></p>
+                                    <p className="t1"><span className="blue">신랑</span>
+                                    <strong>
+                                        {inv.groomFirstName}{inv.groomLastName}
+                                        {inv.groomPhoneNumber && (
+                                            <strong onClick={() => onClickPhoneCall(inv.groomPhoneNumber)}>📞</strong>
+                                        )}
+                                    </strong></p>
                                     <p className="t2">{inv.groomIntroduction}</p>
                                     {/* <p className="t3"><span>신랑 아버지</span>의 {invitationState.groomRelationship}</p> */}
 
                                         <p className="t3">
                                             <span>
                                                 {inv.groomFatherFirstName}{inv.groomFatherLastName}
+                                                {/* 고인표시 */}
+                                                {inv.groomFatherDeceased ? (
+                                                            <span>故人</span> 
+                                                ) : null}
 
                                                 {inv.groomFatherFirstName && (
                                                     <span>•</span> 
                                                 )}
 
                                                 {inv.groomMotherFirstName}{inv.groomMotherLastName}
+                                                {/* 고인표시 */}
+                                                {inv.groomMotherDeceased ? (
+                                                    <span>故人</span> 
+                                                ) : null}
+
                                             </span>
                                             {inv.groomFatherFirstName &&(<>의</> )} {inv.groomRelationship}
                                         </p>
@@ -440,10 +455,19 @@ function PreviewPage() {
                                         <p className="t3">
                                             <span>
                                                 {inv.brideFatherFirstName}{inv.brideFatherLastName}
+                                                {/* 고인표시 */}
+                                                {inv.brideFatherDeceased ? (
+                                                    <span>故人</span> 
+                                                ) : null}
+
                                                 {inv.brideFatherFirstName && (
                                                     <span>•</span> 
                                                 )}
                                                 {inv.brideMotherFirstName}{inv.brideMotherLastName}
+                                                {/* 고인표시 */}
+                                                {inv.brideMotherDeceased ? (
+                                                    <span>故人</span> 
+                                                ) : null}
                                             </span>
                                             {inv.brideFatherFirstName &&(<>의</> )} {inv.brideRelationship}
                                         </p>
@@ -463,7 +487,7 @@ function PreviewPage() {
                                                 {/* {}요일 오후 {}시 */}
                                                 {getKoreanDateInfo(inv.weddingDate)}<br/>
                                                 {inv.weddingHallName || ""}&nbsp;
-                                                {inv.weddingHallFloorAndRoom || ""}
+                                                {inv.weddingHallFloorAndRoom || ""}<br/>
                                                 {inv.weddingHallAddress || ""}
                                                 {inv.weddingHallPhoneNumber && (
                                                     <strong onClick={() => onClickPhoneCall(inv.weddingHallPhoneNumber)}>📞</strong>
@@ -642,24 +666,11 @@ function PreviewPage() {
                                 </strong>
                                 <p className="place">{inv.weddingHallFloorAndRoom || "OOO홀"}</p>
                                 <p className="address">{ inv.weddingHallAddress||"경기 성남시 분당구 판교역로 4"}</p>
-                                {/* <div className="map" id="map" ></div> */}
-                                {/* <Map 
-                                    center={{ lat: 37.5665, lng: 126.978 }} // 기본 좌표 설정 (서울시청 예시)
-                                    style={{ width: "100%", height: "400px" }}
-                                    level={3}
-                                >
-                                    <MapMarker position={{ lat: 37.5665, lng: 126.978 }}>
-                                    <div style={{ padding: "5px", color: "#000" }}>
-                                        {inv.weddingHallName || "예식장"}
-                                    </div>
-                                    </MapMarker>
-                                </Map>
-                                 */}
-                                 <Map center={mapCenter} style={{ width: "100%", height: "400px" }} level={3}>
+                                 {/* <Map center={mapCenter} style={{ width: "100%", height: "400px" }} level={3}>
                                     <MapMarker position={mapCenter}>
                                         <div style={{ padding: "5px", color: "#000" }}>{inv.weddingHallName}</div>
                                     </MapMarker>
-                                </Map>
+                                </Map> */}
                                 {/* <div className="map-btns">
                                     <a href="#" className="map-btn"><img src={map_t} alt=""/>티맵</a>
                                     <a href="#" className="map-btn"><img src={map_kakao} alt=""/>카카오 내비</a>
