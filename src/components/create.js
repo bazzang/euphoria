@@ -837,7 +837,7 @@ function Create() {
                                             {/* <p className="t3"><span>신랑 아버지</span>의 {invitationState.groomRelationship}</p> */}
 
                                                 <p className="t3">
-                                                    <span>
+                                                    <span style={{marginRight:"0px"}}>
 
                                                         
                                                         {invitationState.groomFatherFirstName}{invitationState.groomFatherLastName}
@@ -882,7 +882,7 @@ function Create() {
                                             
                                             </p>
                                             <p className="t2">{invitationState.brideIntroduction}</p>
-                                                <p className="t3">
+                                                <p className="t3" style={{marginRight:"0px"}}>
                                                     <span>
                                                         
                                                         {invitationState.brideFatherFirstName}{invitationState.brideFatherLastName}

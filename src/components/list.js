@@ -89,9 +89,7 @@ function ProductionList() {
 
     // url 복사하기 
     const copyToClipboard = (url) => {
-        navigator.clipboard
-            .writeText(url)
-            .then(() => {
+        navigator.clipboard.writeText(url).then(() => {
                 alert("URL이 클립보드에 복사되었습니다!");
             })
             .catch((err) => {
@@ -183,15 +181,6 @@ function ProductionList() {
                                         // orderDetailCnt 값에 따라 orderList의 데이터를 준비
                                         const selectedItems = orderList.slice(0, orderDetailCnt);
                                         navigate(`/preview?itemId=${item.invSeq}&index=${index}&confirm=${item.confirmYn}`);
-                                        // 선택된 데이터와 orderDetailCnt를 함께 전달
-                                        // navigate('/preview', {
-                                        //   state: {
-                                        //     item,
-                                        //     selectedItems: selectedItems, // 선택된 인덱스 데이터
-                                        //     orderDetailCnt,       // orderDetailCnt 값
-                                        //   },
-                                        // });
-                                        
                                       }}
                                     >
                                         <img src={wd_option_icon_1} alt="" />청첩장 확인하기
