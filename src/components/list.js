@@ -19,15 +19,7 @@ function ProductionList() {
     const [orderDetailCnt, setOrderDetailCnt] = useState(0); // 배송완료 count  제일 먼저 제작한 청첩장부터 워터마크를 제거한다
     // 페이지 로드 시 다이얼로그 열기
     useEffect(() => {
-        if(localStorage.getItem('isAccessToken') ==  1){
             openDialog();
-        }else{
-            const authUrl =
-            'https://openapi.imweb.me/oauth2/authorize?responseType=code&clientId=aaa77bb6-2ab9-4836-8a26-8c58079959dc&redirectUri=https://euphoria-psi.vercel.app/&scope=member-info:read order:read&siteCode=S2024082926c7c40e12877';
-        
-            window.location.href = authUrl;
-        }
-        
     }, []);
 
 
@@ -59,7 +51,7 @@ function ProductionList() {
         } catch (error) {
             console.error("리스트 가져오기 에러1: ", error.response.data.error.errorCode);
             
-            if(error.response.data?.error?.errorCode === "30102"){
+            if(error.response.data?.error?.errorCode === "30102" || error.response.data?.error?.errorCode === "30101" ){
                 alert("토큰이 만료 되었습니다.")
                 const authUrl =
                 'https://openapi.imweb.me/oauth2/authorize?responseType=code&clientId=aaa77bb6-2ab9-4836-8a26-8c58079959dc&redirectUri=https://euphoria-psi.vercel.app/&scope=member-info:read order:read&siteCode=S2024082926c7c40e12877';
