@@ -84,7 +84,7 @@ export default function FormDialog({ onClose, disableBackdropClick = false, onSa
         )}
           <TextField
             InputProps={{
-                // sx: { fontSize: "1.5rem" }, // 입력 필드의 폰트 크기
+                sx: { fontSize: "1.5rem" }, // 입력 필드의 폰트 크기
                 
               }}
               sx={{
