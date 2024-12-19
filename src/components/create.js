@@ -896,20 +896,20 @@ function Create() {
                                                 />
                                             </div>
                                             
-                                            <p className="t1">
-                                                {invitationState.groomPhoneNumber && (
-                                                        <div style={{ position: 'absolute', left: '5%' }} 
-                                                        onClick={() => onClickPhoneCall(invitationState.groomPhoneNumber)}>
-                                                            <CallIcon />
-                                                        </div>
-                                                )}
-                                                
+                                            <p className="t1"
+                                                style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"3px", position:"relative"}}
+                                            >
                                                 <span className="blue">신랑</span>
                                                 
                                             <strong>
                                                 {invitationState.groomFirstName}{invitationState.groomLastName}
-                                                
                                             </strong>
+                                            {invitationState.groomPhoneNumber && (
+                                                        <div style={{marginLeft:"2px"}}
+                                                        onClick={() => onClickPhoneCall(invitationState.groomPhoneNumber)}>
+                                                            <CallIcon />
+                                                        </div>
+                                                )}
                                             
                                             </p>
                                             <p className="t2">{invitationState.groomIntroduction}</p>
@@ -925,7 +925,7 @@ function Create() {
                                                         {invitationState.groomFatherFirstName}{invitationState.groomFatherLastName}
                                                         
                                                         {invitationState.groomFatherFirstName && (
-                                                            <span>•</span> 
+                                                            <span style={{marginRight:"-1px"}}>•</span> 
                                                         )}
 
                                                         {/* 고인표시 */}
@@ -950,20 +950,20 @@ function Create() {
                                                 />
 
                                             </div>
-                                            <p className="t1">
-                                                
-                                                {invitationState.bridePhoneNumber && (
-                                                        <div style={{ position: 'absolute', left: '56%' }} 
-                                                        onClick={() => onClickPhoneCall(invitationState.bridePhoneNumber)}>
-                                                            <CallIcon />
-                                                        </div>
-                                                )}
+                                            <p className="t1"
+                                                style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"3px", position:"relative"}}
+                                            >
                                                 
                                                 <span className="pink">신부</span>
                                             <strong>
                                                 {invitationState.brideFirstName}{invitationState.brideLastName}
-                                                
                                             </strong>
+                                            {invitationState.bridePhoneNumber && (
+                                                    <div style={{marginLeft:"2px"}}
+                                                    onClick={() => onClickPhoneCall(invitationState.bridePhoneNumber)}>
+                                                        <CallIcon />
+                                                    </div>
+                                            )}
                                                         
                                             
                                             </p>
@@ -977,7 +977,7 @@ function Create() {
                                                         {invitationState.brideFatherFirstName}{invitationState.brideFatherLastName}
                                                         
                                                         {invitationState.brideFatherFirstName && (
-                                                            <span>•</span> 
+                                                            <span style={{marginRight:"-1px"}}>•</span> 
                                                         )}
                                                         
                                                         {/* 고인표시 */}
@@ -1006,10 +1006,16 @@ function Create() {
                                                         {getKoreanDateInfo(invitationState.weddingDate)}<br/>
                                                         {invitationState.weddingHallName || ""}&nbsp;
                                                         {invitationState.weddingHallFloorAndRoom || ""}<br/>
-                                                        {invitationState.weddingHallAddress || ""}
-                                                        {invitationState.weddingHallPhoneNumber && (
-                                                            <strong onClick={() => onClickPhoneCall(invitationState.weddingHallPhoneNumber)}><CallIcon /></strong>
-                                                        )}
+                                                        <p 
+                                                        style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"5px", position:"relative"}}
+                                                        >
+                                                            {invitationState.weddingHallAddress || ""}
+                                                            {invitationState.weddingHallPhoneNumber && (
+                                                                <strong onClick={() => onClickPhoneCall(invitationState.weddingHallPhoneNumber)}>
+                                                                    <CallIcon />
+                                                                </strong>
+                                                            )}
+                                                        </p>
                                     </p>
 
                                 </section>
@@ -1762,7 +1768,7 @@ function Create() {
                                         <div className="option-label">예식장 전화번호</div>
                                         <div className="option-contents">
                                             <input 
-                                            type="text" 
+                                            type="number" 
                                             className="input-sts" 
                                             placeholder="-없이 입력해주세요." 
                                             value={invitationState.weddingHallPhoneNumber || ""} // Bind value to state
@@ -2134,7 +2140,7 @@ function Create() {
                                         <div className="option-label">신랑 전화번호</div>
                                         <div className="option-contents">
                                             <input 
-                                                type="text" 
+                                                type="number" 
                                                 className="input-sts" 
                                                 placeholder="-없이 입력해주세요"
                                                 value={invitationState.groomPhoneNumber}
@@ -2146,7 +2152,7 @@ function Create() {
                                         <div className="option-label">신부 전화번호</div>
                                         <div className="option-contents">
                                             <input 
-                                                type="text" 
+                                                type="number" 
                                                 className="input-sts" 
                                                 placeholder="-없이 입력해주세요"
                                                 value={invitationState.bridePhoneNumber}

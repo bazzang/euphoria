@@ -409,17 +409,18 @@ function PreviewPage() {
                                             alt="신랑이미지" 
                                         />
                                     </div>
-                                    <p className="t1"><span className="blue">신랑</span>
+                                    <p className="t1"
+                                    style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"3px", position:"relative"}}
+                                    ><span className="blue">신랑</span>
                                     <strong>
                                         {inv.groomFirstName}{inv.groomLastName}
                                         {inv.groomPhoneNumber && (
-                                            <div style={{ position: 'absolute', left: '5%' }} 
-                                            onClick={() => onClickPhoneCall(inv.groomPhoneNumber)}>
-                                                <CallIcon />
-                                            </div>
-                                            
+                                                <div style={{marginLeft:"2px"}}
+                                                onClick={() => onClickPhoneCall(inv.groomPhoneNumber)}>
+                                                    <CallIcon />
+                                                </div>
                                         )}
-                                        
+                                
                                     </strong></p>
                                     <p className="t2">{inv.groomIntroduction}</p>
                                     {/* <p className="t3"><span>신랑 아버지</span>의 {invitationState.groomRelationship}</p> */}
@@ -454,11 +455,22 @@ function PreviewPage() {
                                         <img 
                                             className="bg"
                                             src={brideImg || ""} 
-                                            alt="신부이미지" 
+                                            alt="" 
                                         />
 
                                     </div>
-                                    <p className="t1"><span className="pink">신부</span><strong>{inv.brideFirstName}{inv.brideLastName}</strong></p>
+                                    <p className="t1"
+                                        style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"3px", position:"relative"}}
+                                    >
+                                        <span className="pink">신부</span>
+                                        <strong>{inv.brideFirstName}{inv.brideLastName}</strong>
+                                        {inv.bridePhoneNumber && (
+                                                <div style={{marginLeft:"2px"}}
+                                                onClick={() => onClickPhoneCall(inv.bridePhoneNumber)}>
+                                                    <CallIcon />
+                                                </div>
+                                        )}
+                                    </p>
                                     <p className="t2">{inv.brideIntroduction}</p>
                                         <p className="t3">
                                             <span>
@@ -498,13 +510,16 @@ function PreviewPage() {
                                                 {getKoreanDateInfo(inv.weddingDate)}<br/>
                                                 {inv.weddingHallName || ""}&nbsp;
                                                 {inv.weddingHallFloorAndRoom || ""}<br/>
-                                                {inv.weddingHallAddress || ""}
-                                                {inv.weddingHallPhoneNumber && (
-                                                    <div style={{ position: 'absolute', left: '56%' }} 
-                                                    onClick={() => onClickPhoneCall(inv.bridePhoneNumber)}>
-                                                        <CallIcon />
-                                                    </div>
-                                                )}
+                                                <p 
+                                                style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"5px", position:"relative"}}
+                                                >
+                                                    {inv.weddingHallAddress || ""}
+                                                    {inv.weddingHallPhoneNumber && (
+                                                        <strong onClick={() => onClickPhoneCall(inv.weddingHallPhoneNumber)}>
+                                                            <CallIcon />
+                                                        </strong>
+                                                    )}
+                                                </p>
                             </p>
 
                         </section>
