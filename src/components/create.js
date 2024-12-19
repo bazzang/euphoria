@@ -804,12 +804,11 @@ function Create() {
                                                     alt="신랑이미지" 
                                                 />
                                             </div>
-                                            <p className="t1"><span className="blue">신랑</span><strong>{invitationState.groomFirstName}{invitationState.groomLastName}</strong>
+                                            <p className="t1"><span className="blue">신랑</span>
+                                            <strong>
+                                                {invitationState.groomFirstName}{invitationState.groomLastName}
+                                            </strong>
                                             
-                                            {/* 전화기아이콘 */}
-                                            {invitationState.groomPhoneNumber && (
-                                                            <img src={callIcon} ></img>
-                                            )}
                                             </p>
                                             <p className="t2">{invitationState.groomIntroduction}</p>
                                             {/* <p className="t3"><span>신랑 아버지</span>의 {invitationState.groomRelationship}</p> */}
@@ -835,15 +834,17 @@ function Create() {
                                             <div className="thumb">
                                                 <img 
                                                     src={invitationState.bridePhotoUrl || ""} 
-                                                    alt="신랑이미지" 
+                                                    alt="신부이미지" 
                                                 />
 
                                             </div>
-                                            <p className="t1"><span className="pink">신부</span><strong>{invitationState.brideFirstName}{invitationState.brideLastName}</strong>
-                                                        {/* 전화기아이콘 */}
-                                            {invitationState.bridePhoneNumber && (
-                                                             <img src={callIcon} ></img>
-                                            )}
+                                            <p className="t1"><span className="pink">신부</span>
+                                            <strong>
+                                                {invitationState.brideFirstName}{invitationState.brideLastName}
+                                                
+                                            </strong>
+                                                        
+                                            
                                             </p>
                                             <p className="t2">{invitationState.brideIntroduction}</p>
                                                 <p className="t3">
