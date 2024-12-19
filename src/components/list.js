@@ -23,32 +23,32 @@ function ProductionList() {
     }, []);
 
 
-    const handleAuthCode = async() => {
-        console.log("handleAuthCode 실행  @@@ ");
-        try {
-            // const authCode = sessionStorage.getItem("authCode"); // 저장된 authCode 가져오기
+    // const handleAuthCode = async() => {
+    //     console.log("handleAuthCode 실행  @@@ ");
+    //     try {
+    //         // const authCode = sessionStorage.getItem("authCode"); // 저장된 authCode 가져오기
 
-            // FormData 객체 생성
-            const formData = new FormData();
-            // formData.append("code", authCode); // key: 'code', value: authCode
+    //         // FormData 객체 생성
+    //         const formData = new FormData();
+    //         // formData.append("code", authCode); // key: 'code', value: authCode
 
-            const response = await axios.post("https://api.euphoriacard.co.kr/api/oauth", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data", // form-data 전송을 위한 헤더
-                },
-            });
+    //         const response = await axios.post("https://api.euphoriacard.co.kr/api/oauth", formData, {
+    //             headers: {
+    //                 "Content-Type": "multipart/form-data", // form-data 전송을 위한 헤더
+    //             },
+    //         });
         
-            console.log("Response Data: ", response.data);
+    //         console.log("Response Data: ", response.data);
 
-            handleDialogConfirm({
-                ordererName: sessionStorage.getItem('ordererName'),
-                ordererCall: sessionStorage.getItem('ordererCall'),
-            });
-        } catch (error) {
-            console.error("엑세스 토큰 에러: ", error);
+    //         handleDialogConfirm({
+    //             ordererName: sessionStorage.getItem('ordererName'),
+    //             ordererCall: sessionStorage.getItem('ordererCall'),
+    //         });
+    //     } catch (error) {
+    //         console.error("엑세스 토큰 에러: ", error);
 
-        }
-    }
+    //     }
+    // }
     // 주문자정보로 청첩장 제작 목록 가져오기 
     const handleDialogConfirm = async (data) => {
         sessionStorage.setItem('ordererName', data.ordererName);
@@ -76,12 +76,15 @@ function ProductionList() {
             
         } catch (error) {
             console.error("리스트 가져오기 에러1: ", error.response.data.error.errorCode);
-
-            if(error.response.data.error.errorCode === 30102 || error.response.data.error.errorCode === "30102"){
+            
+            if(error.response.data?.error?.errorCode === "30102"){
+                alert("토큰이 만료 되었습니다.")
                 const authUrl =
                 'https://openapi.imweb.me/oauth2/authorize?responseType=code&clientId=aaa77bb6-2ab9-4836-8a26-8c58079959dc&redirectUri=https://euphoria-psi.vercel.app/&scope=member-info:read order:read&siteCode=S2024082926c7c40e12877';
             
                 window.location.href = authUrl;
+                localStorage.setItem("isAccessToken", 0);
+                
             }else{
                 alert("오류가 발생하였습니다.")
             }

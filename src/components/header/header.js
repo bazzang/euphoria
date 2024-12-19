@@ -25,9 +25,6 @@ function Header() {
         
             if (code) {
                 console.log('세션스토리지 저장된 code :',  code);
-
-                // var response = axiosPost('/api/oauth', {code: code});
-
                 try {
                     // 요청 URL 및 데이터 설정
                     const url = 'https://api.euphoriacard.co.kr/api/oauth';
@@ -61,7 +58,7 @@ function Header() {
     
     useEffect(() => {
 
-        if(localStorage.getItem("isAccessToken") !== 1){
+        if(!localStorage.getItem("isAccessToken")){
             handleAuthCode();
         }
         
