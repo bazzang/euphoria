@@ -19,20 +19,23 @@ function ProductionList() {
     const [orderDetailCnt, setOrderDetailCnt] = useState(0); // 배송완료 count  제일 먼저 제작한 청첩장부터 워터마크를 제거한다
     // 페이지 로드 시 다이얼로그 열기
     useEffect(() => {
+        if (ordererNm && ordererCall) {
+            console.log('state 없음', ordererNm, ordererCall);
             openDialog();
+        }
     }, []);
 
 
     // 주문자정보로 청첩장 제작 목록 가져오기 
     const handleDialogConfirm = async (data) => {
-        sessionStorage.setItem('ordererName', data.ordererName);
-        sessionStorage.setItem('ordererCall', data.ordererCall);
+        sessionStorage.setItem('ordererName', ordererNm);
+        sessionStorage.setItem('ordererCall', ordererCall);
         
         try {
             const response = await axios.post("https://api.euphoriacard.co.kr/api/list",
               {
-                ordererNm: data.ordererName,
-                ordererCall: data.ordererCall,
+                ordererNm: ordererNm ? ordererNm : data.ordererName,
+                ordererCall: ordererCall ? ordererCall : data.ordererCall,
               },
               {
                 headers: {
