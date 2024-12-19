@@ -21,6 +21,7 @@ function ProductionList() {
     useEffect(() => {
         if (ordererNm && ordererCall) {
             console.log('state 없음', ordererNm, ordererCall);
+            handleDialogConfirm();
         }else{
             openDialog();
         }
