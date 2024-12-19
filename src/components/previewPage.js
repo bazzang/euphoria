@@ -291,7 +291,7 @@ function PreviewPage() {
         {/* confirmCnt가 0일 경우에만 watermark를 표시 */}
         {confirm != 'Y'  && (
             <div className="watermark">
-                <p>구매 후 워터마크를 제거해주세요. {confirmCnt}
+                <p>구매 후 워터마크를 제거해주세요.
                 <br/>
                 {/* <br/>2024.10.02 23:59까지 사용 가능합니다. */}
                 <br/>
