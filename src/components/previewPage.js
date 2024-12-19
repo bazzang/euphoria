@@ -411,20 +411,18 @@ function PreviewPage() {
                                     </div>
                                     <p className="t1"
                                     style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"3px", position:"relative"}}
-                                    ><span className="blue">신랑</span>
-                                    <strong>
-                                        {inv.groomFirstName}{inv.groomLastName}
+                                    >
+                                        <span className="blue">신랑</span>
+                                    <strong>{inv.groomFirstName}{inv.groomLastName}</strong>
                                         {inv.groomPhoneNumber && (
                                                 <div style={{marginLeft:"2px"}}
                                                 onClick={() => onClickPhoneCall(inv.groomPhoneNumber)}>
                                                     <CallIcon />
                                                 </div>
                                         )}
-                                
-                                    </strong></p>
+                                    </p>
                                     <p className="t2">{inv.groomIntroduction}</p>
                                     {/* <p className="t3"><span>신랑 아버지</span>의 {invitationState.groomRelationship}</p> */}
-
                                         <p className="t3">
                                             <span>
                                                 {/* 고인표시 */}
@@ -452,12 +450,7 @@ function PreviewPage() {
                                 </div>
                                 <div className="item">
                                     <div className="thumb">
-                                        <img 
-                                            className="bg"
-                                            src={brideImg || ""} 
-                                            alt="" 
-                                        />
-
+                                        <img className="bg" src={brideImg || ""} alt="" />
                                     </div>
                                     <p className="t1"
                                         style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"3px", position:"relative"}}
