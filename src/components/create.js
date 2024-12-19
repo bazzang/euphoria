@@ -555,7 +555,7 @@ function Create() {
             previewUrl: URL.createObjectURL(file), // 미리보기 URL 생성
         }));
 
-        setPreviewGallery(newImages);
+        // setPreviewGallery(newImages);
     
         setInvitationState((prevState) => ({
             ...prevState,
@@ -574,7 +574,7 @@ function Create() {
             galleryImages: prevState.galleryImages.filter((_, i) => i !== index),
         }));
 
-        setPreviewGallery((prevGallery) => prevGallery.filter((_, i) => i !== index));
+        // setPreviewGallery((prevGallery) => prevGallery.filter((_, i) => i !== index));
     };
 
     // -------------------------------------------------------------------------------------------------
@@ -966,19 +966,19 @@ function Create() {
                                     {/* <div className="gallery-list" data-aos="fade-up" data-aos-duration="100"> */}
 
                                     {/* 이걸로 안보여서 아래 소스 사용  */}
-                                        {/* {invitationState.galleryImages &&
+                                        {invitationState.galleryImages &&
                                             invitationState.galleryImages.map((image, index) => (
                                                 <div className="gallery-item" key={index}>
                                                     <img src={image} alt={`gallery-${index}`} />
                                                 </div>
-                                        ))} */}
+                                        ))}
 
-                                        {previewGallery &&
+                                        {/* {previewGallery &&
                                             previewGallery.map((image, index) => (
                                                 <div className="gallery-item" key={index}>
                                                     <img src={image.previewUrl} alt={`gallery-${index}`} />
                                                 </div>
-                                        ))}
+                                        ))} */}
                                         
                                     </div>
                                 </section>
@@ -2260,8 +2260,8 @@ function Create() {
                                                     {invitationState.galleryImages &&
                                                         invitationState.galleryImages.map((image, index) => (
                                                             <div className="gallery-item" key={index}>
-                                                                {/* <img src={image} alt={`gallery-${index}`} /> */}
-                                                                <img src={previewGallery[index]?.previewUrl || image} alt={`gallery-${index}`} />
+                                                                <img src={image} alt={`gallery-${index}`} />
+                                                                {/* <img src={previewGallery[index]?.previewUrl || image} alt={`gallery-${index}`} /> */}
                                                                 <button onClick={() => handleGalleryImageDelete(index)}>삭제</button>
                                                             </div>
                                                     ))}
