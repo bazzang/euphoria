@@ -2394,8 +2394,8 @@ function Create() {
                             )}
                             </div> */}
 
-                            {/* 목요일 이후 > 지도 안나옴  */}
-                            {/* <div className="category">
+                            {/*  지도 안나옴  */}
+                            <div className="category">
                                 <div className="category-head">
                                     <label for="" className="switch">
                                         <input type="checkbox" checked/>
@@ -2477,7 +2477,7 @@ function Create() {
                                     </div>
                                 </div>
                             )}
-                            </div> */}
+                            </div> 
 
                             <div className="category">
                                 <div className="category-head">
