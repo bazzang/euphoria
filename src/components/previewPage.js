@@ -16,6 +16,7 @@ import page3_bg from '../images/card/page3_bg.png';
 import map_t from '../images/create/map_t.png';
 import map_kakao from '../images/create/map_kakao.png';
 import map_naver from '../images/create/map_naver.png';
+import CallIcon from './CallIcon.js'
 
 function PreviewPage() {
     const location = useLocation();
@@ -412,8 +413,13 @@ function PreviewPage() {
                                     <strong>
                                         {inv.groomFirstName}{inv.groomLastName}
                                         {inv.groomPhoneNumber && (
-                                            <strong onClick={() => onClickPhoneCall(inv.groomPhoneNumber)}>📞</strong>
+                                            <div style={{ position: 'absolute', left: '5%' }} 
+                                            onClick={() => onClickPhoneCall(inv.groomPhoneNumber)}>
+                                                <CallIcon />
+                                            </div>
+                                            
                                         )}
+                                        
                                     </strong></p>
                                     <p className="t2">{inv.groomIntroduction}</p>
                                     {/* <p className="t3"><span>신랑 아버지</span>의 {invitationState.groomRelationship}</p> */}
@@ -494,7 +500,10 @@ function PreviewPage() {
                                                 {inv.weddingHallFloorAndRoom || ""}<br/>
                                                 {inv.weddingHallAddress || ""}
                                                 {inv.weddingHallPhoneNumber && (
-                                                    <strong onClick={() => onClickPhoneCall(inv.weddingHallPhoneNumber)}>📞</strong>
+                                                    <div style={{ position: 'absolute', left: '56%' }} 
+                                                    onClick={() => onClickPhoneCall(inv.bridePhoneNumber)}>
+                                                        <CallIcon />
+                                                    </div>
                                                 )}
                             </p>
 
