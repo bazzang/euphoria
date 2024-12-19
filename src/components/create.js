@@ -98,6 +98,9 @@ function Create() {
         main: true, // 메인 카테고리를 초기 상태에서 열림으로 설정
         bride: true,
         groom: true,
+        prof : true,
+        weddingHall : true,
+        weddingDate : true,
     });
 
     // 특정 카테고리의 열림 상태를 토글하는 함수
