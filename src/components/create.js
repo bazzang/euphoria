@@ -38,6 +38,72 @@ function Create() {
           [key]: value,
         }));
 
+
+        switch(key){
+            case "useContactBrideAndGroom" : 
+                setCategories((prevCategories) => ({
+                    ...prevCategories,
+                    contactBrideAndGroom: value, // 체크 상태에 따라 활성화/비활성화
+                }));
+                break;
+
+            case "useEnding" : 
+                setCategories((prevCategories) => ({
+                    ...prevCategories,
+                    ending: value, // 체크 상태에 따라 활성화/비활성화
+                }));
+                break;
+
+            case "useProfile" : 
+                setCategories((prevCategories) => ({
+                    ...prevCategories,
+                    prof: value, // 체크 상태에 따라 활성화/비활성화
+                }));
+                break;
+
+            case "useCalendar" : 
+                setCategories((prevCategories) => ({
+                    ...prevCategories,
+                    calendar: value, // 체크 상태에 따라 활성화/비활성화
+                }));
+                break;
+
+            case "useGallery" : 
+                setCategories((prevCategories) => ({
+                    ...prevCategories,
+                    gallery: value, // 체크 상태에 따라 활성화/비활성화
+                }));
+                break;
+
+            case "useNotice" : 
+                setCategories((prevCategories) => ({
+                    ...prevCategories,
+                    noticeMessage: value, // 체크 상태에 따라 활성화/비활성화
+                }));
+                break;
+                
+            case "useFirstMeetTime" : 
+                setCategories((prevCategories) => ({
+                    ...prevCategories,
+                    timeTogether: value, // 체크 상태에 따라 활성화/비활성화
+                }));
+                break;
+
+            // case "useDirections" : 
+            //     setCategories((prevCategories) => ({
+            //         ...prevCategories,
+            //         contactBrideAndGroom: value, // 체크 상태에 따라 활성화/비활성화
+            //     }));
+            case "useTransportation" : 
+                setCategories((prevCategories) => ({
+                    ...prevCategories,
+                    trnspt: value, // 체크 상태에 따라 활성화/비활성화
+                }));
+                break;
+            default : 
+                break;
+        }
+
     };
 
     const [message, setMessage] = useState('');
@@ -839,22 +905,22 @@ function Create() {
                                                 <p className="t3">
                                                     <span style={{marginRight:"0px"}}>
 
-                                                        
-                                                        {invitationState.groomFatherFirstName}{invitationState.groomFatherLastName}
                                                         {/* 고인표시 */}
                                                         {invitationState.groomFatherDeceased ? (
-                                                            <span>故人</span> 
+                                                            <span>故</span> 
                                                         ) : null}
+                                                        {invitationState.groomFatherFirstName}{invitationState.groomFatherLastName}
+                                                        
                                                         {invitationState.groomFatherFirstName && (
                                                             <span>•</span> 
                                                         )}
 
-                                                        
-                                                        {invitationState.groomMotherFirstName}{invitationState.groomMotherLastName}
                                                         {/* 고인표시 */}
                                                         {invitationState.groomMotherDeceased ? (
-                                                            <span>故人</span> 
+                                                            <span>故</span> 
                                                         ) : null}
+                                                        {invitationState.groomMotherFirstName}{invitationState.groomMotherLastName}
+                                                        
                                                     </span>
                                                     {invitationState.groomFatherFirstName&&(<>의</> )} {invitationState.groomRelationship}
                                                 </p>
@@ -884,21 +950,22 @@ function Create() {
                                             <p className="t2">{invitationState.brideIntroduction}</p>
                                                 <p className="t3" style={{marginRight:"0px"}}>
                                                     <span>
-                                                        
-                                                        {invitationState.brideFatherFirstName}{invitationState.brideFatherLastName}
                                                         {/* 고인표시 */}
                                                         {invitationState.brideFatherDeceased ? (
-                                                            <span>故人</span> 
+                                                            <span>故</span> 
                                                         ) : null}
+                                                        {invitationState.brideFatherFirstName}{invitationState.brideFatherLastName}
+                                                        
                                                         {invitationState.brideFatherFirstName && (
                                                             <span>•</span> 
                                                         )}
                                                         
-                                                        {invitationState.brideMotherFirstName}{invitationState.brideMotherLastName}
                                                         {/* 고인표시 */}
                                                         {invitationState.brideMotherDeceased ? (
-                                                            <span>故人</span> 
+                                                            <span>故</span> 
                                                         ) : null}
+                                                        {invitationState.brideMotherFirstName}{invitationState.brideMotherLastName}
+                                                        
                                                     </span>
                                                     {invitationState.brideFatherFirstName&&(<>의</> )} {invitationState.brideRelationship}
                                                     
@@ -1949,7 +2016,7 @@ function Create() {
                                                 )}
                                                 
                                             </div>
-                                            <div className="mt-10"><button className="btn-positioning">위치 조정</button></div>
+                                            {/* <div className="mt-10"><button className="btn-positioning">위치 조정</button></div> */}
                                         </div>
                                     </div>
                                     <div className="option">
@@ -2003,7 +2070,7 @@ function Create() {
                                                     </div>
                                                 )}
                                             </div>
-                                            <div className="mt-10"><button className="btn-positioning">위치 조정</button></div>
+                                            {/* <div className="mt-10"><button className="btn-positioning">위치 조정</button></div> */}
                                         </div>
                                     </div>
                                     <div className="option">
@@ -2439,7 +2506,7 @@ function Create() {
                             </div> */}
 
                             {/*  지도 안나옴  */}
-                            <div className="category">
+                            {/* <div className="category">
                                 <div className="category-head">
                                     <label for="" className="switch">
                                         <input type="checkbox" checked/>
@@ -2521,7 +2588,7 @@ function Create() {
                                     </div>
                                 </div>
                             )}
-                            </div> 
+                            </div>  */}
 
                             <div className="category">
                                 <div className="category-head">

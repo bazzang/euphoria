@@ -129,7 +129,7 @@ export default function FormDialog({ onClose, disableBackdropClick = false, onSa
         {hideCancelButton && ( // hideCancelButton이 true일 경우 '취소' 버튼 숨김
           <DialogActions>
             <Button sx={{fontSize : '1.5rem'}} onClick={handleHistoryBack}>취소</Button>
-            <Button type="submit" sx={{fontSize : '1.5rem'}} onClick={handleSave}>저장</Button>
+            <Button type="submit" sx={{fontSize : '1.5rem'}} onClick={handleSave}>조회</Button>
           </DialogActions>
         )}
         {!hideCancelButton && ( 

@@ -57,10 +57,9 @@ function Header() {
     };
     
     useEffect(() => {
-        console.log("header - useEffect", localStorage.getItem("isAccessToken"));
+        console.log("헤더 useEffect 확인 ===", localStorage.getItem("isAccessToken"));
         if(localStorage.getItem("isAccessToken") !== 1 || localStorage.getItem("isAccessToken") !== "1"){
-            console.log("header - useEffect if~~~~~", localStorage.getItem("isAccessToken"));
-            console.log("적용2", localStorage.getItem("isAccessToken"));
+            console.log("로컬 스토리지 확인 ===", localStorage.getItem("isAccessToken"));
             handleAuthCode();
         }
         
