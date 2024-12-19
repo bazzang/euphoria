@@ -554,7 +554,8 @@ function Create() {
     
         setInvitationState((prevState) => ({
             ...prevState,
-            galleryImages: [...(prevState.galleryImages || []), ...newImages], // 기존 이미지와 합침
+            galleryImages: [...(prevState.galleryImages || []), ...files], // 기존 이미지와 합침
+            // galleryImages: [...(prevState.galleryImages || []), ...newImages], // 기존 이미지와 합침
         }));
     };
 
