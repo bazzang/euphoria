@@ -114,6 +114,13 @@ function Create() {
 
     
 
+    // 전화하기 함수 
+    const onClickPhoneCall = (phoneNumber) =>{
+        if (!phoneNumber) {
+            return;
+        }
+        window.location.href = `tel:${phoneNumber}`;
+    }
     // -------------------------------------------------------------------------------------------------
 
     // *********************************[메인] 배경이미지************************************************
@@ -818,7 +825,7 @@ function Create() {
                                             <strong>
                                                 {invitationState.groomFirstName}{invitationState.groomLastName}
                                                 {invitationState.groomPhoneNumber && (
-                                                    <strong>📞</strong>
+                                                    <strong onClick={() => onClickPhoneCall(invitationState.groomPhoneNumber)}>📞</strong>
                                                 )}
                                             </strong>
                                             
@@ -855,7 +862,7 @@ function Create() {
                                             <strong>
                                                 {invitationState.brideFirstName}{invitationState.brideLastName}
                                                 {invitationState.bridePhoneNumber && (
-                                                    <strong>📞</strong>
+                                                    <strong onClick={() => onClickPhoneCall(invitationState.bridePhoneNumber)}>📞</strong>
                                                 )}
                                             </strong>
                                                         
