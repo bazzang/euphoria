@@ -808,7 +808,7 @@ function Create() {
                                             
                                             {/* 전화기아이콘 */}
                                             {invitationState.groomPhoneNumber && (
-                                                            <span>{callIcon}</span> 
+                                                            <img src={callIcon} ></img>
                                             )}
                                             </p>
                                             <p className="t2">{invitationState.groomIntroduction}</p>
@@ -842,7 +842,7 @@ function Create() {
                                             <p className="t1"><span className="pink">신부</span><strong>{invitationState.brideFirstName}{invitationState.brideLastName}</strong>
                                                         {/* 전화기아이콘 */}
                                             {invitationState.bridePhoneNumber && (
-                                                            <span>{callIcon}</span> 
+                                                             <img src={callIcon} ></img>
                                             )}
                                             </p>
                                             <p className="t2">{invitationState.brideIntroduction}</p>
