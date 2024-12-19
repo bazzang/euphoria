@@ -30,14 +30,13 @@ export const InvitationProvider = ({ children }) => {
     // 메인정보
     mainType: "포스터(풀페이지)", // 메인화면 청첩장 타입
     mainPhotoUrl: "", // 메인사진저장경로
-    mainPhotoNm: "", // 메인사진이름
     letteringMsg: 'our wedding day', // 레터링문구
     letteringClr: "#FFFFFF", // 레터링문구색상
-    letteringHg : 0, // 레터링문구 위치 
+    letteringHg : '', // 레터링문구 위치 
     mainTxt: "", // 메인텍스트
     mainTxtClr: "#FFFFFF", // 메인텍스트색상
     mainWddInfoOnoff: "", // 메인 하단 예식 정보
-    mainTxtHg : 0, // 메인문구 위치 
+    mainTxtHg : '', // 메인문구 위치 
 
     // 신랑 정보
     groomFirstName: "",
@@ -73,7 +72,7 @@ export const InvitationProvider = ({ children }) => {
     // 달력 관련 정보
     
     calendarType: "",
-    calendarTitle: "",
+    calendarTitle: "예식 안내",
     calendarImage: "",
     useDday: false,
 
@@ -96,7 +95,7 @@ export const InvitationProvider = ({ children }) => {
 
     // 갤러리
     
-    galleryTitle: "", // 갤러리 제목
+    galleryTitle: "갤러리", // 갤러리 제목
     galleryType: "grid", // 갤러리 타입 (grid, slider 등)
     galleryImages: [], // 갤러리 이미지 목록
     galleryProgressBarVisible: false, // 하단 진행바 표시 여부
@@ -115,7 +114,7 @@ export const InvitationProvider = ({ children }) => {
     transportation: [], // 교통수단 배열 method, details
 
     // 안내문
-    noticeTitle: "", // 안내문 제목
+    noticeTitle: "안내문", // 안내문 제목
     noticeContent: "", // 안내문 내용
     externalLinkUsage: false, // 외부 링크 버튼 사용 여부
     noticeExternalLink : "", // 외부 링크 url 
@@ -132,6 +131,7 @@ export const InvitationProvider = ({ children }) => {
     endingImage: "", // 엔딩 사진 URL
     endingContent: "", // 엔딩 글귀
     endingContentPosition: "상단", // 글귀 위치 (상단, 중간, 하단)
+    endingHg : "",
 
     // 사진
     mainPhotoFile : "",

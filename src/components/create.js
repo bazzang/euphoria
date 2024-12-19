@@ -27,7 +27,7 @@ function Create() {
 
 
     useEffect(() => {
-       console.log('Current state:', invitationState); // 초기 상태 확인
+    //    console.log('Current state:', invitationState); // 초기 상태 확인
     }, [invitationState]);
 
     const handleChange = (key, value) => {
@@ -127,8 +127,8 @@ function Create() {
             const imageUrl = URL.createObjectURL(file); // Create a temporary URL for the file
             setPreviewImage(imageUrl); // Update preview state
             setBackgroundImage(imageUrl); // Update background image
-
-            handleChange("mainPhotoUrl", imageUrl);
+            // TODO
+            // handleChange("mainPhotoUrl", imageUrl);
             handleFileChange(event, "mainPhoto");
         }
     };
@@ -180,12 +180,21 @@ function Create() {
     };
 
     const [maintxtHg, setMaintxtHg] = useState("50%");
+    const [endingHg, setEndingHg] = useState("50%");
 
-const handleMainTxtRangeChange = (value) => {
-    setMaintxtHg(`${value}%`); 
-    
-    handleChange("mainTxtHg", `${value}%`);
-};
+    //메인텍스트 위치 조절
+    const handleMainTxtRangeChange = (value) => {
+        setMaintxtHg(`${value}%`); 
+        
+        handleChange("mainTxtHg", `${value}%`);
+    };
+
+    //엔딩텍스트 위치 조절
+    const handleEndingRangeChange = (value) => {
+        setEndingHg(`${value}%`); 
+        
+        handleChange("endingHg", `${value}%`);
+    };
     // -------------------------------------------------------------------------------------------------
 
     // *********************************[지도] 지도 api  ******************************************
@@ -1035,7 +1044,19 @@ const handleMainTxtRangeChange = (value) => {
                                 <section className="land">
                                     {/* <section className="land" data-aos="fade-up" data-aos-duration="100"> */}
                                     <img className="bg" src={invitationState.endingImage ||bgimg} alt="bg" />
-                                    <p className="text">
+                                    {/* <p className="text">
+                                        {invitationState.endingContent}
+                                    </p> */}
+                                    <p
+                                        className="text"
+                                        style={{
+                                            // color : color2,
+                                            top: endingHg,
+                                            wordWrap: "break-word", // 긴 단어를 자동으로 줄바꿈
+                                            overflowWrap: "break-word", // 긴 단어가 깨지도록 줄바꿈
+                                            whiteSpace: "normal", // 일반 줄바꿈 허용
+                                        }}
+                                        >
                                         {invitationState.endingContent}
                                     </p>
                                 </section>
@@ -3132,6 +3153,17 @@ const handleMainTxtRangeChange = (value) => {
                                                 onChange={(e) => handleChange("endingContent", e.target.value)} // Update state
                                             ></textarea>
                                         </div>
+                                    </div>
+                                    <div className="option-label">엔딩 글귀 위치</div>
+                                    <div className="option-contents">
+                                        {/* <input type="range" /> */}
+                                        <input
+                                            type="range"
+                                            min="10"
+                                            max="80"
+                                            value={parseInt(endingHg)} // Parse to integer for the range input
+                                            onChange={(e) => handleEndingRangeChange(e.target.value)}
+                                        />
                                     </div>
                                     {/* 목요일 */}
                                     {/* <div className="option">
