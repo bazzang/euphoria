@@ -49,7 +49,7 @@ function ProductionList() {
             }
             
         } catch (error) {
-            console.error("리스트 가져오기 에러1: ", error.response.data.error.errorCode);
+            console.error("리스트 가져오기 에러1: ", error);
             
             if(error.response.data?.error?.errorCode === "30102" || error.response.data?.error?.errorCode === "30101" ){
                 alert("토큰이 만료 되었습니다.")
