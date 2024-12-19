@@ -288,7 +288,7 @@ function PreviewPage() {
         )}
         
         {/* <div className="wedding-card"> */}
-        <div className="frame" style={{width: "100%", maxWidth: "412px", margin: "0 auto",  boxShadow:" 0 0 10px rgba(0, 0, 0, 0.1)", backgroundColor: "white" }}>
+        <div className="frame" style={{width: "100%", maxWidth: "428px", margin: "0 auto",  boxShadow:" 0 0 10px rgba(0, 0, 0, 0.1)", backgroundColor: "white" }}>
             
             {/* 메인 */}
             {/* <div className="create-preview">
@@ -651,7 +651,7 @@ function PreviewPage() {
                         <section className="land">
                             <img className="bg" src={endingImg || ""} alt="bg" />
                             <p className="text">
-                                {inv.endingContent}😂😂😂😂😂😂
+                                {inv.endingContent}
                             </p>
                         </section>
                         ) : null}
