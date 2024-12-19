@@ -141,7 +141,7 @@ export const InvitationProvider = ({ children }) => {
     endingPhotoFile : "",
 
     // 사용섹션 
-    useProfile : false, // 프로필형 소개 
+    useProfile : true, // 프로필형 소개 
     useCalendar: false, // 달력
     useGallery : false, // 갤러리 사용 여부 
     useNotice : false, // 안내문 사용 여부 
