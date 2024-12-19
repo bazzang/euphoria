@@ -40,7 +40,7 @@ function Header() {
                 
                     // 결과 반환
                     console.log('Response:', response.data);
-                    if(response.data === 200){
+                    if(response.data === 200 || response.data === "200"){
                         localStorage.setItem("isAccessToken", "Y");
                     }
                 
