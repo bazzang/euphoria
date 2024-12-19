@@ -58,7 +58,7 @@ function Header() {
     
     useEffect(() => {
 
-        if(localStorage.getItem("isAccessToken") !== 1 ){
+        if(localStorage.getItem("isAccessToken") !== 1 || localStorage.getItem("isAccessToken") !== "1" ){
             handleAuthCode();
         }
         
