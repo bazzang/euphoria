@@ -545,18 +545,18 @@ function Create() {
     };
 
     //test
+    const [previewGallery, setPreviewGallery] = useState([]);
+
     const handleGalleryImageUpload = (event) => {
-        console.log('갤러리 업로드 이미지11');
-        const files = Array.from(event.target.files);
+        const files = Array.from(event.target.files); // 다중 파일 업로드 처리
         const newImages = files.map((file) => ({
-            file: file, // 원본 파일 저장
+            file, // 파일 객체 저장
             previewUrl: URL.createObjectURL(file), // 미리보기 URL 생성
         }));
     
         setInvitationState((prevState) => ({
             ...prevState,
-            galleryImages: [...(prevState.galleryImages || []), ...files], // 기존 이미지와 합침
-            // galleryImages: [...(prevState.galleryImages || []), ...newImages], // 기존 이미지와 합침
+            galleryImages: [...(prevState.galleryImages || []), ...newImages],
         }));
     };
 
@@ -2244,7 +2244,7 @@ function Create() {
                                                                 <img src={image.previewUrl} alt={`gallery-${index}`} />
                                                                 <button onClick={() => handleGalleryImageDelete(index)}>삭제</button>
                                                             </div>
-                                                    ))}
+                                                        ))}
 
 
                                                 </div>
