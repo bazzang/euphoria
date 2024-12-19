@@ -20,7 +20,8 @@ import FormDialog, { openDialog } from "./dialog.js";
 import PositionedSnackbar from "./PositionedSnackbar.js";
 import ribon from '../images/ribbon.png';
 import noimg from '../images/defaultimg.png';
-import callIcon from '../images/create/call.png'; 
+import CallIcon from './CallIcon.js'
+
 
 function Create() {
     const navigate = useNavigate(); 
@@ -628,7 +629,7 @@ function Create() {
             previewUrl: URL.createObjectURL(file), // 미리보기 URL 생성
         }));
 
-        setPreviewGallery(newImages);
+        setPreviewGallery((prevGallery) => [...prevGallery, ...newImages]);
     
         setInvitationState((prevState) => ({
             ...prevState,
@@ -709,6 +710,7 @@ function Create() {
             { key: "mainType", label: "메인 타입" },
             { key: "mainPhotoFile", label: "메인 사진", type: "file" }, // 파일 타입 지정
             { key: "letteringMsg", label: "레터링 문구" },
+            { key: "mainTxt", label: "메인 텍스트" },
             { key: "letteringClr", label: "레터링 색상" },
             { key: "mainTxtClr", label: "메인 텍스트 색상" },
             { key: "groomFirstName", label: "신랑 성" },
@@ -890,12 +892,20 @@ function Create() {
                                                     }}
                                                 />
                                             </div>
-                                            <p className="t1"><span className="blue">신랑</span>
+                                            
+                                            <p className="t1">
+                                                {invitationState.groomPhoneNumber && (
+                                                        <div style={{ position: 'absolute', left: '5%' }} 
+                                                        onClick={() => onClickPhoneCall(invitationState.groomPhoneNumber)}>
+                                                            <CallIcon />
+                                                        </div>
+                                                )}
+                                                
+                                                <span className="blue">신랑</span>
+                                                
                                             <strong>
                                                 {invitationState.groomFirstName}{invitationState.groomLastName}
-                                                {invitationState.groomPhoneNumber && (
-                                                    <strong onClick={() => onClickPhoneCall(invitationState.groomPhoneNumber)}>📞</strong>
-                                                )}
+                                                
                                             </strong>
                                             
                                             </p>
@@ -937,19 +947,26 @@ function Create() {
                                                 />
 
                                             </div>
-                                            <p className="t1"><span className="pink">신부</span>
+                                            <p className="t1">
+                                                
+                                                {invitationState.bridePhoneNumber && (
+                                                        <div style={{ position: 'absolute', left: '56%' }} 
+                                                        onClick={() => onClickPhoneCall(invitationState.bridePhoneNumber)}>
+                                                            <CallIcon />
+                                                        </div>
+                                                )}
+                                                
+                                                <span className="pink">신부</span>
                                             <strong>
                                                 {invitationState.brideFirstName}{invitationState.brideLastName}
-                                                {invitationState.bridePhoneNumber && (
-                                                    <strong onClick={() => onClickPhoneCall(invitationState.bridePhoneNumber)}>📞</strong>
-                                                )}
+                                                
                                             </strong>
                                                         
                                             
                                             </p>
                                             <p className="t2">{invitationState.brideIntroduction}</p>
-                                                <p className="t3" style={{marginRight:"0px"}}>
-                                                    <span>
+                                                <p className="t3" >
+                                                    <span style={{marginRight:"0px"}}>
                                                         {/* 고인표시 */}
                                                         {invitationState.brideFatherDeceased ? (
                                                             <span>故</span> 
@@ -988,7 +1005,7 @@ function Create() {
                                                         {invitationState.weddingHallFloorAndRoom || ""}<br/>
                                                         {invitationState.weddingHallAddress || ""}
                                                         {invitationState.weddingHallPhoneNumber && (
-                                                            <strong onClick={() => onClickPhoneCall(invitationState.weddingHallPhoneNumber)}>📞</strong>
+                                                            <strong onClick={() => onClickPhoneCall(invitationState.weddingHallPhoneNumber)}><CallIcon /></strong>
                                                         )}
                                     </p>
 
@@ -1265,11 +1282,11 @@ function Create() {
                                                     <option value="화관(이미지 없는 청첩장) - 디자인 없음">화관(이미지 없는 청첩장) - 디자인 없음</option> */}
                                                 </select>
                                                 <button className="btn-change tooltip">변경
-                                                    {visibleTooltips.tooltip1 && (
+                                                    {/* {visibleTooltips.tooltip1 && (
                                                         <span className="tooltip-box" onClick={() => hideTooltip('tooltip1')}>
                                                         <span>10가지</span> 템플릿이 준비되어 있습니다.
                                                         </span>
-                                                    )}
+                                                    )} */}
                                                     {/* <span className="tooltip-box" onClick={onClickTooltip1}><span>10가지</span> 템플릿이 준비되어 있습니다.</span> */}
                                                 </button>
                                             </div>
@@ -1332,11 +1349,11 @@ function Create() {
                                                 </select>
                                                 <button className="btn-change tooltip">변경
                                                     {/* <span className="tooltip-box"><span>9가지</span> 문구가 준비되어 있습니다.</span> */}
-                                                    {visibleTooltips.tooltip2 && (
+                                                    {/* {visibleTooltips.tooltip2 && (
                                                         <span className="tooltip-box" onClick={() => hideTooltip('tooltip2')}>
                                                         <span>9가지</span> 템플릿이 준비되어 있습니다.
                                                         </span>
-                                                    )}
+                                                    )} */}
                                                 </button>
                                             </div>
                                         </div>
