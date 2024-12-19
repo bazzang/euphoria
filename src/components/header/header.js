@@ -41,7 +41,7 @@ function Header() {
                     // 결과 반환
                     console.log('Response:', response.data);
                     if(response.data === 200){
-                        localStorage.setItem("isAccessToken", 1);
+                        localStorage.setItem("isAccessToken", "Y");
                     }
                 
                   } catch (error) {
@@ -57,9 +57,9 @@ function Header() {
     };
     
     useEffect(() => {
-        console.log("헤더 useEffect 확인 ===", localStorage.getItem("isAccessToken"));
-        if(localStorage.getItem("isAccessToken") !== 1 || localStorage.getItem("isAccessToken") !== "1"){
-            console.log("로컬 스토리지 확인 ===", localStorage.getItem("isAccessToken"));
+        console.log("헤더 useEffect 확인2 ===", localStorage.getItem("isAccessToken"));
+        if(localStorage.getItem("isAccessToken") !== "Y"){
+            console.log("로컬 스토리지 확인2 ===", localStorage.getItem("isAccessToken"));
             handleAuthCode();
         }
         
