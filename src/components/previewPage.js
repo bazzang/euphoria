@@ -44,6 +44,23 @@ function PreviewPage() {
             fetchInvData();
         }
     }, []);
+
+    useEffect(() => {
+        const handlePopState = (event) => {
+            // 뒤로가기가 발생했을 때 원하는 경로로 이동
+            alert("뒤로가기");
+            navigate(-1);
+        };
+
+        // 브라우저 뒤로가기 이벤트 감지
+        window.addEventListener("popstate", handlePopState);
+
+        // 컴포넌트가 언마운트될 때 이벤트 제거
+        return () => {
+            window.removeEventListener("popstate", handlePopState);
+        };
+    }, [navigate]);
+
     
     const fetchInvData = async() => {
         try {
