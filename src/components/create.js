@@ -819,6 +819,9 @@ function Create() {
                                                 <img 
                                                     src={invitationState.groomPhotoUrl || ""} 
                                                     alt="신랑이미지" 
+                                                    style={{
+                                                        visibility: invitationState.groomPhotoUrl ? "visible" : "hidden",
+                                                    }}
                                                 />
                                             </div>
                                             <p className="t1"><span className="blue">신랑</span>
@@ -838,13 +841,20 @@ function Create() {
 
                                                         
                                                         {invitationState.groomFatherFirstName}{invitationState.groomFatherLastName}
-
+                                                        {/* 고인표시 */}
+                                                        {invitationState.groomFatherDeceased ? (
+                                                            <span>故人</span> 
+                                                        ) : null}
                                                         {invitationState.groomFatherFirstName && (
                                                             <span>•</span> 
                                                         )}
 
                                                         
                                                         {invitationState.groomMotherFirstName}{invitationState.groomMotherLastName}
+                                                        {/* 고인표시 */}
+                                                        {invitationState.groomMotherDeceased ? (
+                                                            <span>故人</span> 
+                                                        ) : null}
                                                     </span>
                                                     {invitationState.groomFatherFirstName&&(<>의</> )} {invitationState.groomRelationship}
                                                 </p>
@@ -855,6 +865,9 @@ function Create() {
                                                 <img 
                                                     src={invitationState.bridePhotoUrl || ""} 
                                                     alt="신부이미지" 
+                                                    style={{
+                                                        visibility: invitationState.groomPhotoUrl ? "visible" : "hidden",
+                                                    }}
                                                 />
 
                                             </div>
@@ -873,11 +886,19 @@ function Create() {
                                                     <span>
                                                         
                                                         {invitationState.brideFatherFirstName}{invitationState.brideFatherLastName}
+                                                        {/* 고인표시 */}
+                                                        {invitationState.brideFatherDeceased ? (
+                                                            <span>故人</span> 
+                                                        ) : null}
                                                         {invitationState.brideFatherFirstName && (
                                                             <span>•</span> 
                                                         )}
                                                         
                                                         {invitationState.brideMotherFirstName}{invitationState.brideMotherLastName}
+                                                        {/* 고인표시 */}
+                                                        {invitationState.brideMotherDeceased ? (
+                                                            <span>故人</span> 
+                                                        ) : null}
                                                     </span>
                                                     {invitationState.brideFatherFirstName&&(<>의</> )} {invitationState.brideRelationship}
                                                     
@@ -888,21 +909,31 @@ function Create() {
                                     {/* <button className="btn">혼주에게 연락하기</button> */}
                                 </section>
                                 )}
-                            
-
-                                {/* useCalendar 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
-                                {invitationState.useCalendar && (
-                                <section className="calendar">
-                                    
-                                    <strong className="title">{invitationState.calendarTitle || "예식 안내"}</strong>
+                                
+                                {invitationState.weddingHallName && (
+                                <section className='calendar'>
                                     <p className="info">{parseInt(invitationState.weddingDate.split("-")[0], 10)}년&nbsp;
                                                         {parseInt(invitationState.weddingDate.split("-")[1], 10)}월&nbsp;
                                                         {parseInt(invitationState.weddingDate.split("-")[2])}일&nbsp;
                                                         {/* {}요일 오후 {}시 */}
                                                         {getKoreanDateInfo(invitationState.weddingDate)}<br/>
                                                         {invitationState.weddingHallName || ""}&nbsp;
-                                                        {invitationState.weddingHallFloorAndRoom || ""}
+                                                        {invitationState.weddingHallFloorAndRoom || ""}<br/>
+                                                        {invitationState.weddingHallAddress || ""}
+                                                        {invitationState.weddingHallPhoneNumber && (
+                                                            <strong onClick={() => onClickPhoneCall(invitationState.weddingHallPhoneNumber)}>📞</strong>
+                                                        )}
                                     </p>
+
+                                </section>
+                                )}
+
+                                {/* useCalendar 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
+                                {invitationState.useCalendar && (
+                                <section className="calendar">
+                                    
+                                    <strong className="title">{invitationState.calendarTitle || "예식 안내"}</strong>
+                                    
 
                                     {invitationState.calendarImage && (
                                         <img

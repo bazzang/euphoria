@@ -119,6 +119,14 @@ function PreviewPage() {
         window.location.href = url;
     }
 
+     // 전화하기 함수 
+     const onClickPhoneCall = (phoneNumber) =>{
+        if (!phoneNumber) {
+            return;
+        }
+        window.location.href = `tel:${phoneNumber}`;
+    }
+
     // -------------------------------------------------------------------------------------------------
     // *********************************[함께한 시간] 함께한 시간 계산 ***********************************
     // -------------------------------------------------------------------------------------------------
@@ -446,6 +454,24 @@ function PreviewPage() {
                         </section>
                         ) : null}
 
+
+                        {inv.weddingHallName && (
+                        <section className='calendar'>
+                            <p className="info">{parseInt(inv.weddingDate.split("-")[0], 10)}년&nbsp;
+                                                {parseInt(inv.weddingDate.split("-")[1], 10)}월&nbsp;
+                                                {parseInt(inv.weddingDate.split("-")[2])}일&nbsp;
+                                                {/* {}요일 오후 {}시 */}
+                                                {getKoreanDateInfo(inv.weddingDate)}<br/>
+                                                {inv.weddingHallName || ""}&nbsp;
+                                                {inv.weddingHallFloorAndRoom || ""}
+                                                {inv.weddingHallAddress || ""}
+                                                {inv.weddingHallPhoneNumber && (
+                                                    <strong onClick={() => onClickPhoneCall(inv.weddingHallPhoneNumber)}>📞</strong>
+                                                )}
+                            </p>
+
+                        </section>
+                        )}
 
                         {/* 캘린더 */}
                         {inv.useCalendar ? (
