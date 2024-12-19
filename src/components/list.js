@@ -57,7 +57,7 @@ function ProductionList() {
                 'https://openapi.imweb.me/oauth2/authorize?responseType=code&clientId=aaa77bb6-2ab9-4836-8a26-8c58079959dc&redirectUri=https://euphoria-psi.vercel.app/&scope=member-info:read order:read&siteCode=S2024082926c7c40e12877';
             
                 window.location.href = authUrl;
-                localStorage.setItem("isAccessToken", 0);
+                localStorage.setItem("isAccessToken", null);
                 
             }else{
                 console.log('리스트 가져오기 에러2: ', error)
