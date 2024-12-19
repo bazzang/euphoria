@@ -560,7 +560,7 @@ function Create() {
             galleryImages: [...(prevState.galleryImages || []), ...files], // 기존 이미지와 합침
         }));
 
-        console.log('갤러리 테스트', invitationState.galleryImage);
+        console.log('갤러리 테스트', invitationState);
     };
 
     const handleGalleryImageDelete = (index) => {
