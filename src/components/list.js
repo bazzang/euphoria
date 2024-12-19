@@ -19,36 +19,18 @@ function ProductionList() {
     const [orderDetailCnt, setOrderDetailCnt] = useState(0); // 배송완료 count  제일 먼저 제작한 청첩장부터 워터마크를 제거한다
     // 페이지 로드 시 다이얼로그 열기
     useEffect(() => {
-        openDialog();
+        if(localStorage.getItem('isAccessToken') ==  1){
+            openDialog();
+        }else{
+            const authUrl =
+            'https://openapi.imweb.me/oauth2/authorize?responseType=code&clientId=aaa77bb6-2ab9-4836-8a26-8c58079959dc&redirectUri=https://euphoria-psi.vercel.app/&scope=member-info:read order:read&siteCode=S2024082926c7c40e12877';
+        
+            window.location.href = authUrl;
+        }
+        
     }, []);
 
 
-    // const handleAuthCode = async() => {
-    //     console.log("handleAuthCode 실행  @@@ ");
-    //     try {
-    //         // const authCode = sessionStorage.getItem("authCode"); // 저장된 authCode 가져오기
-
-    //         // FormData 객체 생성
-    //         const formData = new FormData();
-    //         // formData.append("code", authCode); // key: 'code', value: authCode
-
-    //         const response = await axios.post("https://api.euphoriacard.co.kr/api/oauth", formData, {
-    //             headers: {
-    //                 "Content-Type": "multipart/form-data", // form-data 전송을 위한 헤더
-    //             },
-    //         });
-        
-    //         console.log("Response Data: ", response.data);
-
-    //         handleDialogConfirm({
-    //             ordererName: sessionStorage.getItem('ordererName'),
-    //             ordererCall: sessionStorage.getItem('ordererCall'),
-    //         });
-    //     } catch (error) {
-    //         console.error("엑세스 토큰 에러: ", error);
-
-    //     }
-    // }
     // 주문자정보로 청첩장 제작 목록 가져오기 
     const handleDialogConfirm = async (data) => {
         sessionStorage.setItem('ordererName', data.ordererName);
