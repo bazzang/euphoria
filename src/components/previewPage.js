@@ -48,8 +48,7 @@ function PreviewPage() {
     useEffect(() => {
         const handlePopState = (event) => {
             // 뒤로가기가 발생했을 때 원하는 경로로 이동
-            alert("뒤로가기");
-            navigate(-1);
+            navigate("/list");
         };
 
         // 브라우저 뒤로가기 이벤트 감지
