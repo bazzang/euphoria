@@ -196,7 +196,7 @@ function Create() {
     }
 
     const onClickFlower = () => { 
-        const link = "https://agent.maruw.co.kr/mobile/product-type01?goods_div_idx=1"; // 이동할 URL
+        const link = "https://www.barunsonflower.com/?barunid=731900"; // 이동할 URL
         window.open(link, "_blank"); // 새 탭에서 열기
     }
     // -------------------------------------------------------------------------------------------------
