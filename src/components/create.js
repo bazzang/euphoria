@@ -1153,7 +1153,7 @@ function Create() {
                                 <section className="flower">
                                     <div className="flower-box" onClick={() => { 
                                                                     const link = "https://agent.maruw.co.kr/mobile/product-type01?goods_div_idx=1"; // 이동할 URL
-                                                                    window.location.href = link; // URL로 이동
+                                                                    window.open = link; // URL로 이동
                                                                 }}>
                                     {/* <div className="flower-box" data-aos="fade-up" data-aos-duration="100"> */}
                                         <img src={flower} alt="화환"/>
