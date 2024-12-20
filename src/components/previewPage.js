@@ -136,22 +136,34 @@ function PreviewPage() {
     useEffect(() => {
         // 타이머 업데이트 함수
         const updateElapsedTime = () => {
-        if (inv.firstMeetTime) {
-            const firstMeetDate = new Date(inv.firstMeetTime); // firstMeetTime 값
-            const now = new Date();
-            const diffInSeconds = Math.floor((now - firstMeetDate) / 1000); // 초 단위 차이 계산
-    
-            const years = Math.floor(diffInSeconds / (365 * 24 * 60 * 60));
-            const months = Math.floor((diffInSeconds % (365 * 24 * 60 * 60)) / (30 * 24 * 60 * 60));
-            const days = Math.floor((diffInSeconds % (30 * 24 * 60 * 60)) / (24 * 60 * 60));
-            const hours = Math.floor((diffInSeconds % (24 * 60 * 60)) / (60 * 60));
-            const minutes = Math.floor((diffInSeconds % (60 * 60)) / 60);
-            const seconds = diffInSeconds % 60;
-    
-            setElapsedTime(`${years}년 ${months}개월 ${days}일 ${hours}시간 ${minutes}분 ${seconds}초`);
-        } else {
-            setElapsedTime("날짜를 입력해주세요.");
-        }
+            if (inv.firstMeetTime) {
+                const firstMeetDate = new Date(inv.firstMeetTime); // firstMeetTime 값
+                const now = new Date();
+                const diffInSeconds = Math.floor((now - firstMeetDate) / 1000); // 초 단위 차이 계산
+        
+                const years = Math.floor(diffInSeconds / (365 * 24 * 60 * 60));
+                const months = Math.floor((diffInSeconds % (365 * 24 * 60 * 60)) / (30 * 24 * 60 * 60));
+                const days = Math.floor((diffInSeconds % (30 * 24 * 60 * 60)) / (24 * 60 * 60));
+                const hours = Math.floor((diffInSeconds % (24 * 60 * 60)) / (60 * 60));
+                const minutes = Math.floor((diffInSeconds % (60 * 60)) / 60);
+                const seconds = diffInSeconds % 60;
+        
+                // 조건부로 각 단위를 문자열에 추가
+                const formattedTime = [
+                    years > 0 ? `${years}년` : "",
+                    months > 0 ? `${months}개월` : "",
+                    days > 0 ? `${days}일` : "",
+                    `${hours}시간`,
+                    `${minutes}분`,
+                    `${seconds}초`,
+                ]
+                .filter(Boolean) // 빈 문자열 제거
+                .join(" "); // 공백으로 연결
+        
+                setElapsedTime(formattedTime);
+            } else {
+                setElapsedTime("날짜를 입력해주세요.");
+            }
         };
     
         // 1초마다 업데이트
