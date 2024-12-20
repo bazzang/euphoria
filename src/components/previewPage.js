@@ -117,7 +117,7 @@ function PreviewPage() {
 
     const onClickFlower = () => {
         var url = inv.sendWreathUrl 
-        window.open(url, "_blank");
+        window.open("https://www.barunsonflower.com/?barunid=731900", "_blank");
     }
 
      // 전화하기 함수 
