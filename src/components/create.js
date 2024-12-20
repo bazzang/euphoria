@@ -1079,6 +1079,8 @@ function Create() {
                                             </tbody>
                                         </table>
                                     </div>
+
+                                    {invitationState.useDday ? (
                                     <div
                                         className={`d-day ${invitationState.useDday ? '' : 'hidden'}`}
                                         style={{ display: invitationState.useDday ? 'block' : 'none' }}
@@ -1096,6 +1098,9 @@ function Create() {
                                             <li><span>{timeLeft.seconds}</span>Seconds</li>
                                         </ul>
                                     </div>
+                                    ) : null}
+
+
                                 </section>
                                 )}
 
@@ -1879,19 +1884,23 @@ function Create() {
                                             </div>
                                         </div>
                                     </div>
+
                                     {/* 목요일 이후 (일단 패스) */}
-                                    {/* <div className="option">
+                                    <div className="option">
                                         <div className="option-label">디데이</div>
                                         <div className="option-contents">
                                             <div className="radio-wrap">
                                                 <span className="check">
                                                     <input type="checkbox" name="ct1_2" id="ct1_2_1" 
-                                                    onChange={(e) => handleChange("useDday", e.target.value === 'on'? true : false)} />
+                                                    onChange={(e) => handleChange("useDday", e.target.checked)} />
                                                     <label for="ct1_2_1"><i></i>사용</label>
                                                 </span>
                                             </div>
                                         </div>
-                                    </div> */}
+                                    </div>
+
+
+
                                 </div>
                                 )}
                             </div>

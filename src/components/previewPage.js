@@ -588,21 +588,25 @@ function PreviewPage() {
                             </div>
                             )}
 
+                            {inv.useDday ? (
                             <div
                                 className={`d-day ${inv.useDday ? '' : 'hidden'}`}
                                 style={{ display: inv.useDday ? 'block' : 'none' }}
                             >
-                                <p className="point" data-aos="fade-up" data-aos-duration="600">
+                                <p className="point">
+                                {/* <p className="point" data-aos="fade-up" data-aos-duration="600"> */}
                                     <span>{inv.groomLastName || "신랑"}</span>♥
                                     <span>{inv.brideLastName || "신부"}</span> 결혼식까지
                                 </p>
-                                <ul className="timer" data-aos="fade-up" data-aos-duration="600">
+                                <ul className="timer">
+                                {/* <ul className="timer" data-aos="fade-up" data-aos-duration="600"> */}
                                     <li><span>{timeLeft.days}</span>Days</li>
                                     <li><span>{timeLeft.hours}</span>Hours</li>
                                     <li><span>{timeLeft.minutes}</span>Minutes</li>
                                     <li><span>{timeLeft.seconds}</span>Seconds</li>
                                 </ul>
                             </div>
+                        ) : null}
                         </section>
                         ) : null}
 
