@@ -1151,7 +1151,10 @@ function Create() {
                                 {/* useFlower 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
                                 {invitationState.useFlower && (
                                 <section className="flower">
-                                    <div className="flower-box">
+                                    <div className="flower-box" onClick={() => { 
+                                                                    const link = "https://agent.maruw.co.kr/mobile/product-type01?goods_div_idx=1"; // 이동할 URL
+                                                                    window.location.href = link; // URL로 이동
+                                                                }}>
                                     {/* <div className="flower-box" data-aos="fade-up" data-aos-duration="100"> */}
                                         <img src={flower} alt="화환"/>
                                         <div className="text">
@@ -3221,17 +3224,17 @@ function Create() {
 
 
                                     <strong>화환 보내기</strong>
-                                    <button 
+                                    {/* <button 
                                         className={`btn-toggle ${categories['flowerDelivery'] ? 'active' : ''}`}
                                         onClick={() => toggleCategory('flowerDelivery')}
-                                    >여닫기</button> 
+                                    >여닫기</button>  */}
                                 </div>
-                                {categories['flowerDelivery'] && (
+                                {/* {categories['flowerDelivery'] && (
                                     <div className="category-body">
                                         <div className="option">
                                             <div className="option-label">링크</div>
                                             <div className="option-contents">
-                                                {/* <input type="datetime-local" className="input-sts"/> */}
+
                                                 <input
                                                 type="text"
                                                 className="input-sts"
@@ -3243,7 +3246,7 @@ function Create() {
                                         </div>
                                     </div>
 
-                                )}
+                                )} */}
                             </div>
 
 
