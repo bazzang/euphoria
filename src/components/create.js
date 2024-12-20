@@ -3206,12 +3206,28 @@ function Create() {
 
 
                                     <strong>화환 보내기</strong>
-                                    {/* <button 
+                                    <button 
                                         className={`btn-toggle ${categories['flowerDelivery'] ? 'active' : ''}`}
                                         onClick={() => toggleCategory('flowerDelivery')}
-                                    >여닫기</button> */}
+                                    >여닫기</button> 
                                 </div>
-                                {categories['flowerDelivery'] && (<></>
+                                {categories['flowerDelivery'] && (
+                                    <div className="category-body">
+                                        <div className="option">
+                                            <div className="option-label">링크</div>
+                                            <div className="option-contents">
+                                                {/* <input type="datetime-local" className="input-sts"/> */}
+                                                <input
+                                                type="text"
+                                                className="input-sts"
+                                                placeholder='화환 보내기 URL을 입력해주세요.'
+                                                value={invitationState.sendWreathUrl}
+                                                onChange={(e) => handleChange("sendWreathUrl", e.target.value)}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 )}
                             </div>
 
