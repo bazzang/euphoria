@@ -117,7 +117,7 @@ function PreviewPage() {
 
     const onClickFlower = () => {
         var url = inv.sendWreathUrl 
-        window.open = url;
+        window.open(url, "_blank");
     }
 
      // 전화하기 함수 
