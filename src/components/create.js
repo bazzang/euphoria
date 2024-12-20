@@ -101,6 +101,12 @@ function Create() {
                     trnspt: value, // 체크 상태에 따라 활성화/비활성화
                 }));
                 break;
+            case "useFlower" : 
+                setCategories((prevCategories) => ({
+                    ...prevCategories,
+                    flowerDelivery: value, // 체크 상태에 따라 활성화/비활성화
+                }));
+                break;
             default : 
                 break;
         }
