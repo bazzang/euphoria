@@ -194,6 +194,11 @@ function Create() {
         }
         window.location.href = `tel:${phoneNumber}`;
     }
+
+    const onClickFlower = () => { 
+        const link = "https://agent.maruw.co.kr/mobile/product-type01?goods_div_idx=1"; // 이동할 URL
+        window.open = link; // URL로 이동
+    }
     // -------------------------------------------------------------------------------------------------
 
     // *********************************[메인] 배경이미지************************************************
@@ -1151,10 +1156,7 @@ function Create() {
                                 {/* useFlower 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
                                 {invitationState.useFlower && (
                                 <section className="flower">
-                                    <div className="flower-box" onClick={() => { 
-                                                                    const link = "https://agent.maruw.co.kr/mobile/product-type01?goods_div_idx=1"; // 이동할 URL
-                                                                    window.open = link; // URL로 이동
-                                                                }}>
+                                    <div className="flower-box" onClick={onClickFlower}>
                                     {/* <div className="flower-box" data-aos="fade-up" data-aos-duration="100"> */}
                                         <img src={flower} alt="화환"/>
                                         <div className="text">
