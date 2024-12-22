@@ -167,7 +167,14 @@ function ProductionList() {
                                     <ul className="wd-desc">
                                         {/* <li>2024. 09. 01 21:30 제작</li>  */}
                                         <li>{item.createdAt} 제작</li> 
-                                        <li>워터마크 제거여부 : <strong>제거안함</strong></li> 
+                                        <li>워터마크 제거여부 : 
+                                            <strong>
+                                            {item.confirmYn === 'Y' ? '제거됨' : '제거 안함'}
+                                            제거안함
+                                            </strong>
+
+
+                                        </li> 
                                         <li>사용기간 : <span className="red">{formattedDate(item.createdAt)}</span> 까지</li> 
                                     </ul>
                                 </div>
