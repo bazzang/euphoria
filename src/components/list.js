@@ -170,7 +170,6 @@ function ProductionList() {
                                         <li>워터마크 제거여부 : 
                                             <strong>
                                             {item.confirmYn === 'Y' ? '제거됨' : '제거 안함'}
-                                            제거안함
                                             </strong>
 
 
