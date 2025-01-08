@@ -102,10 +102,9 @@ export const InvitationProvider = ({ children }) => {
     galleryThumbnailsVisible: false, // 썸네일 표시 여부
 
     // 지도 설정 변수
-    useMap : false,
     mapMarker: "", // 지도 마커 위치 정보
     mapHeight: "300px", // 지도 높이 기본값
-    mapZoomLevel: 1, // 지도 줌 레벨 기본값
+    mapZoomLevel: 3, // 지도 줌 레벨 기본값
     navigationRemove: false, // 네비게이션 삭제 여부
     mapFix: false, // 지도 이동 고정 여부
     
@@ -140,6 +139,14 @@ export const InvitationProvider = ({ children }) => {
     bridePhotoFile : "",
     endingPhotoFile : "",
 
+    // 영상
+     videoUrl : "",
+     videoTitle : "식전 영상",
+     
+
+
+
+     
     // 사용섹션 
     useProfile : true, // 프로필형 소개 
     useCalendar: false, // 달력
@@ -151,7 +158,10 @@ export const InvitationProvider = ({ children }) => {
     useTransportation : false, // 교통수단 사용 여부
     useEnding : false,  // land 
     useContactBrideAndGroom : false, // 신랑신부 연락하기
-
+    useVideo : false, // 영상
+    useMap : false
+    
+    
 
   });
 

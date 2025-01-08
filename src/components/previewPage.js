@@ -84,10 +84,6 @@ function PreviewPage() {
     }
 
     useEffect(() => {
-        setImg();
-    }, [galList]);
-    
-    useEffect(() => {
     }, [trsptList]);
 
     useEffect(() => {
@@ -112,7 +108,7 @@ function PreviewPage() {
                 setLoading(false);
             }
         });
-    }, [address]);
+    }, [inv.weddingHallAddress]);
 
 
     const onClickFlower = () => {
@@ -265,26 +261,66 @@ function PreviewPage() {
     const [endingImg, setEndingImg] = useState(); 
     const [gallImgs, setGallImgs] = useState([]); // 상태로 설정
     
-    function setImg() {
+    // function setImg() {
 
+    //     const newImages = [];
+    //     galList.forEach(img => {
+    //         const fixedFilename = encodeURIComponent((img.pic1).replace(/\\/g, '/'));
+    //         const imageUrl = `https://api.euphoriacard.co.kr/api/image?filename=${fixedFilename}`;
+    //         switch(img.type){
+    //             case "main" : 
+    //                 setMainImg(imageUrl);
+    //                 break;
+    //             case "bride" : 
+    //                 setBrideImg(imageUrl);
+    //                 break;
+    //             case "groom" : 
+    //                 setGroomImg(imageUrl);
+    //                 break;
+    //             case "calendar" : 
+    //                 setCalendarImg(imageUrl);
+    //                 break;
+    //             case "ending" : 
+    //                 setEndingImg(imageUrl);
+    //                 break;
+    //             case "gallery":
+    //                 newImages.push(imageUrl);
+    //                 break;
+    //             default:
+    //                 break;
+    //         }
+    //     });
+        
+    //     setGallImgs(newImages); // 상태 업데이트
+        
+    // }
+    // useEffect(() => {
+    //     if (gallImgs.length > 0) {
+    //         setImg();
+    //     }
+    // }, [galList]); // gallist가 업데이트되면 setImg 호출
+    // useEffect(() => {
+        //     setImg();
+        // }, [galList]);
+    useEffect(() => {
         const newImages = [];
-        galList.forEach(img => {
+        galList.forEach((img) => {
             const fixedFilename = encodeURIComponent((img.pic1).replace(/\\/g, '/'));
             const imageUrl = `https://api.euphoriacard.co.kr/api/image?filename=${fixedFilename}`;
-            switch(img.type){
-                case "main" : 
+            switch (img.type) {
+                case "main":
                     setMainImg(imageUrl);
                     break;
-                case "bride" : 
+                case "bride":
                     setBrideImg(imageUrl);
                     break;
-                case "groom" : 
+                case "groom":
                     setGroomImg(imageUrl);
                     break;
-                case "calendar" : 
+                case "calendar":
                     setCalendarImg(imageUrl);
                     break;
-                case "ending" : 
+                case "ending":
                     setEndingImg(imageUrl);
                     break;
                 case "gallery":
@@ -294,22 +330,15 @@ function PreviewPage() {
                     break;
             }
         });
-        
+    
         setGallImgs(newImages); // 상태 업데이트
-        
-    }
-    useEffect(() => {
-        if (gallImgs.length > 0) {
-            setImg();
-        }
-    }, [gallImgs]); // gallist가 업데이트되면 setImg 호출
+    }, [galList]); // gallImgs가 아닌 galList에 의존
 
 
 
   return (
     <>
-        {/* confirmCnt가 0일 경우에만 watermark를 표시 */}
-        {confirm != 'Y'  && (
+        {confirm === null || confirm === "null" && (
             <div className="watermark">
                 <p>구매 후 워터마크를 제거해주세요.
                 <br/>
@@ -319,7 +348,7 @@ function PreviewPage() {
                 </p>
                 <div className="btn-wrap">
                     <a href="https://euphoriacard.co.kr/shop_view/?idx=3" className="watermark-buy">구매하러 가기</a>
-                    <a href="https://euphoriacard.co.kr/shop_view/?idx=3" className="watermark-remove">워터마크 제거하기</a>
+                    {/* <a href="https://euphoriacard.co.kr/shop_view/?idx=3" className="watermark-remove">워터마크 제거하기</a>  */}
                 </div>
             </div>
         )}
@@ -619,6 +648,26 @@ function PreviewPage() {
                                 </ul>
                             </div>
                         ) : null}
+                        </section>
+                        ) : null}
+
+                        {/* 식전 영상 */}
+                        {inv.useVideo ? (
+                        <section className="gallery">
+                            <strong className="title">
+                            {/* <strong className="title" data-aos="fade-up" data-aos-duration="100"> */}
+                            {inv.videoTitle || "식전 영상"}</strong>
+                            <div class="iframe-container">
+                                <iframe 
+                                    width="361"
+                                    height="280" 
+                                    style={{marginLeft : "67px"}}
+                                    src={inv.videoUrl}
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen
+                                ></iframe>
+                            </div>
                         </section>
                         ) : null}
 

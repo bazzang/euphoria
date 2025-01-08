@@ -10,6 +10,7 @@ import wd_option_icon_3 from '../images/list/wd_option_icon_3.svg';
 import wd_option_icon_4 from '../images/list/wd_option_icon_4.svg';
 import wd_option_icon_5 from '../images/list/wd_option_icon_5.svg';
 import FormDialog, { openDialog } from "./dialog.js";
+import AlertDialog, { openAlertDialog } from "./AlertDialog.js";
 function ProductionList() {
     const navigate = useNavigate();
     const location = useLocation();
@@ -17,6 +18,7 @@ function ProductionList() {
     const { ordererNm, ordererCall } = location.state || {}; // 저장 후 제작 내역으로 왔을 경우 
     const [orderList, setOrderList] = useState([]);
     const [orderDetailCnt, setOrderDetailCnt] = useState(0); // 배송완료 count  제일 먼저 제작한 청첩장부터 워터마크를 제거한다
+    const [confCnt, setConfCnt] = useState(0); // 워터마크 제거된 갯수 
     // 페이지 로드 시 다이얼로그 열기
     useEffect(() => {
         if (ordererNm && ordererCall) {
@@ -74,16 +76,56 @@ function ProductionList() {
     }
 
     useEffect(() => {
+        // 컨펌된 갯수만큼 주문 갯수에서 차감
+        var cnt = 0;
         orderList.forEach((ord, idx) => {
-            if((idx+1) <= orderDetailCnt){
-                ord.confirmYn = 'Y'
+            if (ord.confirmedAt !== 0 && ord.confirmedAt !== null) {
+                console.log('컨펌드앳 확인', ord.confirmedAt);
+                console.log('컨펌드앳 인덱스', idx);
+                cnt++;
             }
         });
-    }, [orderDetailCnt]);
+        console.log('cnt?', cnt);
+        setConfCnt(cnt);
+        
+        var tempCnt1 = orderDetailCnt;
 
-    useEffect(() => {
+        var tempCnt2 = tempCnt1 - cnt;
+
+        // 워터마크 제거 가능 횟수 
+        setOrderDetailCnt(tempCnt2);
+        
     }, [orderList]);
 
+
+    const onClickUpdateConfirmed = async (data) => {
+        if(orderDetailCnt < 1 || orderDetailCnt === null){
+            alert("구매 후 이용해주세요.");
+            return;
+        }
+
+        try {
+            const response = await fetch('https://api.euphoriacard.co.kr/api/list/confirm', {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data), // seq는 숫자로 전달됩니다
+            });
+        
+            if (response.ok) {
+                const message = await response.text(); // 서버에서 보낸 메시지 받기
+                console.log('Response:', message);
+                alert('Success: ' + message);
+            } else {
+                console.error('Failed to update confirmation:', response.status);
+                alert('Error: ' + response.status);
+            }
+        } catch (error) {
+            console.error('Error during API call:', error);
+            alert('Error: ' + error.message);
+        }
+    };
 
     // 사용기간 시간 계산 
     function formattedDate (date) {
@@ -104,10 +146,14 @@ function ProductionList() {
             });
     };
 
+
+    
+
     
   return (
     <>
     <FormDialog disableBackdropClick={true} hideCancelButton={true} onSave={handleDialogConfirm}/>
+    <AlertDialog onConfirm={onClickUpdateConfirmed} />
     <div className="contents-wrap">
 
             <div className="container">
@@ -115,8 +161,8 @@ function ProductionList() {
                     <strong className="using-title">이용기간 안내</strong>
                     <ul className="using-list">
                         <li>예식 후 <strong>30일까지</strong> 이용 가능합니다.</li>
-                        <li>예식일 <strong> 335일(11개월) 전부터</strong> 제작이 가능합니다.</li>
-                        {/* <li>워터마크 미제거 청첩장은 <strong>7일</strong>이 지나면 자동으로 삭제됩니다.</li> */}
+                        {/* <li>예식일 <strong> 335일(11개월) 전부터</strong> 제작이 가능합니다.</li> */}
+                        <li>워터마크 미제거 청첩장은 <strong>7일</strong>이 지나면 자동으로 삭제됩니다.</li> 
                     </ul>
                 </div>
                 <div className="list-btn">
@@ -169,7 +215,7 @@ function ProductionList() {
                                         <li>{item.createdAt} 제작</li> 
                                         <li>워터마크 제거여부 : 
                                             <strong>
-                                            {item.confirmYn === 'Y' ? '제거됨' : '제거 안함'}
+                                            {item.confirmedAt ? ' 제거됨' : ' 제거 안함'}
                                             </strong>
 
 
@@ -192,7 +238,7 @@ function ProductionList() {
                                     onClick={() => {
                                         // orderDetailCnt 값에 따라 orderList의 데이터를 준비
                                         const selectedItems = orderList.slice(0, orderDetailCnt);
-                                        navigate(`/preview?itemId=${item.invSeq}&index=${index}&confirm=${item.confirmYn}`);
+                                        navigate(`/preview?itemId=${item.invSeq}&index=${index}&confirm=${item.confirmedAt}`);
                                       }}
                                     >
                                         <img src={wd_option_icon_1} alt="" />청첩장 확인하기
@@ -200,7 +246,7 @@ function ProductionList() {
                                     {/* <button className="wd-option-btn"><img src={wd_option_icon_2} alt=""/>참석여부 확인</button> */}
                                     <button className="wd-option-btn"
                                         onClick={() => {
-                                            const url = `${window.location.origin}/preview?itemId=${item.invSeq}&index=${index}&confirm=${item.confirmYn}`;
+                                            const url = `${window.location.origin}/preview?itemId=${item.invSeq}&index=${index}&confirm=${item.confirmedAt}`;
                                             copyToClipboard(url);
                                         }}
                                     >
@@ -209,9 +255,20 @@ function ProductionList() {
                                     {/* <button className="wd-option-btn"><img src={wd_option_icon_4} alt=""/>카톡 공유하기</button> */}
                                     {/* <button className="wd-option-btn"><img src={wd_option_icon_5} alt=""/>QR코드</button> */}
                                 </div>
-                                {/* <div className="wd-btn">
-                                    <button className="wd-btn-gray">워터마크 제거하기</button>
-                                </div>   */}
+
+                                
+                                {item.confirmedAt === null && (
+                                <div className="wd-btn">
+                                    <button 
+                                    className="wd-btn-gray" 
+                                    onClick={() => {openAlertDialog(item.invSeq)}}
+                                    >
+                                        워터마크 제거하기
+                                    </button>
+                                </div>  
+                                )}
+
+
                             </div>
                         </div> 
                     </div>

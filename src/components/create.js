@@ -90,11 +90,11 @@ function Create() {
                 }));
                 break;
 
-            // case "useDirections" : 
-            //     setCategories((prevCategories) => ({
-            //         ...prevCategories,
-            //         contactBrideAndGroom: value, // 체크 상태에 따라 활성화/비활성화
-            //     }));
+            case "useMap" : 
+                setCategories((prevCategories) => ({
+                    ...prevCategories,
+                    map: value, // 체크 상태에 따라 활성화/비활성화
+                }));
             case "useTransportation" : 
                 setCategories((prevCategories) => ({
                     ...prevCategories,
@@ -107,6 +107,13 @@ function Create() {
                     flowerDelivery: value, // 체크 상태에 따라 활성화/비활성화
                 }));
                 break;
+            case "useVideo" : 
+                setCategories((prevCategories) => ({
+                    ...prevCategories,
+                    video: value, // 체크 상태에 따라 활성화/비활성화
+                }));
+                break;
+                
             default : 
                 break;
         }
@@ -283,15 +290,66 @@ function Create() {
     };
     // -------------------------------------------------------------------------------------------------
 
-    // *********************************[지도] 지도 api  ******************************************
+    // *********************************[지도] 지도 api  ************************************************
 
     // -------------------------------------------------------------------------------------------------
 
-    useEffect(() => {
-        
-    }, []); 
-    
+    // var mapContainer = document.getElementById('map'); // 지도를 표시할 div 
+    // var mapContainer2 = document.getElementById('mapCategory'); // 지도를 표시할 div 
+    const [map, setMap] = useState(null);
+    const [map2, setMap2] = useState(null);
 
+    const handleMapSearch = () => {
+        const mapElement = document.getElementById('map');
+        const mapCategoryElement = document.getElementById('mapCategory');
+
+        if (!mapElement || !mapCategoryElement) {
+            console.error('Map elements are not rendered yet.');
+            return;
+        }
+
+        const mapOption = {
+            center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+            level: 3,
+        };
+
+        const createdMap = new window.kakao.maps.Map(mapElement, mapOption);
+        const createdMap2 = new window.kakao.maps.Map(mapCategoryElement, mapOption);
+
+        setMap(createdMap); // 상태로 저장
+        setMap2(createdMap2);
+
+        const geocoder = new window.kakao.maps.services.Geocoder();
+
+        geocoder.addressSearch(invitationState.weddingHallAddress, function (result, status) {
+            if (status === window.kakao.maps.services.Status.OK) {
+                const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+
+                const marker = new window.kakao.maps.Marker({
+                    map: createdMap,
+                    position: coords,
+                });
+
+                const marker2 = new window.kakao.maps.Marker({
+                    map: createdMap2,
+                    position: coords,
+                });
+
+                createdMap.setCenter(coords);
+                createdMap2.setCenter(coords);
+            }
+        });
+    };
+
+    // function setDraggable(draggable) {
+    //     // 마우스 드래그로 지도 이동 가능여부를 설정합니다
+    //     // map.setDraggable(draggable);    
+    // }
+
+    // 초기값 설정
+    useEffect(() => {
+        handleMapSearch();
+    }, [invitationState.weddingHallAddress]);
     // -------------------------------------------------------------------------------------------------
 
     // *********************************[교통수단] 교통수단 입력 폼 이벤트 핸들러 *************************
@@ -1104,10 +1162,28 @@ function Create() {
                                         </ul>
                                     </div>
                                     ) : null}
-
-
                                 </section>
                                 )}
+
+
+
+                                {/* useVideo 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
+                                {invitationState.useVideo && (
+                                <section className="gallery">
+                                    <strong className="title">
+                                    {/* <strong className="title" data-aos="fade-up" data-aos-duration="100"> */}
+                                    {invitationState.videoTitle || "식전 영상"}</strong>
+                                         <iframe 
+                                            width="361"
+                                            height="280" 
+                                            src={invitationState.videoUrl}
+                                            frameborder="0" 
+                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                            allowfullscreen
+                                        ></iframe>
+                                </section>
+                                )}
+
 
                                 {/* useGallery 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
                                 {invitationState.useGallery && (
@@ -1173,7 +1249,7 @@ function Create() {
                                 {/* useFirstMeetTime 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
                                 {invitationState.useFirstMeetTime && (
                                 <section className="our-time">
-                                    <span className="title">함께한 시간</span>
+                                    <strong className="title">함께한 시간</strong>
                                     {/* <span className="title" data-aos="fade-up" data-aos-duration="100">함께한 시간</span> */}
                                     {/* <p className="timer" data-aos="fade-up" data-aos-duration="1000">“25년 1개월 17시간 42분 7초”</p> */}
                                     <p className="timer">
@@ -1186,7 +1262,7 @@ function Create() {
 
 
                                 {/* useDirections 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
-                                {invitationState.useDirections && (
+                                {invitationState.useMap && (
                                 <section className="directions">
                                     <strong className="title">
                                     {/* <strong className="title" data-aos="fade-up" data-aos-duration="100"> */}
@@ -1200,7 +1276,12 @@ function Create() {
                                         <p className="place">{invitationState.weddingHallFloorAndRoom || "OOO홀"}</p>
                                         <p className="address">{ invitationState.weddingHallAddress||"경기 성남시 분당구 판교역로 4"}</p>
                                         {/* 목요일에 할거임 */}
-                                        {/* <div className="map"></div> */}
+                                        <div className="map">
+                                            <div
+                                                id="map"
+                                                style={{ width: "100%", height: `${invitationState.mapHeight}`}}
+                                            ></div>
+                                        </div>
                                         {/* <div className="map-btns">
                                             <a href="#" className="map-btn"><img src={map_t} alt=""/>티맵</a>
                                             <a href="#" className="map-btn"><img src={map_kakao} alt=""/>카카오 내비</a>
@@ -1806,6 +1887,7 @@ function Create() {
                                             className="input-sts" 
                                             placeholder="주소 검색을 통해 입력해주세요." 
                                             value={invitationState.weddingHallAddress || ""}
+                                            onChange={handleMapSearch}
                                             readOnly
                                             />
                                         </div>
@@ -2460,34 +2542,50 @@ function Create() {
 
 
                             {/* 목요일 이후 구현 (퍼블리싱 없음) */}
-                            {/* <div className="category">
+                            <div className="category">
                                 <div className="category-head">
-                                    <label for="" className="switch">
-                                        <input type="checkbox" checked/>
+
+                                    <label className="switch">
+                                        <input 
+                                            type="checkbox" 
+                                            checked={invitationState.useVideo} 
+                                            onChange={(e) => handleChange('useVideo', e.target.checked)}
+                                        />
                                     </label>
+
                                     <strong>영상</strong>
                                     <button 
                                         className={`btn-toggle ${categories['video'] ? 'active' : ''}`}
                                         onClick={() => toggleCategory('video')}
                                     >여닫기</button>
+                                    
                                 </div>
                                 {categories['video'] && (
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">유튜브 URL<sup>필수</sup></div>
                                         <div className="option-contents">
-                                            <input type="text" className="input-sts" placeholder="https://www.youtube.com/watch?v=(11자리문자)"/>
+
+                                            <input type="text" className="input-sts" 
+                                            placeholder="https://www.youtube.com/watch"
+                                            value={invitationState.videoUrl || ""} // Bind to invitationState
+                                            onChange={(e) => handleChange("videoUrl", e.target.value)} // Update state
+                                            />
+
                                         </div>
                                     </div>
                                     <div className="option">
                                         <div className="option-label">영상 제목<sup>필수</sup></div>
                                         <div className="option-contents">
-                                            <input type="text" className="input-sts" placeholder="식전 영상"/>
+                                            <input type="text" className="input-sts" placeholder="식전 영상"
+                                                value={invitationState.videoTitle || ""} 
+                                                onChange={(e) => handleChange("videoTitle", e.target.value)} 
+                                            />
                                         </div>
                                     </div>
                                 </div>
                             )}
-                            </div> */}
+                            </div>
 
                             {/* 목요일 이후 구현 (퍼블리싱 없음) */}
                             {/* <div className="category">
@@ -2551,11 +2649,13 @@ function Create() {
                             )}
                             </div> */}
 
-                            {/*  지도 안나옴  */}
-                            {/* <div className="category">
+                            <div className="category">
                                 <div className="category-head">
                                     <label for="" className="switch">
-                                        <input type="checkbox" checked/>
+                                        <input type="checkbox" 
+                                        checked={invitationState.useMap} 
+                                        onChange={(e) => handleChange('useMap', e.target.checked)}
+                                        />
                                     </label>
                                     <strong>지도</strong>
                                     <button 
@@ -2570,28 +2670,33 @@ function Create() {
                                         <div className="option-label">지도 마커</div>
                                         <div className="option-contents">
                                             <div className="map-marker">
-                                                <Map // 카카오맵을 표시할 컴포넌트
-                                                    center={{lat : 33.491103, lng : 126.496458}} // 중심 좌표
-                                                    level={3} // 확대 레벨
-                                                    style={{ width: "100%", height: "100%" }} // 스타일
-                                                />
+                                                <div id="mapCategory" style={{width:'100%',height:'350px'}}>
+                                                    
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="option">
                                         <div className="option-label">지도 높이</div>
                                         <div className="option-contents">
-                                            <select name="" id="" className="select-sts">
-                                                <option value="0">300px</option>
-                                                <option value="1">350px</option>
-                                                <option value="2">400px</option>
+                                            <select name="" id="" className="select-sts" 
+                                            value={invitationState.mapHeight || "300px"} 
+                                            onChange={(e) => handleChange("mapHeight", e.target.value)}
+                                            >
+                                                <option value="300px">300px</option>
+                                                <option value="350px">350px</option>
+                                                <option value="400px">400px</option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div className="option">
+                                    {/* TODO */}
+                                    {/* <div className="option">
                                         <div className="option-label">지도 줌 레벨</div>
                                         <div className="option-contents">
-                                            <select name="" id="" className="select-sts">
+                                            <select name="" id="" className="select-sts"
+                                            value={invitationState.mapZoomLevel || "3"} 
+                                            onChange={(e) => handleChange("mapZoomLevel", e.target.value)}
+                                            >
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
                                                 <option value="3">3</option>
@@ -2609,8 +2714,8 @@ function Create() {
                                             </select>
                                             <p className="notice">지도 레벨은 1부터 14레벨이 있으며 숫자가 작을수록 지도 확대 수준이 높습니다.</p>
                                         </div>
-                                    </div>
-                                    <div className="option">
+                                    </div> */}
+                                    {/* <div className="option">
                                         <div className="option-label">네비게이션</div>
                                         <div className="option-contents">
                                             <div className="check-wrap">
@@ -2631,10 +2736,10 @@ function Create() {
                                                 </span>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             )}
-                            </div>  */}
+                            </div> 
 
                             <div className="category">
                                 <div className="category-head">
@@ -2836,7 +2941,7 @@ function Create() {
                                             </div>
                                         </div>
                                     </div>
-                                    {/* 목요일 이후 구현 (퍼블 없어서 만들다 때려ㅓ침 ) */}
+                                    {/* 목요일 이후 구현  */}
                                     {/* <div className="option">
                                         <div className="option-label">외부링크 버튼</div>
                                         <div className="option-contents">
