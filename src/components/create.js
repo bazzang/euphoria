@@ -1275,7 +1275,7 @@ function Create() {
                                         </strong>
                                         <p className="place">{invitationState.weddingHallFloorAndRoom || "OOO홀"}</p>
                                         <p className="address">{ invitationState.weddingHallAddress||"경기 성남시 분당구 판교역로 4"}</p>
-                                        {/* 목요일에 할거임 */}
+                                        
                                         <div className="map">
                                             <div
                                                 id="map"

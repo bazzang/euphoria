@@ -88,28 +88,60 @@ function PreviewPage() {
 
     useEffect(() => {
         generateCalendar(inv.weddingDate);
+        
     }, [inv]);
     
-    const [mapCenter, setMapCenter] = useState({ lat: 37.5665, lng: 126.978 }); // 기본 좌표
-    const [address, setAddress] = useState("경기 성남시 분당구 판교역로 4"); // 기본 주소
-    const [loading, setLoading] = useState(true);
+
+
+    // -------------------------------------------------------------------------------------------------
+    // *********************************[지도] 지도 api  ************************************************
+    // -------------------------------------------------------------------------------------------------
 
     useEffect(() => {
+        if (inv.useMap && inv.weddingHallAddress) {
+            handleMapSearch();
+        }
+    }, [inv.useMap, inv.weddingHallAddress]);
+
+    useEffect(() => {
+        if (!window.kakao) {
+            console.error("Kakao Maps SDK is not loaded.");
+        }
+    }, []);
+
+    
+
+    const handleMapSearch = () => {
+        const mapElement = document.getElementById('map');
+
+        if (!mapElement) {
+            console.error('Map elements are not rendered yet.');
+            return;
+        }
+
+        const mapOption = {
+            center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+            level: 3,
+        };
+
+        const createdMap = new window.kakao.maps.Map(mapElement, mapOption);
+
         const geocoder = new window.kakao.maps.services.Geocoder();
-        setAddress(inv.weddingHallAddress)
-        // 주소 검색
-        geocoder.addressSearch(address, (result, status) => {
+
+        geocoder.addressSearch(inv.weddingHallAddress, function (result, status) {
             if (status === window.kakao.maps.services.Status.OK) {
-                const coords = { lat: parseFloat(result[0].y), lng: parseFloat(result[0].x) };
-                setMapCenter(coords);
-                setLoading(false);
-            } else {
-                console.error("Geocoder failed: ", status);
-                setLoading(false);
+                const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+
+                const marker = new window.kakao.maps.Marker({
+                    map: createdMap,
+                    position: coords,
+                });
+
+                createdMap.setCenter(coords);
             }
         });
-    }, [inv.weddingHallAddress]);
-
+    };
+    
 
     const onClickFlower = () => {
         var url = inv.sendWreathUrl 
@@ -653,16 +685,31 @@ function PreviewPage() {
 
                         {/* 식전 영상 */}
                         {inv.useVideo ? (
-                        <section className="gallery">
+                        <section className="calendar">
                             <strong className="title">
                             {/* <strong className="title" data-aos="fade-up" data-aos-duration="100"> */}
                             {inv.videoTitle || "식전 영상"}</strong>
-                            <div class="iframe-container">
+                            <br/>
+                            <div class="iframe-container" 
+                                style={{ 
+                                    width: "100%",
+                                    maxWidth: "700px",
+                                    textAlign: "center", 
+                                    display: "flex", 
+                                    justifyContent:"center",
+                                    margin: "0 auto",
+                                }}
+                            >
                                 <iframe 
-                                    width="361"
-                                    height="280" 
-                                    style={{marginLeft : "67px"}}
-                                    src={inv.videoUrl}
+                                    title="YouTube video player"
+                                    style={{
+                                        width: "100%", // Make it responsive to the container
+                                        height: "300px", // Adjust height to your preference
+                                        maxWidth: "700px", // Set maximum width
+                                        border: "none",
+                                    }}
+                                    
+                                    src={inv.videoUrl.replace("watch?v=", "embed/")}
                                     frameborder="0" 
                                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
                                     allowfullscreen
@@ -740,7 +787,7 @@ function PreviewPage() {
 
 
                         {/* 오시는길 */}
-                        {inv.useDirections ? (
+                        {inv.useMap ? (
                         <section className="directions">
                             {/* <strong className="title" data-aos="fade-up" data-aos-duration="600">오시는 길</strong>
                             <div className="info" data-aos="fade-up" data-aos-duration="600"> */}
@@ -749,14 +796,28 @@ function PreviewPage() {
                                 <strong className="name">
                                     {inv.weddingHallName || "예식장 이름"}
                                     {/* <a href="#" className="call"></a> */}
+                                    {inv.weddingHallPhoneNumber && (
+                                            <div style={{marginLeft:"4px"}} className="call"
+                                            onClick={() => onClickPhoneCall(inv.weddingHallPhoneNumber)}>
+                                                <CallIcon />
+                                            </div>
+                                    )}
                                 </strong>
                                 <p className="place">{inv.weddingHallFloorAndRoom || "OOO홀"}</p>
                                 <p className="address">{ inv.weddingHallAddress||"경기 성남시 분당구 판교역로 4"}</p>
-                                 {/* <Map center={mapCenter} style={{ width: "100%", height: "400px" }} level={3}>
-                                    <MapMarker position={mapCenter}>
-                                        <div style={{ padding: "5px", color: "#000" }}>{inv.weddingHallName}</div>
-                                    </MapMarker>
-                                </Map> */}
+                                {inv.useMap ? (
+                                <div>
+                                    <div className="map">
+                                        <div
+                                            id="map"
+                                            style={{
+                                                width: "100%",
+                                                height: inv.mapHeight || "400px", // 기본 높이
+                                            }}
+                                        ></div>
+                                    </div>
+                                </div>
+                                ) : null}
                                 {/* <div className="map-btns">
                                     <a href="#" className="map-btn"><img src={map_t} alt=""/>티맵</a>
                                     <a href="#" className="map-btn"><img src={map_kakao} alt=""/>카카오 내비</a>
