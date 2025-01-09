@@ -734,7 +734,7 @@ function PreviewPage() {
                             <div className="gallery-list">
                                 {gallImgs &&
                                     gallImgs.map((image, index) => (
-                                        <div className="gallery-item" key={index} onClick={() => handleImageClick(gallImgs, index)}>
+                                        <div className="gallery-item" key={index} onClick={() => handleImageClick(image)}>
                                             <img src={image} alt={`gallery-${index}`} />
                                         </div>
                                 ))}
