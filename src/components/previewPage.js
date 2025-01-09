@@ -865,7 +865,7 @@ function PreviewPage() {
             {/* </div>         
             </div> */}
 
-            <BasicModal />
+            {/* <BasicModal /> */}
             
         </div>
     </>
