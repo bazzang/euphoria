@@ -66,7 +66,7 @@ function PreviewPage() {
     
     const fetchInvData = async() => {
         try {
-            const response = await axios.post("https://api.euphoriacard.co.kr/api/invitation/detail", itemId,
+            const response = await axios.post("/api/invitation/detail", itemId,
               {
                 headers: {
                   "Content-Type": "application/json",
