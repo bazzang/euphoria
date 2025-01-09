@@ -340,7 +340,7 @@ function PreviewPage() {
         const newImages = [];
         galList.forEach((img) => {
             const fixedFilename = encodeURIComponent((img.pic1).replace(/\\/g, '/'));
-            const imageUrl = `https://api.euphoriacard.co.kr/api/image?filename=${fixedFilename}`;
+            const imageUrl = `https://api.euphoriacard.co.kr/api/image?filename=${fixedFilename}/`;
             switch (img.type) {
                 case "main":
                     setMainImg(imageUrl);
