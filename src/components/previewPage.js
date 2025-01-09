@@ -18,6 +18,8 @@ import map_kakao from '../images/create/map_kakao.png';
 import map_naver from '../images/create/map_naver.png';
 import CallIcon from './CallIcon.js'
 
+import BasicModal, { openBasicModal } from "./BasicModal.js";
+
 function PreviewPage() {
     const location = useLocation();
     const navigate = useNavigate();
@@ -366,7 +368,9 @@ function PreviewPage() {
         setGallImgs(newImages); // 상태 업데이트
     }, [galList]); // gallImgs가 아닌 galList에 의존
 
-
+    const handleImageClick = (img) => {
+        openBasicModal(img);
+    }
 
   return (
     <>
@@ -730,7 +734,7 @@ function PreviewPage() {
                             <div className="gallery-list">
                                 {gallImgs &&
                                     gallImgs.map((image, index) => (
-                                        <div className="gallery-item" key={index}>
+                                        <div className="gallery-item" key={index} onClick={() => handleImageClick(image)}>
                                             <img src={image} alt={`gallery-${index}`} />
                                         </div>
                                 ))}
@@ -861,7 +865,7 @@ function PreviewPage() {
             {/* </div>         
             </div> */}
 
-
+            <BasicModal />
             
         </div>
     </>

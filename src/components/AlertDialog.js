@@ -11,7 +11,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 let openDialogCallback;
 var param = "";
 export function openAlertDialog(params) {
-  console.log('params@@@@@', params);
   param = params
   if (openDialogCallback) {
     openDialogCallback();
