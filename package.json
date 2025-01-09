@@ -18,6 +18,8 @@
     "react-kakao-maps-sdk": "^1.1.27",
     "react-router-dom": "^6.27.0",
     "react-scripts": "5.0.1",
+    "react-slick": "^0.30.3",
+    "slick-carousel": "^1.8.1",
     "web-vitals": "^2.1.4"
   },
   "proxy": "https://api.euphoriacard.co.kr",

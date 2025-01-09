@@ -368,8 +368,8 @@ function PreviewPage() {
         setGallImgs(newImages); // 상태 업데이트
     }, [galList]); // gallImgs가 아닌 galList에 의존
 
-    const handleImageClick = (img) => {
-        openBasicModal(img);
+    const handleImageClick = (img, idx) => {
+        openBasicModal(img, idx);
     }
 
   return (
@@ -734,7 +734,7 @@ function PreviewPage() {
                             <div className="gallery-list">
                                 {gallImgs &&
                                     gallImgs.map((image, index) => (
-                                        <div className="gallery-item" key={index} onClick={() => handleImageClick(image)}>
+                                        <div className="gallery-item" key={index} onClick={() => handleImageClick(gallImgs, index)}>
                                             <img src={image} alt={`gallery-${index}`} />
                                         </div>
                                 ))}
