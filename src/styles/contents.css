@@ -418,5 +418,21 @@ input[type="range"]::-moz-range-thumb {height:18px; width:50px; background-color
 .main-typo {position:absolute; top:58%; left:50%; max-width:80%;transform: translateX(-50%);}
 
 
-/* 지수 추가  */
+/* 개발자 추가  */
 .hidden {display: none;}
+/* .frame .calendar .infoP {color:#363636;font-family: "Nanum Myeongjo";font-size:16px;font-weight:bold;line-height:1.6;text-align: inherit;} */
+.frame .calendar .infoP {
+    color: #363636;
+    font-family: "Nanum Myeongjo";
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 1.6;
+    text-align: inherit; /* 부모 정렬 속성을 상속 */
+  }
+  
+  .ql-align-right {
+    text-align: right !important; /* 오른쪽 정렬 강제 적용 */
+  }
+  .ql-align-center {
+    text-align: center !important; /* 가운데 정렬 강제 적용 */
+  }

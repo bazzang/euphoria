@@ -21,16 +21,24 @@ import PositionedSnackbar from "./PositionedSnackbar.js";
 import ribon from '../images/ribbon.png';
 import noimg from '../images/defaultimg.png';
 import CallIcon from './CallIcon.js'
-
+import MapComponent from './map.js';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import PhraseModal, {openPhraseModal} from './PhraseModal.js';
+// import PhraseSampleModal, {openPhraseSample} from './PhraseSampleModal.js';
 
 function Create() {
     const navigate = useNavigate(); 
     const { invitationState, setInvitationState } = useInvitation();
 
-
+    
     useEffect(() => {
     //    console.log('Current state:', invitationState); // 초기 상태 확인
     }, [invitationState]);
+
+    useEffect(() => {
+        console.log("mainWddInfoOnoff???", invitationState.mainWddInfoOnoff);
+    }, [invitationState.mainWddInfoOnoff]);
 
     const handleChange = (key, value) => {
         
@@ -113,6 +121,12 @@ function Create() {
                     video: value, // 체크 상태에 따라 활성화/비활성화
                 }));
                 break;
+            case "usePhrases" : 
+                setCategories((prevCategories) => ({
+                    ...prevCategories,
+                    phrases: value, // 체크 상태에 따라 활성화/비활성화
+                }));
+                break;
                 
             default : 
                 break;
@@ -154,25 +168,6 @@ function Create() {
     //     $('.menu-wrap').toggleClass('active');
     // })
 
-    ///////////////////////////////teststart///////////////////////////////
-    const [val1, setVal1] = useState('');
-    const [val2, setVal2] = useState('');
-    const [val3, setVal3] = useState('');
-    const [val4, setVal4] = useState('');
-    const [val5, setVal5] = useState('');
-    const [val6, setVal6] = useState('');
-    const [val7, setVal7] = useState('');
-
-    const handleSelectChange = (e) => {
-        setVal1(e.target.value); // 선택한 옵션 값을 상태에 저장
-        
-    };
-
-
-    const handleTextChange = (e) => {
-        setVal3(e.target.value); // 메인텍스트입력
-    };
-    ////////////////////////////////testend//////////////////////////////
 
     // 각 카테고리의 열림 상태를 관리하는 상태
     const [categories, setCategories] = useState({
@@ -294,62 +289,17 @@ function Create() {
 
     // -------------------------------------------------------------------------------------------------
 
-    // var mapContainer = document.getElementById('map'); // 지도를 표시할 div 
-    // var mapContainer2 = document.getElementById('mapCategory'); // 지도를 표시할 div 
-    const [map, setMap] = useState(null);
-    const [map2, setMap2] = useState(null);
-
-    const handleMapSearch = () => {
-        const mapElement = document.getElementById('map');
-        const mapCategoryElement = document.getElementById('mapCategory');
-
-        if (!mapElement || !mapCategoryElement) {
-            console.error('Map elements are not rendered yet.');
-            return;
+    const handleCoordinatesChange = (data) => {
+        if (
+          data.latitude !== invitationState.latitude ||
+          data.longitude !== invitationState.longitude
+        ) {
+          console.log("맵컴포넌트 위도경도 업데이트", data);
+          handleChange("longitude", data.longitude);
+          handleChange("latitude", data.latitude);
         }
+      };
 
-        const mapOption = {
-            center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-            level: 3,
-        };
-
-        const createdMap = new window.kakao.maps.Map(mapElement, mapOption);
-        const createdMap2 = new window.kakao.maps.Map(mapCategoryElement, mapOption);
-
-        setMap(createdMap); // 상태로 저장
-        setMap2(createdMap2);
-
-        const geocoder = new window.kakao.maps.services.Geocoder();
-
-        geocoder.addressSearch(invitationState.weddingHallAddress, function (result, status) {
-            if (status === window.kakao.maps.services.Status.OK) {
-                const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
-
-                const marker = new window.kakao.maps.Marker({
-                    map: createdMap,
-                    position: coords,
-                });
-
-                const marker2 = new window.kakao.maps.Marker({
-                    map: createdMap2,
-                    position: coords,
-                });
-
-                createdMap.setCenter(coords);
-                createdMap2.setCenter(coords);
-            }
-        });
-    };
-
-    // function setDraggable(draggable) {
-    //     // 마우스 드래그로 지도 이동 가능여부를 설정합니다
-    //     // map.setDraggable(draggable);    
-    // }
-
-    // 초기값 설정
-    useEffect(() => {
-        handleMapSearch();
-    }, [invitationState.weddingHallAddress]);
     // -------------------------------------------------------------------------------------------------
 
     // *********************************[교통수단] 교통수단 입력 폼 이벤트 핸들러 *************************
@@ -504,9 +454,13 @@ function Create() {
         const minutes = date.getMinutes();
         const period = hours >= 12 ? "오후" : "오전"; // 오전/오후 구분
         const twelveHourFormat = hours % 12 || 12; // 12시간 형식으로 변환
-      
-        // 최종 문자열 생성
-        return `${dayOfWeek}  ${period}  ${twelveHourFormat}시  ${minutes}분`;
+        if(minutes === 0){
+            return `${dayOfWeek}  ${period}  ${twelveHourFormat}시`;
+        }else{
+            // 최종 문자열 생성
+            return `${dayOfWeek}  ${period}  ${twelveHourFormat}시  ${minutes}분`;
+        }
+        
 
     };
 
@@ -947,7 +901,30 @@ function Create() {
                                 </div>
                                 </section>
 
+                                {/* 메인 하단 예식 정보 */}
+                                {invitationState.mainWddInfoOnoff ? (
+                                <section className="calendar" style={{textAlign: "center"}}>
+                                    <div style={{width:"300px", borderTop:"2px solid #c7c7c7",  borderBottom:"2px solid #c7c7c7", margin:"0 auto 20px", paddingTop:"20px", paddingBottom:"20px"}}>
+                                        <p className="info">{parseInt(invitationState.weddingDate.split("-")[0], 10)}년&nbsp;
+                                                            {parseInt(invitationState.weddingDate.split("-")[1], 10)}월&nbsp;
+                                                            {parseInt(invitationState.weddingDate.split("-")[2])}일&nbsp;
+                                                            {/* {}요일 오후 {}시 */}
+                                                            {getKoreanDateInfo(invitationState.weddingDate)}<br/>
+                                                            {invitationState.weddingHallName || "예식장"}&nbsp;
+                                        </p>
+                                    </div>
+                                </section>
+                                ) : null}
 
+                                {/* 글귀 */}
+                                {invitationState.usePhrases ? (
+                                <section className="calendar">
+                                   <span
+                                    className="infoP"
+                                    dangerouslySetInnerHTML={{ __html: invitationState.phrases }}
+                                    ></span>
+                                </section>
+                                ) : null}
 
                                 {/* useProfile 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
                                 {invitationState.useProfile && (
@@ -1277,16 +1254,53 @@ function Create() {
                                         <p className="address">{ invitationState.weddingHallAddress||"경기 성남시 분당구 판교역로 4"}</p>
                                         
                                         <div className="map">
-                                            <div
+                                            {/* <div
                                                 id="map"
                                                 style={{ width: "100%", height: `${invitationState.mapHeight}`}}
-                                            ></div>
+                                            ></div> */}
+                                            <MapComponent mapId="map2" address={invitationState.weddingHallAddress} mapHeight={invitationState.mapHeight} />
+
+                                            <div className="map-btns">
+                                            {/* 티맵 */}
+                                            <a 
+                                                href={`https://apis.openapi.sk.com/tmap/app/routes?appKey=TpWtOTtdJv3PGa01rxTRS1PfjuWBzvRo8vZwImL2&name=${encodeURIComponent(invitationState.weddingHallName)}&lon=${invitationState.longitude}&lat=${invitationState.latitude}`} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="map-btn"
+                                            >
+                                                <img src={map_t} alt=""/>
+                                                티맵
+                                            </a>
+                                            
+                                            {/* 카카오 내비 */}
+                                            <a 
+                                                href={`kakaomap://route?sp=37.5665,126.9780&ep=${invitationState.latitude},${invitationState.longitude}&by=CAR`} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="map-btn"
+                                            >
+                                                <img src={map_kakao} alt=""/>
+                                                카카오 내비
+                                            </a>
+                                            
+                                            {/* 네이버 지도 */}
+                                            <a 
+                                                href={`nmap://route/car?dlat=${invitationState.latitude}&dlng=${invitationState.longitude}&dname=${encodeURIComponent(invitationState.weddingHallName)}&appname=com.example.myapp`} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="map-btn"
+                                            >
+                                                <img src={map_naver} alt=""/>
+                                                네이버 지도
+                                            </a>
+                                        </div>
                                         </div>
                                         {/* <div className="map-btns">
                                             <a href="#" className="map-btn"><img src={map_t} alt=""/>티맵</a>
                                             <a href="#" className="map-btn"><img src={map_kakao} alt=""/>카카오 내비</a>
                                             <a href="#" className="map-btn"><img src={map_naver} alt=""/>네이버 지도</a>
                                         </div> */}
+                                        
                                     </div>
                                 </section>
                                 )}
@@ -1552,22 +1566,43 @@ function Create() {
                                             />
                                         </div>
                                     </div>
-                                        {/* 기능이해못함 */}
-                                    {/* <div className="option">
+
+                                    <div className="option">
                                         <div className="option-label">메인 하단 예식 정보 <sup>필수</sup></div>
                                         <div className="option-contents">
                                             <div className="radio-wrap">
-                                                <span className="radio">
-                                                    <input type="radio" name="ct1_1" id="ct1_1_1" />
+                                                <label className="switch">
+                                                    <input 
+                                                        type="checkbox" 
+                                                        checked={invitationState.mainWddInfoOnoff} 
+                                                        onChange={(e) => handleChange('mainWddInfoOnoff', e.target.checked)}
+                                                    />
+                                                </label>
+                                                {/* <span className="radio">
+                                                    <input
+                                                        type="radio"
+                                                        name="ct1_1"
+                                                        id="ct1_1_1"
+                                                        value="true"
+                                                        checked={invitationState.mainWddInfoOnoff === true} // Bind to state
+                                                        onChange={(e) => handleChange("mainWddInfoOnoff", e.target.value)}
+                                                    />
                                                     <label for="ct1_1_1"><i></i>노출</label>
                                                 </span>
                                                 <span className="radio">
-                                                    <input type="radio" name="ct1_1" id="ct1_1_2" checked />
+                                                    <input
+                                                        type="radio"
+                                                        name="ct1_1"
+                                                        id="ct1_1_2"
+                                                        value="false"
+                                                        checked={invitationState.mainWddInfoOnoff === false} // Bind to state
+                                                        onChange={(e) => handleChange("mainWddInfoOnoff", e.target.value)}
+                                                    />
                                                     <label for="ct1_1_2"><i></i>비노출</label>
-                                                </span>
+                                                </span> */}
                                             </div>
                                         </div>
-                                    </div> */}
+                                    </div>
                                     
                                     {/* <div className="option">
                                         <div className="option-label">스크롤 안내 <sup>필수</sup></div>
@@ -1887,7 +1922,8 @@ function Create() {
                                             className="input-sts" 
                                             placeholder="주소 검색을 통해 입력해주세요." 
                                             value={invitationState.weddingHallAddress || ""}
-                                            onChange={handleMapSearch}
+                                            // onChange={handleMapSearch}
+                                            onChange={(e) => handleChange("weddingHallAddress", e.target.value)}
                                             readOnly
                                             />
                                         </div>
@@ -1994,40 +2030,64 @@ function Create() {
 
 
                             {/* 목요일 이후 구현 (퍼블리싱 없음) */}
-                            {/* <div className="category">
+                            <div className="category">
                                 <div className="category-head">
-                                    <label for="" className="switch">
-                                        <input type="checkbox" checked />
+                                    <label className="switch">
+                                        <input 
+                                            type="checkbox" 
+                                            checked={invitationState.usePhrases} 
+                                            onChange={(e) => handleChange('usePhrases', e.target.checked)}
+                                        />
                                     </label>
                                     <strong>글귀</strong>
                                     <button 
-                                        className={`btn-toggle ${categories['phrases '] ? 'active' : ''}`}
-                                        onClick={() => toggleCategory('phrases ')}
+                                        className={`btn-toggle ${categories['phrases'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('phrases')}
                                     >여닫기</button>
                                 </div>
-                                {categories['phrases '] && (
+                                {categories['phrases'] && (
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">글귀</div>
                                         <div className="option-contents">
                                             <div className="phrase">
-                                                <button className="phrase-sample">샘플 양식</button>
-                                                <textarea name="" id="" className="textarea-sts" rows="9">
-                                                내가 그다지 사랑하던 그대여
-                                                내 한 평생에 차마
-                                                그대를 잊을 수 없소이다.
-                                                못 올 사랑인 줄 알면서도
-                                                나 혼자는 꾸준히 생각하리라.
+                                                <button className="phrase-sample" onClick={() => openPhraseModal()}>샘플 양식</button>
+                                                <PhraseModal onPhraseSelect={(phrase) => handleChange("phrases", phrase)}/>
+                                                <ReactQuill
+                                                    theme="snow"
+                                                    value={invitationState.phrases || 
+                                                            "내가 그다지 사랑하던 그대여" + "<br/>" +
+                                                            "내 한 평생에 차마" + "<br/>" +
+                                                            "그대를 잊을 수 없소이다." + "<br/>" +
+                                                            "못 올 사랑인 줄 알면서도" + "<br/>" +
+                                                            "나 혼자는 꾸준히 생각하리라." + "<br/>" +
+                                                            "자, 그러면 내내 어여쁘소서." + "<br/><br/>" +
+                                                            "<i>이런 시<i>, 이상"
+                                                    }
+                                                    onChange={(content) => handleChange("phrases", content)} // Update state
+                                                    modules={{
+                                                        toolbar: [
+                                                        // 텍스트 꾸미기
+                                                        ['bold', 'italic', 'underline', 'strike'],
+                                                        // 색상
+                                                        [{ 'color': [] }, { 'background': [] }],
+                                                        // 정렬
+                                                        [{ 'align': [] }],
+                                                        ],
+                                                    }}
+                                                    formats={[
+                                                        'bold', 'italic', 'underline', 'strike',
+                                                        'color', 'background',
+                                                        'align',
+                                                    ]}
+                                                />
 
-                                                자, 그러면 내내 어여쁘소서.
-
-                                                이런 시, 이상</textarea>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 )  }
-                            </div> */}
+                            </div>
 
 
 
@@ -2670,9 +2730,7 @@ function Create() {
                                         <div className="option-label">지도 마커</div>
                                         <div className="option-contents">
                                             <div className="map-marker">
-                                                <div id="mapCategory" style={{width:'100%',height:'350px'}}>
-                                                    
-                                                </div>
+                                                <MapComponent mapId="map1" address={invitationState.weddingHallAddress} onCoordinatesChange={handleCoordinatesChange} mapHeight={invitationState.mapHeight}/>
                                             </div>
                                         </div>
                                     </div>

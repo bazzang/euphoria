@@ -35,7 +35,7 @@ export const InvitationProvider = ({ children }) => {
     letteringHg : '', // 레터링문구 위치 
     mainTxt: "", // 메인텍스트
     mainTxtClr: "#FFFFFF", // 메인텍스트색상
-    mainWddInfoOnoff: "", // 메인 하단 예식 정보
+    mainWddInfoOnoff: false, // 메인 하단 예식 정보
     mainTxtHg : '', // 메인문구 위치 
 
     // 신랑 정보
@@ -107,9 +107,13 @@ export const InvitationProvider = ({ children }) => {
     mapZoomLevel: 3, // 지도 줌 레벨 기본값
     navigationRemove: false, // 네비게이션 삭제 여부
     mapFix: false, // 지도 이동 고정 여부
+
+    // TODO20250113 지도 위도 경도 추가
+    longitude : 0,
+    latitude : 0,
+
     
     // 교통수단
-    
     transportation: [], // 교통수단 배열 method, details
 
     // 안내문
@@ -143,10 +147,11 @@ export const InvitationProvider = ({ children }) => {
      videoUrl : "",
      videoTitle : "식전 영상",
      
+    //글귀
+    usePhrases : false,
+    phrases : "",
+    
 
-
-
-     
     // 사용섹션 
     useProfile : true, // 프로필형 소개 
     useCalendar: false, // 달력

@@ -9,16 +9,14 @@ import "aos/dist/aos.js";
 import AOS from "aos";
 import flower from "../images/create/flower.png";
 import { Map, Polyline, MapMarker, CustomOverlayMap } from "react-kakao-maps-sdk";
-
 import typo from '../images/card/typo.png';
 import page3_bg from '../images/card/page3_bg.png';
-
 import map_t from '../images/create/map_t.png';
 import map_kakao from '../images/create/map_kakao.png';
 import map_naver from '../images/create/map_naver.png';
 import CallIcon from './CallIcon.js'
-
 import BasicModal, { openBasicModal } from "./BasicModal.js";
+import MapComponent from './map.js';
 
 function PreviewPage() {
     const location = useLocation();
@@ -258,8 +256,12 @@ function PreviewPage() {
         const period = hours >= 12 ? "오후" : "오전"; // 오전/오후 구분
         const twelveHourFormat = hours % 12 || 12; // 12시간 형식으로 변환
       
-        // 최종 문자열 생성
-        return `${dayOfWeek}  ${period}  ${twelveHourFormat}시  ${minutes}분`;
+        if(minutes === 0){
+            return `${dayOfWeek}  ${period}  ${twelveHourFormat}시`;
+        }else{
+            // 최종 문자열 생성
+            return `${dayOfWeek}  ${period}  ${twelveHourFormat}시  ${minutes}분`;
+        }
 
     };
 
@@ -473,6 +475,32 @@ function PreviewPage() {
                             </div>
                             
                         </section>
+
+                        {/* 메인 하단 예식 정보 */}
+                        {inv.mainWddInfoOnoff ? (
+                        <section className="calendar" style={{textAlign: "center"}}>
+                            <div style={{width:"300px", borderTop:"2px solid #c7c7c7",  borderBottom:"2px solid #c7c7c7", margin:"0 auto 20px", paddingTop:"20px", paddingBottom:"20px"}}>
+                                <p className="info">{parseInt(inv.weddingDate.split("-")[0], 10)}년&nbsp;
+                                                    {parseInt(inv.weddingDate.split("-")[1], 10)}월&nbsp;
+                                                    {parseInt(inv.weddingDate.split("-")[2])}일&nbsp;
+                                                    {/* {}요일 오후 {}시 */}
+                                                    {getKoreanDateInfo(inv.weddingDate)}<br/>
+                                                    {inv.weddingHallName || "예식장"}&nbsp;
+                                </p>
+                            </div>
+                        </section>
+                        ) : null}
+
+                        {/* 글귀 */}
+                        {inv.usePhrases ? (
+                        <section className="calendar">
+                            <span
+                            className="infoP"
+                            dangerouslySetInnerHTML={{ __html: inv.phrases }}
+                            ></span>
+                        </section>
+                        ) : null}
+                        
 
                         {/* 프로필  */}
                         {inv.useProfile ? (
@@ -812,13 +840,14 @@ function PreviewPage() {
                                 {inv.useMap ? (
                                 <div>
                                     <div className="map">
-                                        <div
+                                        {/* <div
                                             id="map"
                                             style={{
                                                 width: "100%",
                                                 height: inv.mapHeight || "400px", // 기본 높이
                                             }}
-                                        ></div>
+                                        ></div> */}
+                                        <MapComponent mapId="map2" address={inv.weddingHallAddress} mapHeight={inv.mapHeight} />
                                     </div>
                                 </div>
                                 ) : null}
