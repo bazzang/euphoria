@@ -17,6 +17,7 @@ import map_naver from '../images/create/map_naver.png';
 import CallIcon from './CallIcon.js'
 import BasicModal, { openBasicModal } from "./BasicModal.js";
 import MapComponent from './map.js';
+import SmsIcon from './SmsIcon.js';
 
 function PreviewPage() {
     const location = useLocation();
@@ -34,6 +35,7 @@ function PreviewPage() {
     const confirm = searchParams.get('confirm');
     
     const [trsptList, setTrsptList] = useState([]);
+    const [interviewList, setInterviewList] = useState([]);
     const [galList, setGalList] = useState([]);
     const [inv, setInv] = useState({});
 
@@ -77,6 +79,7 @@ function PreviewPage() {
             setTrsptList(response.data.tvolist);
             setInv(response.data.ivo);
             setGalList(response.data.gvolist);
+            setInterviewList(response.data.qalist);
             
         } catch (error) {
             console.error("Error fetching order list: ", error);
@@ -85,6 +88,9 @@ function PreviewPage() {
 
     useEffect(() => {
     }, [trsptList]);
+
+    useEffect(() => {
+    }, [interviewList]);
 
     useEffect(() => {
         generateCalendar(inv.weddingDate);
@@ -155,6 +161,15 @@ function PreviewPage() {
         }
         window.location.href = `tel:${phoneNumber}`;
     }
+
+    // 문자하기 함수
+    const onClickSendSMS = (phoneNumber, message = '') => {
+        if (!phoneNumber) {
+            return;
+        }
+        // SMS 링크 생성
+        window.location.href = `sms:${phoneNumber}`//`sms:${phoneNumber}?body=${encodeURIComponent(message)}`;
+    };
 
     // -------------------------------------------------------------------------------------------------
     // *********************************[함께한 시간] 함께한 시간 계산 ***********************************
@@ -374,6 +389,24 @@ function PreviewPage() {
         openBasicModal(img, idx);
     }
 
+    // -------------------------------------------------------------------------------------------------
+    // *********************************[혼주에게 연락하기] ************************************************
+    // -------------------------------------------------------------------------------------------------
+    const [isPopupVisible, setIsPopupVisible] = useState(false);
+    // 모달 열기
+    const openContactModal = () => {
+        // setIsContactModalOpen(true);
+        setIsPopupVisible(true);
+
+    };
+
+    // 모달 닫기
+    const closeContactModal = () => {
+        // setIsContactModalOpen(false);
+        setIsPopupVisible(false);
+    };
+    
+
   return (
     <>
         {confirm === null || confirm === "null" && (
@@ -392,6 +425,122 @@ function PreviewPage() {
         )}
         
         {/* <div className="wedding-card"> */}
+
+        {isPopupVisible && (
+            <div className="frame" id="popup">
+                <section className="calendar">
+                    <div style={{width:"100%", justifyContent: "space-between", paddingBottom: "10px", marginTop:"-30px", borderBottom: "1px solid #c7c7c7"}}>
+                        <div onClick={closeContactModal} style={{float:"right", marginRight:"10px", background: "none", cursor: "pointer"}}>✕</div>
+                        <p className="info" style={{marginLeft:"30px"}}>혼주에게 연락하기</p> 
+                    </div>
+                    <div className="profile-wrap" style={{marginTop:"40px"}}>
+                        <div className="item">
+                            <div className="thumb" style={{backgroundColor: "#ffffff"}}>
+                                <p className="t1"
+                                    style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"3px", position:"relative"}}
+                                >
+                                    <span className="blue">신랑측</span>
+                                </p>
+
+                                {inv.broomFatherPhone && (
+                                <div style={{marginTop:"30px", marginBottom:"30px"}}>
+                                    <p className="t2" >
+                                        아버지 {inv.groomFatherFirstName}{inv.groomFatherLastName}
+                                    </p>
+                                    <p className="t3" style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"15px", position:"relative"}}>
+
+                                        <div style={{display: "flex", alignItems:"center", justifyContent:"center"}}
+                                            onClick={() => onClickPhoneCall(inv.broomFatherPhone)}>
+                                            <CallIcon />
+                                        </div>
+                                        <div style={{display: "flex", alignItems:"center", justifyContent:"center"}}
+                                            onClick={() => onClickSendSMS(inv.broomFatherPhone)}>
+                                            <SmsIcon />
+                                        </div>
+                                    </p>
+                                </div>
+                                )}
+                                
+                                {inv.broomMotherPhone && (
+                                <div style={{marginTop:"30px", marginBottom:"30px"}}>
+                                    <p className="t2">
+                                        어머니 {inv.groomMotherFirstName}{inv.groomMotherLastName}
+                                    </p>
+                                    <p className="t3" style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"15px", position:"relative"}}>
+
+                                        <div style={{display: "flex", alignItems:"center", justifyContent:"center"}}
+                                            onClick={() => onClickPhoneCall(inv.broomMotherPhone)}>
+                                                <CallIcon />
+                                        </div>
+                                        <div style={{display: "flex", alignItems:"center", justifyContent:"center"}}
+                                            onClick={() => onClickSendSMS(inv.broomMotherPhone)}>
+                                            <SmsIcon />
+                                        </div>
+                                    </p>
+                                </div>
+                                )}
+
+                            </div>
+                        </div>
+                        <div className="item">
+                            <div className="thumb" style={{backgroundColor: "#ffffff"}}>
+                                <p className="t1"
+                                    style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"3px", position:"relative"}}
+                                >
+                                    <span className="pink">신부측</span>
+                                </p>
+
+                                {inv.brideFatherPhone && (
+                                <div style={{marginTop:"30px", marginBottom:"30px"}}>
+                                    <p className="t2" >
+                                        아버지 {inv.brideFatherFirstName}{inv.brideFatherLastName}
+                                    </p>
+                                    <p className="t3" style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"15px", position:"relative"}}>
+
+                                        <div style={{display: "flex", alignItems:"center", justifyContent:"center"}}
+                                            onClick={() => onClickPhoneCall(inv.brideFatherPhone)}>
+                                                <CallIcon />
+                                        </div>
+                                        <div style={{display: "flex", alignItems:"center", justifyContent:"center"}}
+                                            onClick={() => onClickSendSMS(inv.brideFatherPhone)}>
+                                            <SmsIcon />
+                                        </div>
+                                    </p>
+                                </div>
+                                )}
+
+                                {inv.brideMotherPhone && (
+                                <div style={{marginTop:"30px", marginBottom:"30px"}}>
+                                    <p className="t2">
+                                        어머니 {inv.brideMotherFirstName}{inv.brideMotherLastName}
+                                    </p>
+                                    <p className="t3" style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"15px", position:"relative"}}>
+
+                                        <div style={{display: "flex", alignItems:"center", justifyContent:"center"}}
+                                            onClick={() => onClickPhoneCall(inv.brideMotherPhone)}>
+                                                <CallIcon />
+                                        </div>
+                                        <div style={{display: "flex", alignItems:"center", justifyContent:"center"}}
+                                            onClick={() => onClickSendSMS(inv.brideMotherPhone)}>
+                                            <SmsIcon />
+                                        </div>
+                                    </p>
+                                </div>
+                                )}
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <br/>
+                    
+                </section>
+            </div>
+            )}
+
+
+
+
         <div className="frame" style={{width: "100%", maxWidth: "428px", margin: "0 auto",  boxShadow:" 0 0 10px rgba(0, 0, 0, 0.1)", backgroundColor: "white" }}>
             
             {/* 메인 */}
@@ -497,6 +646,18 @@ function PreviewPage() {
                             <span
                             className="infoP"
                             dangerouslySetInnerHTML={{ __html: inv.phrases }}
+                            ></span>
+                        </section>
+                        ) : null}
+
+                        {/* 인사말 */}
+                        {inv.useSalutations ? (
+                        <section className="calendar">
+                            <strong className="title">
+                            {inv.salutationsTitle || "소중한 분들을 초대합니다."}</strong>
+                            <span
+                            className="infoP"
+                            dangerouslySetInnerHTML={{ __html: inv.salutations }}
                             ></span>
                         </section>
                         ) : null}
@@ -771,6 +932,19 @@ function PreviewPage() {
                         </section>
                         ) : null}
                         
+                        {/* 웨딩 인터뷰 useInterview 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
+                        {inv.useInterview && (
+                        <section className="transportion">
+                            <strong className="title" style={{textAlign:"center"}}>웨딩 인터뷰</strong>
+                            {interviewList &&
+                            interviewList.map((list, index) => (
+                            <div key={index}>
+                                <span className="title" style={{fontSize:"14px"}}>{list.question}</span>
+                                <p className="text" style={{fontSize:"14px"}}>{list.answer}</p> 
+                            </div>
+                            ))}
+                        </section>
+                        )}
 
 
 

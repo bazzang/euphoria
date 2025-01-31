@@ -124,7 +124,6 @@ export const InvitationProvider = ({ children }) => {
     externalLinkBtnTxt : "", // 외부 링크 버튼 txt 
     
     // 화환 보내기
-    sendWreath: false, // 화환 보내기 섹션 활성화 여부
     sendWreathUrl : "https://www.barunsonflower.com/?barunid=731900", // 화환 보내기에 연결 될 url 
     
     // 함께한 시간
@@ -151,7 +150,25 @@ export const InvitationProvider = ({ children }) => {
     usePhrases : false,
     phrases : "",
     
+    //인사말
+    useSalutations : false,
+    salutationsTitle : "",
+    salutations : "",
 
+
+    // 20250117 추가가 필요한 항목 
+    // 혼주 연락하기 
+    useParentsContactInfo : false,
+    broomFatherPhone : '',
+    broomMotherPhone : '',
+    brideFatherPhone : '',
+    brideMotherPhone : '',
+
+    useInterview : false,
+    interviewList : [],
+
+
+    
     // 사용섹션 
     useProfile : true, // 프로필형 소개 
     useCalendar: false, // 달력

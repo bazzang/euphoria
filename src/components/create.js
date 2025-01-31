@@ -25,6 +25,9 @@ import MapComponent from './map.js';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import PhraseModal, {openPhraseModal} from './PhraseModal.js';
+import SalModal, {openSalModal} from './SalModal.js';
+import SmsIcon from './SmsIcon.js';
+
 // import PhraseSampleModal, {openPhraseSample} from './PhraseSampleModal.js';
 
 function Create() {
@@ -52,82 +55,100 @@ function Create() {
             case "useContactBrideAndGroom" : 
                 setCategories((prevCategories) => ({
                     ...prevCategories,
-                    contactBrideAndGroom: value, // 체크 상태에 따라 활성화/비활성화
+                    contactBrideAndGroom: value, 
                 }));
                 break;
 
             case "useEnding" : 
                 setCategories((prevCategories) => ({
                     ...prevCategories,
-                    ending: value, // 체크 상태에 따라 활성화/비활성화
+                    ending: value, 
                 }));
                 break;
 
             case "useProfile" : 
                 setCategories((prevCategories) => ({
                     ...prevCategories,
-                    prof: value, // 체크 상태에 따라 활성화/비활성화
+                    prof: value, 
                 }));
                 break;
 
             case "useCalendar" : 
                 setCategories((prevCategories) => ({
                     ...prevCategories,
-                    calendar: value, // 체크 상태에 따라 활성화/비활성화
+                    calendar: value,
                 }));
                 break;
 
             case "useGallery" : 
                 setCategories((prevCategories) => ({
                     ...prevCategories,
-                    gallery: value, // 체크 상태에 따라 활성화/비활성화
+                    gallery: value, 
                 }));
                 break;
 
             case "useNotice" : 
                 setCategories((prevCategories) => ({
                     ...prevCategories,
-                    noticeMessage: value, // 체크 상태에 따라 활성화/비활성화
+                    noticeMessage: value,
                 }));
                 break;
                 
             case "useFirstMeetTime" : 
                 setCategories((prevCategories) => ({
                     ...prevCategories,
-                    timeTogether: value, // 체크 상태에 따라 활성화/비활성화
+                    timeTogether: value, 
                 }));
                 break;
 
             case "useMap" : 
                 setCategories((prevCategories) => ({
                     ...prevCategories,
-                    map: value, // 체크 상태에 따라 활성화/비활성화
+                    map: value, 
                 }));
             case "useTransportation" : 
                 setCategories((prevCategories) => ({
                     ...prevCategories,
-                    trnspt: value, // 체크 상태에 따라 활성화/비활성화
+                    trnspt: value, 
                 }));
                 break;
             case "useFlower" : 
                 setCategories((prevCategories) => ({
                     ...prevCategories,
-                    flowerDelivery: value, // 체크 상태에 따라 활성화/비활성화
+                    flowerDelivery: value, 
                 }));
                 break;
             case "useVideo" : 
                 setCategories((prevCategories) => ({
                     ...prevCategories,
-                    video: value, // 체크 상태에 따라 활성화/비활성화
+                    video: value, 
                 }));
                 break;
-            case "usePhrases" : 
+            case "usePhrases" : // 글귀
                 setCategories((prevCategories) => ({
                     ...prevCategories,
-                    phrases: value, // 체크 상태에 따라 활성화/비활성화
+                    phrases: value, 
                 }));
                 break;
-                
+            case "useSalutations" :  // 인사말
+                setCategories((prevCategories) => ({
+                    ...prevCategories,
+                    salutations: value, 
+                }));
+                break;
+            case "useParentsContactInfo" :  // 혼주에게 연락하기
+                setCategories((prevCategories) => ({
+                    ...prevCategories,
+                    parentsContactInfo: value, 
+                }));
+                break;
+            case "useInterview" :  // 웨딩 인터뷰뷰
+                setCategories((prevCategories) => ({
+                    ...prevCategories,
+                    interview: value, 
+                }));
+                break;
+
             default : 
                 break;
         }
@@ -196,6 +217,15 @@ function Create() {
         }
         window.location.href = `tel:${phoneNumber}`;
     }
+
+    // 문자하기 함수
+    const onClickSendSMS = (phoneNumber, message = '') => {
+        if (!phoneNumber) {
+            return;
+        }
+        // SMS 링크 생성
+        window.location.href = `sms:${phoneNumber}`//`sms:${phoneNumber}?body=${encodeURIComponent(message)}`;
+    };
 
     const onClickFlower = () => { 
         const link = "https://www.barunsonflower.com/?barunid=731900"; // 이동할 URL
@@ -367,6 +397,75 @@ function Create() {
           )
         );
     };
+
+    // -------------------------------------------------------------------------------------------------
+
+    // *********************************[인터뷰] 인터뷰 입력 폼 이벤트 핸들러 *************************
+
+    // -------------------------------------------------------------------------------------------------
+    
+    // 교통수단 상태 관리
+    const [interviewList, setInterviewList] = useState([
+        // { method: "", details: "" },
+    ]);
+
+    // 초기값 설정
+    useEffect(() => {
+        if (interviewList.length === 0) {
+            setInterviewList([{ question: "", answer: "" }]);
+        }
+    }, [interviewList]);
+
+    // 교통수단 추가
+    const addInterview = () => {
+        setInterviewList((prevList) => [
+        ...prevList,
+        { question: "", answer: "" },
+        ]);
+    };
+
+    // 교통수단 삭제
+    const removeInterview = (index) => {
+        setInterviewList((prevList) =>
+        prevList.filter((_, i) => i !== index)
+        );
+    };
+
+    // 교통수단 위로 이동
+    const moveUpInterview = (index) => {
+        if (index === 0) return; // 첫 번째 요소는 위로 이동 불가
+        setInterviewList((prevList) => {
+        const newList = [...prevList];
+        [newList[index - 1], newList[index]] = [
+            newList[index],
+            newList[index - 1],
+        ];
+        return newList;
+        });
+    };
+
+    // 교통수단 아래로 이동
+    const moveDownInterview = (index) => {
+        if (index === interviewList.length - 1) return; // 마지막 요소는 아래로 이동 불가
+        setInterviewList((prevList) => {
+        const newList = [...prevList];
+        [newList[index], newList[index + 1]] = [
+            newList[index + 1],
+            newList[index],
+        ];
+        return newList;
+        });
+    };
+
+    // 교통수단 입력값 업데이트
+    const handleInputChangeInterview = (index, field, value) => {
+        setInterviewList((prevList) =>
+          prevList.map((item, i) =>
+            i === index ? { ...item, [field]: value } : item
+          )
+        );
+    };
+
     // -------------------------------------------------------------------------------------------------
 
     // *********************************[전체] AOS 애니메이션 적용 **************************************
@@ -396,6 +495,25 @@ function Create() {
         }
       }, []);
 
+    // -------------------------------------------------------------------------------------------------
+
+    // *********************************[혼주 연락하기] 혼주에게 연락하기 *********************************
+
+    // -------------------------------------------------------------------------------------------------
+    const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+    const [isPopupVisible, setIsPopupVisible] = useState(false);
+    // 모달 열기
+    const openContactModal = () => {
+        // setIsContactModalOpen(true);
+        setIsPopupVisible(true);
+
+    };
+
+    // 모달 닫기
+    const closeContactModal = () => {
+        // setIsContactModalOpen(false);
+        setIsPopupVisible(false);
+    };
 
     // -------------------------------------------------------------------------------------------------
 
@@ -772,6 +890,7 @@ function Create() {
     // -------------------------------------------------------------------------------------------------
     const fetchInv = async (res) => {
         invitationState.transportationList = transportationList;
+        invitationState.interviewList = interviewList;
         // SaveInvitationReqVo에 맞게 데이터 구성
         let gids = [];
         if(res){
@@ -780,6 +899,7 @@ function Create() {
         let data = {
             invitation: invitationState, // invitationState를 전송
             transportationList : transportationList,
+            interviewList : interviewList,
             galleryIds: gids,// res.result, // res.result를 galleryIds로 전송
         };
 
@@ -848,6 +968,119 @@ function Create() {
                     <div className="create-preview">
 
                         <div className="frame-wrap">
+                            
+                            {isPopupVisible && (
+                            <div className="frame" id="popup">
+                                <section className="calendar">
+                                    <div style={{width:"100%", justifyContent: "space-between", paddingBottom: "10px", marginTop:"-30px", borderBottom: "1px solid #c7c7c7"}}>
+                                        <div onClick={closeContactModal} style={{float:"right", marginRight:"10px", background: "none", cursor: "pointer"}}>✕</div>
+                                        <p className="info" style={{marginLeft:"30px"}}>혼주에게 연락하기</p> 
+                                    </div>
+                                    <div className="profile-wrap" style={{marginTop:"40px"}}>
+                                        <div className="item">
+                                            <div className="thumb" style={{backgroundColor: "#ffffff"}}>
+                                                <p className="t1"
+                                                    style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"3px", position:"relative"}}
+                                                >
+                                                    <span className="blue">신랑측</span>
+                                                </p>
+
+                                                {invitationState.broomFatherPhone && (
+                                                <div style={{marginTop:"30px", marginBottom:"30px"}}>
+                                                    <p className="t2" >
+                                                        아버지 {invitationState.groomFatherFirstName}{invitationState.groomFatherLastName}
+                                                    </p>
+                                                    <p className="t3" style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"15px", position:"relative"}}>
+
+                                                        <div style={{display: "flex", alignItems:"center", justifyContent:"center"}}
+                                                            onClick={() => onClickPhoneCall(invitationState.broomFatherPhone)}>
+                                                            <CallIcon />
+                                                        </div>
+                                                        <div style={{display: "flex", alignItems:"center", justifyContent:"center"}}
+                                                            onClick={() => onClickSendSMS(invitationState.broomFatherPhone)}>
+                                                            <SmsIcon />
+                                                        </div>
+                                                    </p>
+                                                </div>
+                                                )}
+                                                
+                                                {invitationState.broomMotherPhone && (
+                                                <div style={{marginTop:"30px", marginBottom:"30px"}}>
+                                                    <p className="t2">
+                                                        어머니 {invitationState.groomMotherFirstName}{invitationState.groomMotherLastName}
+                                                    </p>
+                                                    <p className="t3" style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"15px", position:"relative"}}>
+
+                                                        <div style={{display: "flex", alignItems:"center", justifyContent:"center"}}
+                                                            onClick={() => onClickPhoneCall(invitationState.broomMotherPhone)}>
+                                                                <CallIcon />
+                                                        </div>
+                                                        <div style={{display: "flex", alignItems:"center", justifyContent:"center"}}
+                                                            onClick={() => onClickSendSMS(invitationState.broomMotherPhone)}>
+                                                            <SmsIcon />
+                                                        </div>
+                                                    </p>
+                                                </div>
+                                                )}
+
+                                            </div>
+                                        </div>
+                                        <div className="item">
+                                            <div className="thumb" style={{backgroundColor: "#ffffff"}}>
+                                                <p className="t1"
+                                                    style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"3px", position:"relative"}}
+                                                >
+                                                    <span className="pink">신부측</span>
+                                                </p>
+
+                                                {invitationState.brideFatherPhone && (
+                                                <div style={{marginTop:"30px", marginBottom:"30px"}}>
+                                                    <p className="t2" >
+                                                        아버지 {invitationState.brideFatherFirstName}{invitationState.brideFatherLastName}
+                                                    </p>
+                                                    <p className="t3" style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"15px", position:"relative"}}>
+
+                                                        <div style={{display: "flex", alignItems:"center", justifyContent:"center"}}
+                                                            onClick={() => onClickPhoneCall(invitationState.brideFatherPhone)}>
+                                                                <CallIcon />
+                                                        </div>
+                                                        <div style={{display: "flex", alignItems:"center", justifyContent:"center"}}
+                                                            onClick={() => onClickSendSMS(invitationState.brideFatherPhone)}>
+                                                            <SmsIcon />
+                                                        </div>
+                                                    </p>
+                                                </div>
+                                                )}
+
+                                                {invitationState.brideMotherPhone && (
+                                                <div style={{marginTop:"30px", marginBottom:"30px"}}>
+                                                    <p className="t2">
+                                                        어머니 {invitationState.brideMotherFirstName}{invitationState.brideMotherLastName}
+                                                    </p>
+                                                    <p className="t3" style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"15px", position:"relative"}}>
+
+                                                        <div style={{display: "flex", alignItems:"center", justifyContent:"center"}}
+                                                            onClick={() => onClickPhoneCall(invitationState.brideMotherPhone)}>
+                                                                <CallIcon />
+                                                        </div>
+                                                        <div style={{display: "flex", alignItems:"center", justifyContent:"center"}}
+                                                            onClick={() => onClickSendSMS(invitationState.brideMotherPhone)}>
+                                                            <SmsIcon />
+                                                        </div>
+                                                    </p>
+                                                </div>
+                                                )}
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <br/>
+                                    
+                                </section>
+                            </div>
+                            )}
+
                             <div className="frame">
 
                                 <section className="main">
@@ -922,6 +1155,20 @@ function Create() {
                                    <span
                                     className="infoP"
                                     dangerouslySetInnerHTML={{ __html: invitationState.phrases }}
+                                    ></span>
+                                </section>
+                                ) : null}
+
+
+                                {/* 인사말 */}
+                                {invitationState.useSalutations ? (
+                                <section className="calendar">
+                                    <strong className="title">
+                                    {/* <strong className="title" data-aos="fade-up" data-aos-duration="100"> */}
+                                    {invitationState.salutationsTitle || "소중한 분들을 초대합니다."}</strong>
+                                   <span
+                                    className="infoP"
+                                    dangerouslySetInnerHTML={{ __html: invitationState.salutations }}
                                     ></span>
                                 </section>
                                 ) : null}
@@ -1039,7 +1286,11 @@ function Create() {
                                         </div>
                                     </div>
                                     {/* 목요일 이후 / 팝업 디자인 및 퍼블리싱 없음  故人*/}
-                                    {/* <button className="btn">혼주에게 연락하기</button> */}
+                                    {invitationState.useParentsContactInfo && (
+                                    <button className="btn" onClick={openContactModal}>혼주에게 연락하기</button>
+                                    )}
+                                    {/* <ContactParentsModal open={isContactModalOpen} onClose={closeContactModal} /> */}
+
                                 </section>
                                 )}
                                 
@@ -1190,6 +1441,21 @@ function Create() {
                                 </section>
                                 )}
 
+                                {/* 웨딩 인터뷰 useInterview 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
+                                {invitationState.useInterview && (
+                                <section className="transportion">
+                                    <strong className="title" style={{textAlign:"center"}}>웨딩 인터뷰</strong>
+                                {interviewList &&
+                                    interviewList.map((list, index) => (
+                                        <div key={index}>
+                                            <span className="title" style={{fontSize:"14px"}}>{list.question}</span>
+                                            <p className="text" style={{fontSize:"14px"}}>{list.answer}</p> 
+                                        </div>
+                                ))}
+                                </section>
+                                )}
+
+
 
                                 {/*useNotice 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
                                 {invitationState.useNotice && (
@@ -1221,7 +1487,7 @@ function Create() {
                                 )}
 
 
-
+                                
 
                                 {/* useFirstMeetTime 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
                                 {invitationState.useFirstMeetTime && (
@@ -2005,6 +2271,8 @@ function Create() {
                                                     </div>
                                                 )}
                                             </div>
+
+                                            
                                         </div>
                                     </div>
 
@@ -2029,7 +2297,7 @@ function Create() {
                             </div>
 
 
-                            {/* 목요일 이후 구현 (퍼블리싱 없음) */}
+                            {/* 글귀 */}
                             <div className="category">
                                 <div className="category-head">
                                     <label className="switch">
@@ -2091,11 +2359,15 @@ function Create() {
 
 
 
-                            {/* 목요일 이후 구현 (퍼블리싱 없음) */}
-                            {/* <div className="category">
+                            {/* 인사말 */}
+                            <div className="category">
                                 <div className="category-head">
-                                    <label for="" className="switch">
-                                        <input type="checkbox" checked />
+                                    <label className="switch">
+                                        <input 
+                                            type="checkbox" 
+                                            checked={invitationState.useSalutations} 
+                                            onChange={(e) => handleChange('useSalutations', e.target.checked)}
+                                        />
                                     </label>
                                     <strong>인사말</strong>
                                     <button 
@@ -2108,24 +2380,56 @@ function Create() {
                                     <div className="option">
                                         <div className="option-label">제목</div>
                                         <div className="option-contents">
-                                            <input type="text" className="input-sts" placeholder="소중한 분들을 초대합니다."/>
+                                            <input 
+                                                type="text" 
+                                                className="input-sts" 
+                                                placeholder="소중한 분들을 초대합니다."
+                                                onChange={(e) => handleChange("salutationsTitle", e.target.value)} 
+                                            />
                                         </div>
                                     </div>
                                     <div className="option">
                                         <div className="option-label">내용</div>
                                         <div className="option-contents">
                                             <div className="phrase">
-                                                <button className="phrase-sample">샘플 양식</button>
-                                                <textarea name="" id="" className="textarea-sts" rows="9">
+                                                {/* <button className="phrase-sample">샘플 양식</button> */}
+                                                <button className="phrase-sample" onClick={() => openSalModal()}>샘플 양식</button>
+                                                <SalModal onSalSelect={(salutations) => handleChange("salutations", salutations)}/>
+                                                {/* <textarea name="" id="" className="textarea-sts" rows="9">
                                                 오랜 기다림 속에서 저희 두 사람,
                                                 한 마음 되어 참된 사랑의 결실을
                                                 맺게 되었습니다.
 
-                                                오셔서 축복해 주시면 큰 기쁨이겠습니다.</textarea>
+                                                오셔서 축복해 주시면 큰 기쁨이겠습니다.</textarea> */}
+                                                <ReactQuill
+                                                    theme="snow"
+                                                    value={invitationState.salutations || 
+                                                            "오랜 기다림 속에서 저희 두 사람," + "<br/>" +
+                                                            "한 마음 되어 참된 사랑의 결실을" + "<br/>" +
+                                                            "맺게 되었습니다." + "<br/><br/>" +
+                                                            "오셔서 축복해 주시면 큰 기쁨이겠습니다." 
+                                                    }
+                                                    onChange={(content) => handleChange("salutations", content)} // Update state
+                                                    modules={{
+                                                        toolbar: [
+                                                        // 텍스트 꾸미기
+                                                        ['bold', 'italic', 'underline', 'strike'],
+                                                        // 색상
+                                                        [{ 'color': [] }, { 'background': [] }],
+                                                        // 정렬
+                                                        [{ 'align': [] }],
+                                                        ],
+                                                    }}
+                                                    formats={[
+                                                        'bold', 'italic', 'underline', 'strike',
+                                                        'color', 'background',
+                                                        'align',
+                                                    ]}
+                                                />
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="option">
+                                    {/* <div className="option">
                                         <div className="option-label">사진</div>
                                         <div className="option-contents">
                                             <div className="img-uploader">
@@ -2139,10 +2443,10 @@ function Create() {
                                             </div>
                                             <div className="mt-10"><button className="btn-positioning">위치 조정</button></div>
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             )}
-                            </div> */}
+                            </div>
 
 
                             <div className="category">
@@ -2251,7 +2555,7 @@ function Create() {
                                                         <div className="img-upload-thumb">
                                                             <img 
                                                                 src={invitationState.bridePhotoUrl || noimg} 
-                                                                alt="신부부이미지" 
+                                                                alt="신부이미지" 
                                                             />
                                                         </div>
                                                         <button className="img-upload-cancel" onClick={() =>invitationState.bridePhotoUrl = "" }>삭제</button>
@@ -2327,47 +2631,78 @@ function Create() {
                             </div>
 
 
-                            {/* 목요일 이후 구현 (퍼블리싱 없음) */}
-                            {/* <div className="category">
+                            {/* 혼주 연락하기 / 목요일 이후 구현 (퍼블리싱 없음) */}
+                            <div className="category">
                                 <div className="category-head">
-                                    <label for="" className="switch">
-                                        <input type="checkbox" checked />
+
+                                    <label className="switch">
+                                        <input 
+                                            type="checkbox" 
+                                            checked={invitationState.useParentsContactInfo} 
+                                            onChange={(e) => handleChange('useParentsContactInfo', e.target.checked)}
+                                        />
                                     </label>
+
                                     <strong>혼주 연락하기</strong>
                                     <button 
                                         className={`btn-toggle ${categories['parentsContactInfo'] ? 'active' : ''}`}
                                         onClick={() => toggleCategory('parentsContactInfo')}
                                     >여닫기</button>
+                                    
                                 </div>
                                 {categories['parentsContactInfo'] && (
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">신랑 아버지</div>
                                         <div className="option-contents">
-                                            <input type="text" className="input-sts" placeholder="-없이 입력해주세요"/>
+                                            <input 
+                                                type="number" 
+                                                className="input-sts" 
+                                                placeholder="-없이 입력해주세요"
+                                                value={invitationState.broomFatherPhone}
+                                                onChange={(e) => handleChange("broomFatherPhone", e.target.value)}
+                                            />
                                         </div>
                                     </div>
                                     <div className="option">
                                         <div className="option-label">신랑 어머니</div>
                                         <div className="option-contents">
-                                            <input type="text" className="input-sts" placeholder="-없이 입력해주세요"/>
+                                            <input 
+                                                type="number" 
+                                                className="input-sts" 
+                                                placeholder="-없이 입력해주세요"
+                                                value={invitationState.broomMotherPhone}
+                                                onChange={(e) => handleChange("broomMotherPhone", e.target.value)}
+                                            />
                                         </div>
                                     </div>
                                     <div className="option">
                                         <div className="option-label">신부 아버지</div>
                                         <div className="option-contents">
-                                            <input type="text" className="input-sts" placeholder="-없이 입력해주세요"/>
+                                            <input 
+                                                type="number" 
+                                                className="input-sts" 
+                                                placeholder="-없이 입력해주세요"
+                                                value={invitationState.brideFatherPhone}
+                                                onChange={(e) => handleChange("brideFatherPhone", e.target.value)}
+                                            />
                                         </div>
                                     </div>
                                     <div className="option">
                                         <div className="option-label">신부 어머니</div>
                                         <div className="option-contents">
-                                            <input type="text" className="input-sts" placeholder="-없이 입력해주세요"/>
+                                            <input 
+                                                type="number" 
+                                                className="input-sts" 
+                                                placeholder="-없이 입력해주세요"
+                                                value={invitationState.brideMotherPhone}
+                                                onChange={(e) => handleChange("brideMotherPhone", e.target.value)}
+                                            />
                                         </div>
                                     </div>
                                 </div>
                             )}
-                            </div> */}
+                            </div>
 
                             {/* 목요일 이후 구현 (퍼블리싱 없음) */}
                             {/* <div className="category">
@@ -2648,11 +2983,16 @@ function Create() {
                             </div>
 
                             {/* 목요일 이후 구현 (퍼블리싱 없음) */}
-                            {/* <div className="category">
+                            <div className="category">
                                 <div className="category-head">
-                                    <label for="" className="switch">
-                                        <input type="checkbox" checked/>
+                                    <label className="switch">
+                                        <input 
+                                            type="checkbox" 
+                                            checked={invitationState.useInterview} 
+                                            onChange={(e) => handleChange('useInterview', e.target.checked)}
+                                        />
                                     </label>
+
                                     <strong>웨딩 인터뷰</strong>
 
                                     <button 
@@ -2663,7 +3003,7 @@ function Create() {
                                 {categories['interview'] && (
 
                                 <div className="category-body">
-                                    <div className="option">
+                                    {/* <div className="option">
                                         <div className="option-label">보여주기 방식</div>
                                         <div className="option-contents">
                                             <div className="radio-wrap">
@@ -2677,37 +3017,74 @@ function Create() {
                                                 </span>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     
-                                    <div className="add-box">
+                                    {interviewList.map((qa, index) => (
+                                    <div className="add-box" key={index}>
                                         <div className="add-head">
                                             <div>
-                                                <button className="add-box-up">위로</button>
-                                                <button className="add-box-down">아래로</button>
+                                                <button
+                                                className="add-box-up"
+                                                onClick={() => moveUpInterview(index)}
+                                                disabled={index === 0} // 첫 번째 요소 비활성화
+                                                >위로</button>
+                                                <button
+                                                className="add-box-down"
+                                                onClick={() => moveDownInterview(index)}
+                                                disabled={index === transportationList.length - 1} // 마지막 요소 비활성화
+                                                >아래로</button>
                                             </div>
-                                            <button className="add-box-delete">삭제</button>
+                                            <button className="add-box-delete" onClick={() => removeInterview(index)}>삭제</button>
                                         </div>
                                         <div className="add-body">
                                             <div className="option">
                                                 <div className="option-label">인터뷰 질문</div>
                                                 <div className="option-contents">
-                                                    <input type="text" className="input-sts"/>
+                                                    <div className="input-change">
+                                                        <select className="input-sts" 
+                                                            value={qa.question || ""} 
+                                                            onChange={(e) => handleInputChangeInterview(index, "question", e.target.value)
+                                                        }>
+                                                            <option value=""></option>
+                                                            <option value="결혼하시는 소감이 어떠세요?">결혼하시는 소감이 어떠세요?</option>
+                                                            <option value="처음에 어떻게 만나셨어요?">처음에 어떻게 만나셨어요?</option>
+                                                            <option value="신혼여행은 어디로 가시나요?">신혼여행은 어디로 가시나요?</option>
+                                                            <option value="직업은 어떻게 되시나요?">직업은 어떻게 되시나요?</option>
+                                                            <option value="만난지 얼마나 되셨어요?">만난지 얼마나 되셨어요?</option>
+                                                            <option value="결혼을 결심하게 된 계기가 있나요?">결혼을 결심하게 된 계기가 있나요?</option>
+                                                            <option value="프로포즈는 어떻게 했나요?">프로포즈는 어떻게 했나요?</option>
+                                                            <option value="신혼집은 어디인가요?">신혼집은 어디인가요?</option>
+                                                            <option value="하고싶은 이야기">하고싶은 이야기</option>
+                                                            <option value="결혼생활에 대한 각오 한마디">결혼생활에 대한 각오 한마디</option>
+                                                            <option value="결혼 후 버킷리스트는?">결혼 후 버킷리스트는?</option>
+                                                            <option value="서로의 첫인상은 어떠셨나요?">서로의 첫인상은 어떠셨나요?</option>
+                                                            <option value="30년 후 두 사람은 어떤 모습일 것 같나요?">30년 후 두 사람은 어떤 모습일 것 같나요?</option>
+                                                            <option value="MBTI는 무엇인가요?">MBTI는 무엇인가요?</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div className="option">
                                                 <div className="option-label">인터뷰 답변</div>
                                                 <div className="option-contents">
-                                                    <textarea name="" id="" rows="7" className="textarea-sts"></textarea>
+                                                    <textarea name="" id="" rows="7" className="textarea-sts"
+                                                    value={qa.answer}
+                                                    onChange={(e) =>
+                                                        handleInputChangeInterview(index, "answer", e.target.value)
+                                                    }
+                                                    ></textarea>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    ))}
+
                                     <div className="add-btn">
-                                        <button className="add-box-add">인터뷰 추가</button>
+                                        <button className="add-box-add" onClick={addInterview}>인터뷰 추가</button>
                                     </div>
                                 </div>
                             )}
-                            </div> */}
+                            </div>
 
                             <div className="category">
                                 <div className="category-head">
@@ -3538,26 +3915,6 @@ function Create() {
                                         </div>
                                     </div>
                                     
-                                    {/* 목요일 */}
-                                    {/* <div className="option">
-                                        <div className="option-label">글귀</div>
-                                        <div className="option-contents">
-                                            <div className="radio-wrap">
-                                                <span className="radio">
-                                                    <input type="radio" name="ending" id="ending_1" checked/>
-                                                    <label for="ending_1"><i></i>상단</label>
-                                                </span>
-                                                <span className="radio">
-                                                    <input type="radio" name="ending" id="ending_2"/>
-                                                    <label for="ending_2"><i></i>중간</label>
-                                                </span>
-                                                <span className="radio">
-                                                    <input type="radio" name="ending" id="ending_3"/>
-                                                    <label for="ending_3"><i></i>하단</label>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div> */}
                                     
                                 </div>
                                 )}
