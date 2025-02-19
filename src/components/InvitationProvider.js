@@ -156,7 +156,6 @@ export const InvitationProvider = ({ children }) => {
     salutations : "",
 
 
-    // 20250117 추가가 필요한 항목 
     // 혼주 연락하기 
     useParentsContactInfo : false,
     broomFatherPhone : '',
@@ -164,9 +163,13 @@ export const InvitationProvider = ({ children }) => {
     brideFatherPhone : '',
     brideMotherPhone : '',
 
+    // 인터뷰 
     useInterview : false,
     interviewList : [],
 
+    // 안내사항 // db컬럼 추가 필요 
+    useInfo : false,
+    infoList : [],
 
     
     // 사용섹션 

@@ -148,6 +148,12 @@ function Create() {
                     interview: value, 
                 }));
                 break;
+            case "useInfo" :  // 안내사항
+                setCategories((prevCategories) => ({
+                    ...prevCategories,
+                    info: value, 
+                }));
+                break;
 
             default : 
                 break;
@@ -409,6 +415,7 @@ function Create() {
         // { method: "", details: "" },
     ]);
 
+
     // 초기값 설정
     useEffect(() => {
         if (interviewList.length === 0) {
@@ -465,6 +472,94 @@ function Create() {
           )
         );
     };
+
+
+
+    // -------------------------------------------------------------------------------------------------
+
+    // *********************************[안내사항] 안내사항항 *************************
+
+    // -------------------------------------------------------------------------------------------------
+    
+    // 안내사항 상태 관리
+    const [infoList, setInfoList] = useState([
+        // { title: "", content: "", file : "", useBtn : false, btnTxt : "", link : ""},
+    ]);
+
+    // 초기값 설정
+    useEffect(() => {
+        if (infoList.length === 0) {
+            setInfoList([{ title: "", content: "", file : "", useBtn : false, btnTxt : "", link : "", imgUrl : ""}]);
+        }
+    }, [infoList]);
+
+    // 안내사항 추가
+    const addInfo = () => {
+        setInfoList((prevList) => [
+        ...prevList,
+        { title: "", content: "", file : "", useBtn : false, btnTxt : "", link : "", imgUrl : ""},
+        ]);
+    };
+
+    // 안내사항 삭제
+    const removeInfo = (index) => {
+        setInfoList((prevList) =>
+        prevList.filter((_, i) => i !== index)
+        );
+    };
+
+    // 안내사항 위로 이동
+    const moveUpInfo = (index) => {
+        if (index === 0) return; // 첫 번째 요소는 위로 이동 불가
+        setInfoList((prevList) => {
+        const newList = [...prevList];
+        [newList[index - 1], newList[index]] = [
+            newList[index],
+            newList[index - 1],
+        ];
+        return newList;
+        });
+    };
+
+    // 안내사항 아래로 이동
+    const moveDownInfo = (index) => {
+        if (index === infoList.length - 1) return; // 마지막 요소는 아래로 이동 불가
+        setInfoList((prevList) => {
+        const newList = [...prevList];
+        [newList[index], newList[index + 1]] = [
+            newList[index + 1],
+            newList[index],
+        ];
+        return newList;
+        });
+    };
+
+    // 안내사항 입력값 업데이트
+    const handleInputChangeInfo = (index, field, value) => {
+        setInfoList((prevList) =>
+          prevList.map((item, i) =>
+            i === index ? { ...item, [field]: value } : item
+          )
+        );
+    };
+
+    // 사진 파일 저장
+    const handleInfoFileUpload = (event, index) => {
+        const file = event.target.files[0];
+        if (!file) return;
+    
+        // 이미지 URL 생성
+        const imageUrl = URL.createObjectURL(file);
+        setInfoList((prevList) =>
+            prevList.map((item, i) =>
+                i === index ? { ...item, file: file, imgUrl: imageUrl  } : item
+            )
+        );
+    };
+
+    useEffect(() => {
+        console.log("infoList 변경 감지:", infoList);
+    }, [infoList]);
 
     // -------------------------------------------------------------------------------------------------
 
@@ -888,6 +983,75 @@ function Create() {
     // *********************************[저장] 저장 버튼 클릭 이벤트 핸들러 *******************************
 
     // -------------------------------------------------------------------------------------------------
+
+    const fetchInfoListSave = async (invSeq) => {
+        if(!invitationState.useInfo){
+            navigate('/production-list', {
+                state: {
+                    ordererNm: invitationState.ordererNm,
+                    ordererCall: invitationState.ordererCall,
+                }
+            });
+        }
+
+        const formData = new FormData();
+
+        // JSON 데이터 변환 (file 제외)
+        const jsonData = infoList.map(({ file, imgUrl, ...rest }, index) => ({
+            ...rest,
+            index, // 각 데이터의 index 추가
+            invSeq
+        }));
+    
+        formData.append("jsonData", JSON.stringify(jsonData));
+    
+        // 이미지 파일 추가 (file이 있는 경우만)
+        infoList.forEach((item, index) => {
+            if (item.file) {
+                const fileName = `info_${index}`;
+                console.log(`파일 추가: ${fileName}`);
+                formData.append("infoImages", item.file, fileName);
+            }
+        });
+    
+        try {
+            const response = await fetch("https://api.euphoriacard.co.kr/api/info", {
+                method: "POST",
+                body: formData
+            });
+            
+            // 🔹 응답이 JSON인지 확인 후 처리
+            const responseText = await response.text();
+            console.log("서버 응답:", responseText);
+
+            if (!response.ok) {
+                throw new Error(`Server Error: ${response.status} - ${responseText}`);
+            }
+
+            if(responseText == "200"){
+                navigate('/production-list', {
+                    state: {
+                        ordererNm: invitationState.ordererNm,
+                        ordererCall: invitationState.ordererCall,
+                    }
+                });
+            }
+            //  // 🔹 JSON 응답일 경우에만 파싱
+            // let result;
+            // try {
+            //     result = JSON.parse(responseText);
+            // } catch (jsonError) {
+            //     throw new Error(`JSON Parsing Error: ${jsonError.message}, Server Response: ${responseText}`);
+            // }
+            // console.log("Upload Success:", result);
+
+            
+
+        } catch (error) {
+            console.error("Upload Error:", error);
+        }
+    };
+
     const fetchInv = async (res) => {
         invitationState.transportationList = transportationList;
         invitationState.interviewList = interviewList;
@@ -903,15 +1067,26 @@ function Create() {
             galleryIds: gids,// res.result, // res.result를 galleryIds로 전송
         };
 
-        axiosPost("/api/invitation", data).then(response => {
-            console.log("저장  response : ",response)
-            navigate('/production-list', {
-                state: {
-                    ordererNm: invitationState.ordererNm,
-                    ordererCall: invitationState.ordererCall,
-                }
-            });
-        });
+        // axiosPost("/api/invitation", data).then(response => {
+        //     console.log("저장  response : ",response)
+        //     navigate('/production-list', {
+        //         state: {
+        //             ordererNm: invitationState.ordererNm,
+        //             ordererCall: invitationState.ordererCall,
+        //         }
+        //     });
+        // });
+        try {
+            const response = await axiosPost("/api/invitation", data);
+            console.log("fetchInv response:", response.data);
+    
+            // 🔹 response 반환하여 fetchInfoListSave에서 사용 가능하게 함
+            return response.data;
+        } catch (error) {
+            console.error("fetchInv Error:", error);
+            throw error; // fetchSaveFiles에서 catch할 수 있도록 예외 던짐
+        }
+
 
     }
 
@@ -945,14 +1120,23 @@ function Create() {
                     formData.append("galleryImages", file); // 갤러리 이미지를 배열로 추가
                 });
             }
-    
+
+
             // 서버로 데이터 전송
             const response = await axios.post("https://api.euphoriacard.co.kr/api/gallery", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             });
-            fetchInv(response.data);
+
+            
+            // 🔹 fetchInv 실행 후 response 값 받기
+            const invseq = await fetchInv(response.data);
+            console.log("fetchInv 완료:", invseq);
+
+            // 🔹 fetchInfoListSave 실행 (fetchInv의 response를 전달)
+            await fetchInfoListSave(invseq);
+            
             console.log("Server response:", response.data);
         } catch (error) {
             console.error("Error while saving data:", error);
@@ -1585,6 +1769,33 @@ function Create() {
                                 ))}
                                 </section>
                                 )}
+
+                                {/* [안내사항] useInfo 값의 true/false에 따라 이 섹션 활성화/비활성화 */}
+                                {invitationState.useInfo && (
+                                <section className="calendar">
+                                {infoList &&
+                                    infoList.map((list, index) => (
+                                        <div key={index} >
+                                            <strong className="title">{list.title || ""}</strong>
+                                            {list.imgUrl && (
+                                                <img
+                                                className="bg"
+                                                src={list.imgUrl }
+                                                alt="test"
+                                                style={{ borderRadius: "60px", padding: "30px"}}
+                                                /> 
+                                            )}
+                                             
+                                            <span className="info">{list.content}</span>
+                                            {list.useBtn && (
+                                                <p className="text" >{list.btnTxt}</p> 
+                                            )}
+                                        </div>
+                                ))}
+                                </section>
+                                )}
+
+
 
                                 {/* useEnding 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
                                 {invitationState.useEnding && (
@@ -3175,7 +3386,8 @@ function Create() {
                                 </div>
                             )}
                             </div> 
-
+                            
+                            {/* 교통수단단 */}
                             <div className="category">
                                 <div className="category-head">
 
@@ -3255,13 +3467,19 @@ function Create() {
                                 )}
                             </div>
 
-                            {/* 목요일 이후 구현 (퍼블리싱 없음) */}
-                            {/* <div className="category">
+                            {/* 안내사항 */}
+                            <div className="category">
                                 <div className="category-head">
-                                    <label for="" className="switch">
-                                        <input type="checkbox" checked/>
+                                <label className="switch">
+                                        <input 
+                                            type="checkbox" 
+                                            checked={invitationState.useInfo} 
+                                            onChange={(e) => handleChange('useInfo', e.target.checked)}
+                                        />
                                     </label>
+
                                     <strong>안내사항</strong>
+
                                     <button 
                                         className={`btn-toggle ${categories['info'] ? 'active' : ''}`}
                                         onClick={() => toggleCategory('info')}
@@ -3269,39 +3487,101 @@ function Create() {
                                 </div>
                                 {categories['info'] && (
                                 <div className="category-body">
-                                    <div className="add-box">
+
+                                    {infoList.map((info, index) => (
+                                    <div className="add-box" key={index}>
                                         <div className="add-head">
                                             <div>
-                                                <button className="add-box-up">위로</button>
-                                                <button className="add-box-down">아래로</button>
+                                                <button
+                                                className="add-box-up"
+                                                onClick={() => moveUpInfo(index)}
+                                                disabled={index === 0} // 첫 번째 요소 비활성화
+                                                >위로</button>
+                                                <button
+                                                className="add-box-down"
+                                                onClick={() => moveDownInfo(index)}
+                                                disabled={index === infoList.length - 1} // 마지막 요소 비활성화
+                                                >아래로</button>
                                             </div>
-                                            <button className="add-box-delete">삭제</button>
+                                            <button className="add-box-delete" onClick={() => removeInfo(index)}>삭제</button>
                                         </div>
                                         <div className="add-body">
                                             <div className="option">
                                                 <div className="option-label">제목</div>
                                                 <div className="option-contents">
-                                                    <input type="text" className="input-sts"/>
+                                                    {/* <input type="text" className="input-sts"/> */}
+                                                    <input
+                                                    type="text"
+                                                    className="input-sts"
+                                                    value={info.title}
+                                                    onChange={(e) =>
+                                                        handleInputChangeInfo(index, "title", e.target.value)
+                                                    }
+                                                    />
                                                 </div>
                                             </div>
                                             <div className="option">
                                                 <div className="option-label">사진</div>
                                                 <div className="option-contents">
+
                                                     <div className="img-uploader">
                                                         <div className="img-upload">
-                                                            <button className="img-upload-add"></button>
+                                                            <input
+                                                                type="file"
+                                                                accept="image/*"
+                                                                id={`${index}info`}
+                                                                style={{ display: "none" }}
+                                                                onChange={(e) => {
+                                                                    const file = e.target.files[0];
+                                                                    if (file) {
+                                                                        const imageUrl = URL.createObjectURL(file);
+                                                                        handleInputChangeInfo(index, "imgUrl", imageUrl);
+                                                                        handleInfoFileUpload(e, index);
+                                                                    }
+                                                                }}
+                                                            />
+                                                            {/* <input
+                                                                type="file"
+                                                                accept="image/*"
+                                                                style={{ display: "none" }}
+                                                                id={`${index}file`}
+                                                                onChange={(event) => handleInfoFileUpload(event, index)}
+                                                            /> */}
+
+                                                            <button
+                                                                className="img-upload-add"
+                                                                onClick={() => document.getElementById(`${index}info`).click()}
+                                                            />
                                                         </div>
-                                                        <div className="img-upload fin">
-                                                            <div className="img-upload-thumb"><img src="./images/create/sample.png" alt="sample"/></div>
-                                                            <button className="img-upload-cancel">삭제</button>
-                                                        </div>
+                                                        {info.imgUrl  && (
+                                                            <div className="img-upload fin">
+                                                                <div className="img-upload-thumb">
+                                                                    <img 
+                                                                        src={info.imgUrl} 
+                                                                    />
+                                                                </div>
+                                                                <button className="img-upload-cancel" onClick={() =>info.imgUrl = "" }>삭제</button>
+                                                                
+                                                            </div>
+                                                            
+                                                        )}
                                                     </div>
+
+
                                                 </div>
                                             </div>
                                             <div className="option">
                                                 <div className="option-label">내용</div>
                                                 <div className="option-contents">
-                                                    <textarea name="" id="" rows="7" className="textarea-sts"></textarea>
+                                                    {/* <textarea name="" id="" rows="7" className="textarea-sts"></textarea> */}
+                                                    <textarea
+                                                    rows="7"
+                                                    className="textarea-sts"
+                                                    value={info.content}
+                                                    onChange={(e) =>
+                                                        handleInputChangeInfo(index, "content", e.target.value)
+                                                    }
+                                                    />
                                                 </div>
                                             </div>
                                             <div className="option">
@@ -3309,24 +3589,71 @@ function Create() {
                                                 <div className="option-contents">
                                                     <div className="radio-wrap">
                                                         <span className="radio">
-                                                            <input type="radio" name="notice_link" id="notice_link_1" checked/>
+                                                            <input 
+                                                                type="radio" 
+                                                                name="notice_link" 
+                                                                id="notice_link_1" 
+                                                                checked={!info.useBtn} 
+                                                                onChange={(e) => handleInputChangeInfo(index, "useBtn", false)}
+                                                            />
                                                             <label for="notice_link_1"><i></i>미사용</label>
                                                         </span>
                                                         <span className="radio">
-                                                            <input type="radio" name="notice_link" id="notice_link_2"/>
+                                                            <input 
+                                                                type="radio" 
+                                                                name="notice_link" 
+                                                                id="notice_link_2"
+                                                                checked={info.useBtn} 
+                                                                onChange={(e) => handleInputChangeInfo(index, "useBtn", true)}
+                                                            />
                                                             <label for="notice_link_2"><i></i>사용</label>
                                                         </span>
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            {info.useBtn && (
+                                            <>
+                                            <div className="option">
+                                                <div className="option-label">링크</div>
+                                                <div className="option-contents">
+                                                    <input
+                                                    type="text"
+                                                    className="input-sts"
+                                                    value={info.link}
+                                                    onChange={(e) =>
+                                                        handleInputChangeInfo(index, "link", e.target.value)
+                                                    }
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div className="option">
+                                                <div className="option-label">버튼 텍스트</div>
+                                                <div className="option-contents">
+                                                    <input
+                                                    type="text"
+                                                    className="input-sts"
+                                                    value={info.btnTxt}
+                                                    onChange={(e) =>
+                                                        handleInputChangeInfo(index, "btnTxt", e.target.value)
+                                                    }
+                                                    />
+                                                </div>
+                                            </div>
+                                            </>
+                                            )}
+
                                         </div>
                                     </div>
+                                    ))}
                                     <div className="add-btn">
-                                        <button className="add-box-add">안내사항 추가</button>
+                                        <button className="add-box-add" onClick={addInfo}>안내사항 추가</button>
                                     </div>
                                 </div>
                             )}
-                            </div> */}
+                            </div>
+
                             <div className="category">
                                 <div className="category-head">
 

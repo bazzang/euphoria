@@ -34,6 +34,7 @@ function PreviewPage() {
     const index = searchParams.get('index');
     const confirm = searchParams.get('confirm');
     
+    const [infoList, setInfoList] = useState([]);
     const [trsptList, setTrsptList] = useState([]);
     const [interviewList, setInterviewList] = useState([]);
     const [galList, setGalList] = useState([]);
@@ -80,7 +81,7 @@ function PreviewPage() {
             setInv(response.data.ivo);
             setGalList(response.data.gvolist);
             setInterviewList(response.data.qalist);
-            
+            setInfoList(response.data.infolist);
         } catch (error) {
             console.error("Error fetching order list: ", error);
         }
@@ -381,9 +382,28 @@ function PreviewPage() {
                     break;
             }
         });
-    
+        
         setGallImgs(newImages); // 상태 업데이트
     }, [galList]); // gallImgs가 아닌 galList에 의존
+
+
+    useEffect(() => {
+        if (infoList.length > 0) {
+            const updatedInfoList = infoList.map((info) => {
+                if (info.file) { // file 값이 있는 경우만 변환
+                    const fixedFilename = encodeURIComponent(info.file.replace(/\\/g, '/'));
+                    return {
+                        ...info,
+                        file: `https://api.euphoriacard.co.kr/api/image?filename=${fixedFilename}/` // file 값을 URL로 변경
+                    };
+                }
+                return info;
+            });
+    
+            setInfoList(updatedInfoList);
+        }
+    }, [infoList]); 
+
 
     const handleImageClick = (img, idx) => {
         openBasicModal(img, idx);
@@ -1051,7 +1071,31 @@ function PreviewPage() {
                         </section>
                         ) : null}
 
-
+                        {/* [안내사항] useInfo 값의 true/false에 따라 이 섹션 활성화/비활성화 */}
+                        {inv.useInfo && (
+                            <section className="calendar">
+                            {infoList &&
+                                infoList.map((list, index) => (
+                                    <div key={index} >
+                                        <strong className="title">{list.title || ""}</strong>
+                                        {list.imgUrl && (
+                                            <img
+                                            className="bg"
+                                            src={list.imgUrl }
+                                            alt="test"
+                                            style={{ borderRadius: "60px", padding: "30px"}}
+                                            /> 
+                                        )}
+                                            
+                                        <span className="info">{list.content}</span>
+                                        {list.useBtn && (
+                                            <p className="text" >{list.btnTxt}</p> 
+                                        )}
+                                    </div>
+                            ))}
+                            </section>
+                        )}
+                    
                         {/* 엔딩 */}
                         {/* <section className="land" data-aos="fade-up" data-aos-duration="600"> */}
                         {inv.useEnding ? (
