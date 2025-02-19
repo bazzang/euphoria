@@ -80,8 +80,6 @@ function ProductionList() {
         var cnt = 0;
         orderList.forEach((ord, idx) => {
             if (ord.confirmedAt !== 0 && ord.confirmedAt !== null) {
-                console.log('컨펌드앳 확인', ord.confirmedAt);
-                console.log('컨펌드앳 인덱스', idx);
                 cnt++;
             }
         });
@@ -148,7 +146,37 @@ function ProductionList() {
 
 
     
-
+    const shareKakao = () => {
+        if (window.kakao) {
+          const kakao = window.kakao;
+          if (!kakao.isInitialized()) {
+            kakao.init("267e72e5ca94418235ab871f6c69fe40");
+          }
+    
+          kakao.Link.sendDefault({
+            objectType: "feed", 
+            content: {
+              title: "제목입니다",
+              description: "설명란입니다",
+              imageUrl:
+                "https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png",
+              link: {
+                mobileWebUrl: "https://www.naver.com",
+                webUrl: "https://www.google.com",
+              },
+            },
+            buttons: [
+              {
+                title: "자세히 보러 가기",
+                link: {
+                  mobileWebUrl: "https://www.naver.com",
+                  webUrl: "https://www.google.com",
+                },
+              },
+            ],
+          });
+        }
+    };
     
   return (
     <>
@@ -252,7 +280,7 @@ function ProductionList() {
                                     >
                                         <img src={wd_option_icon_3} alt=""/>URL 복사하기
                                     </button>
-                                    {/* <button className="wd-option-btn"><img src={wd_option_icon_4} alt=""/>카톡 공유하기</button> */}
+                                    <button className="wd-option-btn"><img src={wd_option_icon_4} alt="" onClick={shareKakao}/>카톡 공유하기</button>
                                     {/* <button className="wd-option-btn"><img src={wd_option_icon_5} alt=""/>QR코드</button> */}
                                 </div>
 
