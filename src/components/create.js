@@ -3584,7 +3584,8 @@ function Create() {
                                                     />
                                                 </div>
                                             </div>
-                                            <div className="option">
+                                            {/* TODO */}
+                                            {/* <div className="option">
                                                 <div className="option-label">외부링크 버튼</div>
                                                 <div className="option-contents">
                                                     <div className="radio-wrap">
@@ -3642,7 +3643,7 @@ function Create() {
                                                 </div>
                                             </div>
                                             </>
-                                            )}
+                                            )} */}
 
                                         </div>
                                     </div>
