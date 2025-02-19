@@ -146,7 +146,7 @@ function ProductionList() {
 
 
     
-    const shareKakao = () => {
+    const shareKakao = (index) => {
         if (window.kakao) {
           const kakao = window.kakao;
           if (!kakao.isInitialized()) {
@@ -156,7 +156,7 @@ function ProductionList() {
           kakao.Link.sendDefault({
             objectType: "feed", 
             content: {
-              title: "제목입니다",
+              title: "제목입니다"+index,
               description: "설명란입니다",
               imageUrl:
                 "https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png",
@@ -280,7 +280,7 @@ function ProductionList() {
                                     >
                                         <img src={wd_option_icon_3} alt=""/>URL 복사하기
                                     </button>
-                                    <button className="wd-option-btn"><img src={wd_option_icon_4} alt="" onClick={shareKakao}/>카톡 공유하기</button>
+                                    <button className="wd-option-btn"><img src={wd_option_icon_4} alt="" onClick={shareKakao(index)}/>카톡 공유하기</button>
                                     {/* <button className="wd-option-btn"><img src={wd_option_icon_5} alt=""/>QR코드</button> */}
                                 </div>
 
