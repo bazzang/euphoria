@@ -19,6 +19,7 @@ import BasicModal, { openBasicModal } from "./BasicModal.js";
 import MapComponent from './map.js';
 import SmsIcon from './SmsIcon.js';
 // import { Helmet } from 'react-helmet-async';
+import SEO from './Seo.js';
 
 function PreviewPage() {
     const location = useLocation();
@@ -430,10 +431,13 @@ function PreviewPage() {
         setIsPopupVisible(false);
     };
     
+    // -------------------------------------------------------------------------------------------------
+    // *********************************[URL 공유하기] ************************************************
+    // -------------------------------------------------------------------------------------------------
 
   return (
     <>
-
+          <SEO title={inv.groomLastName + "와 " + inv.brideLastName} description="소중한 시간을 함께" image={mainImg} />
         {/* Helmet으로 메타 태그 설정 */}
         {/* <Helmet>
             <title>{inv.groomLastName + "❤️" + inv.brideLastName + "의 결혼식"} </title>
