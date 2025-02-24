@@ -1169,7 +1169,7 @@ function PreviewPage() {
                                         {list.imgUrl && (
                                             <img
                                             className="bg"
-                                            src={list.imgUrl }
+                                            src={list.file }
                                             alt="test"
                                             style={{ borderRadius: "60px", padding: "30px"}}
                                             /> 
