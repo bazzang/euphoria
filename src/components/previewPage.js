@@ -389,21 +389,24 @@ function PreviewPage() {
 
     useEffect(() => {
         if (infoList.length > 0) {
-            const updatedInfoList = infoList.map((info) => {
-                if (info.file) { // file 값이 있는 경우만 변환
-                    const fixedFilename = encodeURIComponent(info.file.replace(/\\/g, '/'));
-                    return {
-                        ...info,
-                        file: `https://api.euphoriacard.co.kr/api/image?filename=${fixedFilename}/` // file 값을 URL로 변경
-                    };
-                }
-                return info;
-            });
-    
+          const updatedInfoList = infoList.map((info) => {
+            // file이 존재하고 아직 변환되지 않은 경우에만 변환
+            if (info.file && !info.file.startsWith("https://api.euphoriacard.co.kr/api/image?filename=")) {
+              const fixedFilename = encodeURIComponent(info.file.replace(/\\/g, '/'));
+              return {
+                ...info,
+                file: `https://api.euphoriacard.co.kr/api/image?filename=${fixedFilename}/`
+              };
+            }
+            return info;
+          });
+      
+          // 기존 infoList와 업데이트된 값이 다를 경우에만 상태 업데이트
+          if (JSON.stringify(updatedInfoList) !== JSON.stringify(infoList)) {
             setInfoList(updatedInfoList);
+          }
         }
-    }, [infoList]); 
-
+      }, [infoList]);
 
     const handleImageClick = (img, idx) => {
         openBasicModal(img, idx);
