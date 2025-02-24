@@ -146,38 +146,38 @@ function ProductionList() {
 
 
     
-    const shareKakao = (index) => {
-        if (!window.Kakao) {
-            console.error("Kakao SDK 로드 실패");
-            return;
-        }
+    // const shareKakao = (index) => {
+    //     if (!window.Kakao) {
+    //         console.error("Kakao SDK 로드 실패");
+    //         return;
+    //     }
         
-        if (!window.Kakao.isInitialized()) {
-            window.Kakao.init("267e72e5ca94418235ab871f6c69fe40"); // 🔹 API Key 입력
-        }
+    //     if (!window.Kakao.isInitialized()) {
+    //         window.Kakao.init("267e72e5ca94418235ab871f6c69fe40"); // 🔹 API Key 입력
+    //     }
         
-        window.Kakao.Link.sendDefault({
-            objectType: "feed",
-            content: {
-                title: "청첩장 공유",
-                description: "소중한 순간을 함께하세요.",
-                imageUrl: "https://yourdomain.com/default-image.jpg", // 공유할 대표 이미지 URL
-                link: {
-                    mobileWebUrl: `${window.location.origin}/preview?itemId=${orderList[index]?.invSeq}`,
-                    webUrl: `${window.location.origin}/preview?itemId=${orderList[index]?.invSeq}`
-                },
-            },
-            buttons: [
-                {
-                    title: "자세히 보기",
-                    link: {
-                        mobileWebUrl: `${window.location.origin}/preview?itemId=${orderList[index]?.invSeq}`,
-                        webUrl: `${window.location.origin}/preview?itemId=${orderList[index]?.invSeq}`
-                    },
-                },
-            ],
-        });
-    };
+    //     window.Kakao.Link.sendDefault({
+    //         objectType: "feed",
+    //         content: {
+    //             title: "청첩장 공유",
+    //             description: "소중한 순간을 함께하세요.",
+    //             imageUrl: "https://yourdomain.com/default-image.jpg", // 공유할 대표 이미지 URL
+    //             link: {
+    //                 mobileWebUrl: `${window.location.origin}/preview?itemId=${orderList[index]?.invSeq}`,
+    //                 webUrl: `${window.location.origin}/preview?itemId=${orderList[index]?.invSeq}`
+    //             },
+    //         },
+    //         buttons: [
+    //             {
+    //                 title: "자세히 보기",
+    //                 link: {
+    //                     mobileWebUrl: `${window.location.origin}/preview?itemId=${orderList[index]?.invSeq}`,
+    //                     webUrl: `${window.location.origin}/preview?itemId=${orderList[index]?.invSeq}`
+    //                 },
+    //             },
+    //         ],
+    //     });
+    // };
     
   return (
     <>
@@ -281,7 +281,7 @@ function ProductionList() {
                                     >
                                         <img src={wd_option_icon_3} alt=""/>URL 복사하기
                                     </button>
-                                    <button className="wd-option-btn"><img src={wd_option_icon_4} alt="" onClick={shareKakao(index)}/>카톡 공유하기</button>
+                                    {/* <button className="wd-option-btn"><img src={wd_option_icon_4} alt="" onClick={shareKakao(index)}/>카톡 공유하기</button> */}
                                     {/* <button className="wd-option-btn"><img src={wd_option_icon_5} alt=""/>QR코드</button> */}
                                 </div>
 
