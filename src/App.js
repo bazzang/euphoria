@@ -7,7 +7,7 @@ import ProductionList from './components/list.js';
 import PreviewPage from './components/previewPage.js';
 import Invitations from './components/Invitaions.js';
 import { InvitationProvider } from "../src/components/InvitationProvider.js";  // 입력폼의 전역변수
-// import { HelmetProvider } from 'react-helmet-async';
+import { HelmetProvider } from 'react-helmet-async';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
@@ -34,7 +34,7 @@ function App() {
 
 
   return (
-    // <HelmetProvider>
+    <HelmetProvider>
     <div id="wrap" className={wrapClassName}>
       {/* 조건부 렌더링: Header를 숨김 */}
       {!hideHeader && <Header />}
@@ -51,7 +51,7 @@ function App() {
       
 
     </div>
-    // </HelmetProvider>
+    </HelmetProvider>
     
   );
 }
