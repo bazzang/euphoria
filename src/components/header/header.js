@@ -10,10 +10,10 @@ function Header() {
     const navigate = useNavigate(); // useNavigate 훅 사용
     const location = useLocation();
 
-    // 인가코드 콜 
+    // // 인가코드 콜 
     function redirectToAuth(){
         const authUrl =
-          'https://openapi.imweb.me/oauth2/authorize?responseType=code&clientId=aaa77bb6-2ab9-4836-8a26-8c58079959dc&redirectUri=https://euphoria-psi.vercel.app/&scope=member-info:read order:read&siteCode=S2024082926c7c40e12877';
+          'https://openapi.imweb.me/oauth2/authorize?responseType=code&clientId=aaa77bb6-2ab9-4836-8a26-8c58079959dc&redirectUri=https://euphoria-psi.vercel.app/&scope=member-info:read order:read site-info:write&siteCode=S2024082926c7c40e12877';
     
         window.location.href = authUrl;
     };
