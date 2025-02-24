@@ -176,7 +176,7 @@ function ProductionList() {
         //     ],
         //   });
         // }
-        Kakao.Share.sendDefault({
+        window.kakao.Share.sendDefault({
             objectType: 'feed',
             content: {
               title: '오늘의 디저트',
