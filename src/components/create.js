@@ -160,7 +160,12 @@ function Create() {
                     acnt: value, 
                 }));
                 break;
-                
+            case "useUrlShareStyle" :  // URL 공유 스타일 수정
+                setCategories((prevCategories) => ({
+                    ...prevCategories,
+                    shareOption: value, 
+                }));
+                break;
 
             default : 
                 break;
@@ -1118,6 +1123,9 @@ function Create() {
             }
             if (invitationState.endingPhotoFile) {
                 formData.append("endingPhotoFile", invitationState.endingPhotoFile); // 엔딩 이미지
+            }
+            if (invitationState.urlPhotoFile) {
+                formData.append("urlPhotoFile", invitationState.urlPhotoFile); // 엔딩 이미지
             }
     
             // 갤러리 이미지 처리 (배열로 추가)
@@ -4980,10 +4988,15 @@ function Create() {
 
 
                             {/* 목요일 이후 구현 (기획 된 것 없음) */}
-                            {/* <div className="category">
+                            <div className="category">
                                 <div className="category-head">
+                                    {/* value=useEnding */}
                                     <label for="" className="switch">
-                                        <input type="checkbox" checked/>
+                                        <input 
+                                            type="checkbox" 
+                                            checked={invitationState.useUrlShareStyle} 
+                                            onChange={(e) => handleChange('useUrlShareStyle', e.target.checked)}
+                                        />
                                     </label>
                                     <strong>URL 공유 스타일 수정</strong>
 
@@ -4991,6 +5004,8 @@ function Create() {
                                         className={`btn-toggle ${categories['shareOption'] ? 'active' : ''}`}
                                         onClick={() => toggleCategory('shareOption')}
                                     >여닫기</button>
+
+
                                 </div>
                                 {categories['shareOption'] && (
 
@@ -5000,11 +5015,34 @@ function Create() {
                                         <div className="option-contents">
                                             <div className="img-uploader">
                                                 <div className="img-upload">
-                                                    <button className="img-upload-add"></button>
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        id="urlPhotoInput"
+                                                        style={{ display: "none" }}
+                                                        onChange={(e) => {
+                                                            const file = e.target.files[0];
+                                                            if (file) {
+                                                                const imageUrl = URL.createObjectURL(file);
+                                                                handleChange("urlImage", imageUrl);
+                                                                handleFileChange(e, 'urlPhoto');
+                                                            }
+                                                        }}
+                                                    />
+
+                                                    <button
+                                                        className="img-upload-add"
+                                                        onClick={() => document.getElementById('urlPhotoInput').click()}
+                                                    />
                                                 </div>
                                                 <div className="img-upload fin">
-                                                    <div className="img-upload-thumb"><img src="./images/create/sample.png" alt="sample"/></div>
-                                                    <button className="img-upload-cancel">삭제</button>
+                                                    <div className="img-upload-thumb">
+                                                        <img 
+                                                            src={invitationState.urlImage} 
+                                                            alt="" 
+                                                        />
+                                                    </div>
+                                                    <button className="img-upload-cancel" onClick={() =>invitationState.urlImage = "" }>삭제</button>
                                                 </div>
                                             </div>
                                             <p className="notice">URL 공유 수정 시, 해당 서비스에서 수집한 캐시로 인하여 <span className="red">반영까지 1시간 이상</span> 소요됩니다.</p>
@@ -5024,7 +5062,7 @@ function Create() {
                                     </div>
                                 </div>
                                 )}
-                            </div> */}
+                            </div>
 
 
 
@@ -5249,9 +5287,9 @@ function Create() {
 
         <div className="create-btn">
             
-            <div className="preview-tooltip">실시간으로 확인해보세요! <button className="preview-tooltip-close">닫기</button></div>
-            <button className="btn-save">저장</button>
-            <button className="btn-preview">미리보기</button>
+            {/* <div className="preview-tooltip">실시간으로 확인해보세요! <button className="preview-tooltip-close">닫기</button></div> */}
+            <button className="btn-save" onClick={handleOpenDialog}>저장</button>
+            {/* <button className="btn-preview">미리보기</button> */}
         </div>
     </div>
   )
