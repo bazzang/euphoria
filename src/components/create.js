@@ -1321,6 +1321,7 @@ function Create() {
                                             style={{
                                                 color : color2,
                                                 top: maintxtHg,
+                                                fontFamily: "Nanum Myeongjo",
                                                 wordWrap: "break-word", // 긴 단어를 자동으로 줄바꿈
                                                 overflowWrap: "break-word", // 긴 단어가 깨지도록 줄바꿈
                                                 whiteSpace: "normal", // 일반 줄바꿈 허용
