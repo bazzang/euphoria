@@ -390,6 +390,7 @@ function PreviewPage() {
 
 
     useEffect(() => {
+        console.log("inv.confirmedAt ??? ", inv.confirmedAt);
         if (infoList.length > 0) {
           const updatedInfoList = infoList.map((info) => {
             // file이 존재하고 아직 변환되지 않은 경우에만 변환
