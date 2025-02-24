@@ -452,7 +452,7 @@ function PreviewPage() {
             <meta name="twitter:card" content="summary_large_image" />
         </Helmet> */}
 
-        {inv.confirmedAt === null || inv.confirmedAt === "null" && (
+        {inv.confirmedAt === null  && (
             <div className="watermark">
                 <p>구매 후 워터마크를 제거해주세요.
                 <br/>
