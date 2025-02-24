@@ -437,7 +437,7 @@ function PreviewPage() {
 
   return (
     <>
-          <SEO title={inv.groomLastName + "와 " + inv.brideLastName} description="소중한 시간을 함께" image={mainImg} />
+          <SEO title={inv.groomLastName + "와 " + inv.brideLastName} description="초대합니다" image={mainImg} />
         {/* Helmet으로 메타 태그 설정 */}
         {/* <Helmet>
             <title>{inv.groomLastName + "❤️" + inv.brideLastName + "의 결혼식"} </title>
