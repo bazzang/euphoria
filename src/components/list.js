@@ -281,7 +281,7 @@ function ProductionList() {
                                     >
                                         <img src={wd_option_icon_3} alt=""/>URL 복사하기
                                     </button>
-                                    <button className="wd-option-btn"><img src={wd_option_icon_4} alt=""  onClick={() => shareKakao(index)}/>카톡 공유하기</button>
+                                    <button className="wd-option-btn"><img src={wd_option_icon_4} alt="" onClick={shareKakao(index)}/>카톡 공유하기</button>
                                     {/* <button className="wd-option-btn"><img src={wd_option_icon_5} alt=""/>QR코드</button> */}
                                 </div>
 
