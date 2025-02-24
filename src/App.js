@@ -7,7 +7,7 @@ import ProductionList from './components/list.js';
 import PreviewPage from './components/previewPage.js';
 import Invitations from './components/Invitaions.js';
 import { InvitationProvider } from "../src/components/InvitationProvider.js";  // 입력폼의 전역변수
-import { HelmetProvider } from 'react-helmet-async';
+// import { HelmetProvider } from 'react-helmet-async';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
@@ -34,24 +34,24 @@ function App() {
 
 
   return (
-    <HelmetProvider>
-      <div id="wrap" className={wrapClassName}>
+    // <HelmetProvider>
+    <div id="wrap" className={wrapClassName}>
       {/* 조건부 렌더링: Header를 숨김 */}
       {!hideHeader && <Header />}
 
-        <InvitationProvider>
-          <Routes>
-            <Route path="/" element={<Create />} /> 
-            <Route path="/production-list" element={<ProductionList />} /> 
-            <Route path="/preview" element={<PreviewPage />} /> 
-            <Route path="/invitations" element={<Invitations />} />
+      <InvitationProvider>
+        <Routes>
+          <Route path="/" element={<Create />} /> 
+          <Route path="/production-list" element={<ProductionList />} /> 
+          <Route path="/preview" element={<PreviewPage />} /> 
+          <Route path="/invitations" element={<Invitations />} />
 
-          </Routes>
-        </InvitationProvider>
-        
+        </Routes>
+      </InvitationProvider>
+      
 
-      </div>
-    </HelmetProvider>
+    </div>
+    // </HelmetProvider>
     
   );
 }
