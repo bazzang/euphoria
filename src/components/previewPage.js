@@ -1167,7 +1167,7 @@ function PreviewPage() {
                             <section className="calendar">
                             {infoList &&
                                 infoList.map((list, index) => (
-                                    <div key={index} >
+                                    <div key={index}  style={{marginTop:"30px"}} >
                                         <strong className="title">{list.title || ""}</strong>
                                         {list.file && (
                                             <img
