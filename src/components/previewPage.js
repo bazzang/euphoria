@@ -1114,7 +1114,7 @@ function PreviewPage() {
                                             <span>{inv.brmNm}</span>
                                         </div>
                                         <div className="font-acnt">
-                                            <span>{inv.brmBank}</span>
+                                            <span>{inv.brmBank}&nbsp;</span>
                                             <span>{inv.brmAcnt}</span>
                                         </div>
                                     </div>
@@ -1126,7 +1126,7 @@ function PreviewPage() {
                                             <span>{inv.brdNm}</span>
                                         </div>
                                         <div className="font-acnt">
-                                            <span>{inv.brdBank}</span>
+                                            <span>{inv.brdBank}&nbsp;</span>
                                             <span>{inv.brdAcnt}</span>
                                         </div>
                                     </div>
@@ -1138,7 +1138,7 @@ function PreviewPage() {
                                             <span>{inv.brmfNm}</span>
                                         </div>
                                         <div className="font-acnt">
-                                            <span>{inv.brmfBank}</span>
+                                            <span>{inv.brmfBank}&nbsp;</span>
                                             <span>{inv.brmfAcnt}</span>
                                         </div>
                                     </div>
@@ -1150,7 +1150,7 @@ function PreviewPage() {
                                             <span>{inv.brmmNm}</span>
                                         </div>
                                         <div className="font-acnt">
-                                            <span>{inv.brmmBank}</span>
+                                            <span>{inv.brmmBank}&nbsp;</span>
                                             <span>{inv.brmmAcnt}</span>
                                         </div>
                                     </div>
@@ -1162,7 +1162,7 @@ function PreviewPage() {
                                             <span>{inv.brdfNm}</span>
                                         </div>
                                         <div className="font-acnt">
-                                            <span>{inv.brdfBank}</span>
+                                            <span>{inv.brdfBank}&nbsp;</span>
                                             <span>{inv.brdfAcnt}</span>
                                         </div>
                                     </div>
@@ -1174,7 +1174,7 @@ function PreviewPage() {
                                             <span>{inv.brdmNm}</span>
                                         </div>
                                         <div className="font-acnt">
-                                            <span>{inv.brdmBank}</span>
+                                            <span>{inv.brdmBank}&nbsp;</span>
                                             <span>{inv.brdmAcnt}</span>
                                         </div>
                                     </div>

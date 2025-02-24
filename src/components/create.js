@@ -1802,7 +1802,7 @@ function Create() {
                                                     <span>{invitationState.brmNm}</span>
                                                 </div>
                                                 <div className="font-acnt">
-                                                    <span>{invitationState.brmBank}</span>
+                                                    <span>{invitationState.brmBank}&nbsp;</span>
                                                     <span>{invitationState.brmAcnt}</span>
                                                 </div>
                                             </div>
@@ -1814,7 +1814,7 @@ function Create() {
                                                     <span>{invitationState.brdNm}</span>
                                                 </div>
                                                 <div className="font-acnt">
-                                                    <span>{invitationState.brdBank}</span>
+                                                    <span>{invitationState.brdBank}&nbsp;</span>
                                                     <span>{invitationState.brdAcnt}</span>
                                                 </div>
                                             </div>
@@ -1826,7 +1826,7 @@ function Create() {
                                                     <span>{invitationState.brmfNm}</span>
                                                 </div>
                                                 <div className="font-acnt">
-                                                    <span>{invitationState.brmfBank}</span>
+                                                    <span>{invitationState.brmfBank}&nbsp;</span>
                                                     <span>{invitationState.brmfAcnt}</span>
                                                 </div>
                                             </div>
@@ -1838,7 +1838,7 @@ function Create() {
                                                     <span>{invitationState.brmmNm}</span>
                                                 </div>
                                                 <div className="font-acnt">
-                                                    <span>{invitationState.brmmBank}</span>
+                                                    <span>{invitationState.brmmBank}&nbsp;</span>
                                                     <span>{invitationState.brmmAcnt}</span>
                                                 </div>
                                             </div>
@@ -1850,7 +1850,7 @@ function Create() {
                                                     <span>{invitationState.brdfNm}</span>
                                                 </div>
                                                 <div className="font-acnt">
-                                                    <span>{invitationState.brdfBank}</span>
+                                                    <span>{invitationState.brdfBank}&nbsp;</span>
                                                     <span>{invitationState.brdfAcnt}</span>
                                                 </div>
                                             </div>
@@ -1862,7 +1862,7 @@ function Create() {
                                                     <span>{invitationState.brdmNm}</span>
                                                 </div>
                                                 <div className="font-acnt">
-                                                    <span>{invitationState.brdmBank}</span>
+                                                    <span>{invitationState.brdmBank}&nbsp;</span>
                                                     <span>{invitationState.brdmAcnt}</span>
                                                 </div>
                                             </div>
