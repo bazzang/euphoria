@@ -33,8 +33,6 @@ function PreviewPage() {
     const searchParams = new URLSearchParams(location.search);
     // 쿼리스트링에서 값 추출
     const itemId = searchParams.get('itemId');
-    const index = searchParams.get('index');
-    const confirm = searchParams.get('confirm');
     
     const [infoList, setInfoList] = useState([]);
     const [trsptList, setTrsptList] = useState([]);

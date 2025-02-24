@@ -275,7 +275,8 @@ function ProductionList() {
                                     {/* <button className="wd-option-btn"><img src={wd_option_icon_2} alt=""/>참석여부 확인</button> */}
                                     <button className="wd-option-btn"
                                         onClick={() => {
-                                            const url = `${window.location.origin}/preview?itemId=${item.invSeq}&index=${index}&confirm=${item.confirmedAt}`;
+                                            // const url = `${window.location.origin}/preview?itemId=${item.invSeq}`;
+                                            const url = `https://api.euphoriacard.co.kr/api/preview/${item.invSeq}`;
                                             copyToClipboard(url);
                                         }}
                                     >
@@ -283,6 +284,7 @@ function ProductionList() {
                                     </button>
                                     {/* <button className="wd-option-btn"><img src={wd_option_icon_4} alt="" onClick={shareKakao(index)}/>카톡 공유하기</button> */}
                                     {/* <button className="wd-option-btn"><img src={wd_option_icon_5} alt=""/>QR코드</button> */}
+                                    {/*  */}
                                 </div>
 
                                 
