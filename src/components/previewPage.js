@@ -1166,7 +1166,7 @@ function PreviewPage() {
                                 infoList.map((list, index) => (
                                     <div key={index} >
                                         <strong className="title">{list.title || ""}</strong>
-                                        {list.imgUrl && (
+                                        {list.file && (
                                             <img
                                             className="bg"
                                             src={list.file }
