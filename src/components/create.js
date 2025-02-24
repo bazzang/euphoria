@@ -1782,10 +1782,13 @@ function Create() {
                                 <section className="calendar">
                                     <div >
                                         <span className="title" >{invitationState.acntTitle}</span>
-                                        <span
-                                            className="infoP"
-                                            dangerouslySetInnerHTML={{ __html: invitationState.acntContent}}
-                                        ></span>
+                                        <div style={{margin:"10px"}}>
+                                            <span
+                                                className="infoP"
+                                                dangerouslySetInnerHTML={{ __html: invitationState.acntContent}}
+                                            ></span>
+                                        </div>
+                                        
                                     </div>
                                         {invitationState.brmAcnt && (
                                             <div className="item" style={{border: "1px solid #c2c0c0", margin:"10px", padding:"10px"}}>
@@ -1901,6 +1904,7 @@ function Create() {
                                     {/* <p className="text">
                                         {invitationState.endingContent}
                                     </p> */}
+                                    
                                     <p
                                         className="text"
                                         style={{

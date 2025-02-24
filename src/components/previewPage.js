@@ -1094,10 +1094,12 @@ function PreviewPage() {
                         <section className="calendar">
                             <div >
                                 <span className="title" >{inv.acntTitle}</span>
-                                <span
-                                    className="infoP"
-                                    dangerouslySetInnerHTML={{ __html: inv.acntContent}}
-                                ></span>
+                                <div style={{margin:"10px"}}>
+                                    <span
+                                        className="infoP"
+                                        dangerouslySetInnerHTML={{ __html: inv.acntContent}}
+                                    ></span>
+                                </div>
                             </div>
                                 {inv.brmAcnt && (
                                     <div className="item" style={{border: "1px solid #c2c0c0", margin:"10px", padding:"10px"}}>
