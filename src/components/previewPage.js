@@ -681,10 +681,13 @@ function PreviewPage() {
                         {/* 글귀 */}
                         {inv.usePhrases ? (
                         <section className="calendar">
-                            <span
-                            className="infoP"
-                            dangerouslySetInnerHTML={{ __html: inv.phrases }}
-                            ></span>
+                            <div style={{margin:"10px"}}>
+                                <span
+                                className="infoP"
+                                dangerouslySetInnerHTML={{ __html: inv.phrases }}
+                                ></span>
+                            </div>
+                            
                         </section>
                         ) : null}
 
@@ -693,10 +696,13 @@ function PreviewPage() {
                         <section className="calendar">
                             <strong className="title">
                             {inv.salutationsTitle || "소중한 분들을 초대합니다."}</strong>
-                            <span
-                            className="infoP"
-                            dangerouslySetInnerHTML={{ __html: inv.salutations }}
-                            ></span>
+                            <div style={{margin:"10px"}}>
+                                <span
+                                className="infoP"
+                                dangerouslySetInnerHTML={{ __html: inv.salutations }}
+                                ></span>
+                            </div>
+                            
                         </section>
                         ) : null}
                         

@@ -1342,10 +1342,13 @@ function Create() {
                                 {/* 글귀 */}
                                 {invitationState.usePhrases ? (
                                 <section className="calendar">
-                                   <span
-                                    className="infoP"
-                                    dangerouslySetInnerHTML={{ __html: invitationState.phrases }}
-                                    ></span>
+                                    <div style={{margin:"10px"}}>
+                                        <span
+                                        className="infoP"
+                                        dangerouslySetInnerHTML={{ __html: invitationState.phrases }}
+                                        ></span>
+                                    </div>
+                                   
                                 </section>
                                 ) : null}
 
@@ -1356,10 +1359,13 @@ function Create() {
                                     <strong className="title">
                                     {/* <strong className="title" data-aos="fade-up" data-aos-duration="100"> */}
                                     {invitationState.salutationsTitle || "소중한 분들을 초대합니다."}</strong>
-                                   <span
-                                    className="infoP"
-                                    dangerouslySetInnerHTML={{ __html: invitationState.salutations }}
-                                    ></span>
+                                    <div style={{margin:"10px"}}>
+                                        <span
+                                        className="infoP"
+                                        dangerouslySetInnerHTML={{ __html: invitationState.salutations }}
+                                        ></span>
+                                    </div>
+                                   
                                 </section>
                                 ) : null}
 
