@@ -18,6 +18,7 @@ import CallIcon from './CallIcon.js'
 import BasicModal, { openBasicModal } from "./BasicModal.js";
 import MapComponent from './map.js';
 import SmsIcon from './SmsIcon.js';
+import { Helmet } from 'react-helmet-async';
 
 function PreviewPage() {
     const location = useLocation();
@@ -432,6 +433,20 @@ function PreviewPage() {
 
   return (
     <>
+
+        {/* Helmet으로 메타 태그 설정 */}
+        <Helmet>
+            <title>{inv.groomLastName + "❤️" + inv.brideLastName + "의 결혼식에 초대합니다."} </title>
+            <meta property="og:title" content={inv.title || "청첩장 미리보기"} />
+            <meta
+            property="og:description"
+            content={inv.description || "여기에 미리보기 텍스트 설명을 입력하세요."}
+            />
+            <meta property="og:image" content={mainImg || "기본 이미지 URL"} />
+            <meta property="og:url" content={window.location.href} />
+            <meta name="twitter:card" content="summary_large_image" />
+        </Helmet>
+
         {confirm === null || confirm === "null" && (
             <div className="watermark">
                 <p>구매 후 워터마크를 제거해주세요.
