@@ -19,7 +19,7 @@ import BasicModal, { openBasicModal } from "./BasicModal.js";
 import MapComponent from './map.js';
 import SmsIcon from './SmsIcon.js';
 // import { Helmet } from 'react-helmet-async';
-import SEO from './Seo.js';
+// import SEO from './Seo.js';
 
 function PreviewPage() {
     const location = useLocation();
@@ -436,7 +436,7 @@ function PreviewPage() {
 
   return (
     <>
-          <SEO title={inv.groomLastName + "와 " + inv.brideLastName} description={inv.mainTxt} image={mainImg} />
+          {/* <SEO title={inv.groomLastName + "와 " + inv.brideLastName} description={inv.mainTxt} image={mainImg} /> */}
         {/* Helmet으로 메타 태그 설정 */}
         {/* <Helmet>
             <title>{inv.groomLastName + "❤️" + inv.brideLastName + "의 결혼식"} </title>

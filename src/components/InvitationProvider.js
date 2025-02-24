@@ -141,6 +141,7 @@ export const InvitationProvider = ({ children }) => {
     groomPhotoFile : "",
     bridePhotoFile : "",
     endingPhotoFile : "",
+    urlPhotoFile: "",
 
     // 영상
      videoUrl : "",
@@ -194,7 +195,11 @@ export const InvitationProvider = ({ children }) => {
     brdmAcnt : "",
     brdmNm : "",
     
-    
+    //url 공유 스타일 수정
+    useUrlShareStyle : false,
+    urlTitle : "",
+    urlContent : "",
+    urlImage : "",
 
     // 사용섹션 
     useProfile : true, // 프로필형 소개 
