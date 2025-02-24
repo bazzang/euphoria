@@ -146,37 +146,102 @@ function ProductionList() {
 
 
     
-    // const shareKakao = (index) => {
-    //     if (window.kakao) {
-    //       const kakao = window.kakao;
-    //       if (!kakao.isInitialized()) {
-    //         kakao.init("267e72e5ca94418235ab871f6c69fe40");
-    //       }
+    const shareKakao = (index) => {
+        // if (window.kakao) {
+        //   const kakao = window.kakao;
+        //   if (!kakao.isInitialized()) {
+        //     kakao.init("267e72e5ca94418235ab871f6c69fe40");
+        //   }
     
-    //       kakao.Link.sendDefault({
-    //         objectType: "feed", 
-    //         content: {
-    //           title: "제목입니다"+index,
-    //           description: "설명란입니다",
-    //           imageUrl:
-    //             "https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png",
-    //           link: {
-    //             mobileWebUrl: "https://www.naver.com",
-    //             webUrl: "https://www.google.com",
-    //           },
-    //         },
-    //         buttons: [
-    //           {
-    //             title: "자세히 보러 가기",
-    //             link: {
-    //               mobileWebUrl: "https://www.naver.com",
-    //               webUrl: "https://www.google.com",
-    //             },
-    //           },
-    //         ],
-    //       });
-    //     }
-    // };
+        //   kakao.Link.sendDefault({
+        //     objectType: "feed", 
+        //     content: {
+        //       title: "제목입니다"+index,
+        //       description: "설명란입니다",
+        //       imageUrl:
+        //         "https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png",
+        //       link: {
+        //         mobileWebUrl: "https://www.naver.com",
+        //         webUrl: "https://www.google.com",
+        //       },
+        //     },
+        //     buttons: [
+        //       {
+        //         title: "자세히 보러 가기",
+        //         link: {
+        //           mobileWebUrl: "https://www.naver.com",
+        //           webUrl: "https://www.google.com",
+        //         },
+        //       },
+        //     ],
+        //   });
+        // }
+        Kakao.Share.sendDefault({
+            objectType: 'feed',
+            content: {
+              title: '오늘의 디저트',
+              description: '아메리카노, 빵, 케익',
+              imageUrl:
+                'https://mud-kage.kakao.com/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg',
+              link: {
+                mobileWebUrl: 'https://developers.kakao.com',
+                webUrl: 'https://developers.kakao.com',
+              },
+            },
+            itemContent: {
+              profileText: 'Kakao',
+              profileImageUrl: 'https://mud-kage.kakao.com/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png',
+              titleImageUrl: 'https://mud-kage.kakao.com/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png',
+              titleImageText: 'Cheese cake',
+              titleImageCategory: 'Cake',
+              items: [
+                {
+                  item: 'Cake1',
+                  itemOp: '1000원',
+                },
+                {
+                  item: 'Cake2',
+                  itemOp: '2000원',
+                },
+                {
+                  item: 'Cake3',
+                  itemOp: '3000원',
+                },
+                {
+                  item: 'Cake4',
+                  itemOp: '4000원',
+                },
+                {
+                  item: 'Cake5',
+                  itemOp: '5000원',
+                },
+              ],
+              sum: '총 결제금액',
+              sumOp: '15000원',
+            },
+            social: {
+              likeCount: 10,
+              commentCount: 20,
+              sharedCount: 30,
+            },
+            buttons: [
+              {
+                title: '웹으로 이동',
+                link: {
+                  mobileWebUrl: 'https://developers.kakao.com',
+                  webUrl: 'https://developers.kakao.com',
+                },
+              },
+              {
+                title: '앱으로 이동',
+                link: {
+                  mobileWebUrl: 'https://developers.kakao.com',
+                  webUrl: 'https://developers.kakao.com',
+                },
+              },
+            ],
+          });
+    };
     
   return (
     <>
@@ -280,7 +345,7 @@ function ProductionList() {
                                     >
                                         <img src={wd_option_icon_3} alt=""/>URL 복사하기
                                     </button>
-                                    {/* <button className="wd-option-btn"><img src={wd_option_icon_4} alt="" onClick={shareKakao(index)}/>카톡 공유하기</button> */}
+                                    <button className="wd-option-btn"><img src={wd_option_icon_4} alt="" onClick={shareKakao(index)}/>카톡 공유하기</button>
                                     {/* <button className="wd-option-btn"><img src={wd_option_icon_5} alt=""/>QR코드</button> */}
                                 </div>
 

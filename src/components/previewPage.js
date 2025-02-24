@@ -436,7 +436,7 @@ function PreviewPage() {
 
         {/* Helmet으로 메타 태그 설정 */}
         <Helmet>
-            <title>{inv.groomLastName + "❤️" + inv.brideLastName + "의 결혼식에 초대합니다."} </title>
+            <title>{inv.groomLastName + "❤️" + inv.brideLastName + "의 결혼식"} </title>
             <meta property="og:title" content={inv.title || "청첩장 미리보기"} />
             <meta
             property="og:description"
