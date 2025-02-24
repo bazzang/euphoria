@@ -154,6 +154,13 @@ function Create() {
                     info: value, 
                 }));
                 break;
+            case "useAcnt" :  // 안내사항
+                setCategories((prevCategories) => ({
+                    ...prevCategories,
+                    acnt: value, 
+                }));
+                break;
+                
 
             default : 
                 break;
@@ -1769,6 +1776,95 @@ function Create() {
                                 ))}
                                 </section>
                                 )}
+
+                                {/* [계좌번호] useAcnt 값의 true/false에 따라 이 섹션 활성화/비활성화 */}
+                                {invitationState.useAcnt && (
+                                <section className="calendar">
+                                    <div >
+                                        <span className="title" >{invitationState.acntTitle}</span>
+                                        <span
+                                            className="infoP"
+                                            dangerouslySetInnerHTML={{ __html: invitationState.acntContent}}
+                                        ></span>
+                                    </div>
+                                        {invitationState.brmAcnt && (
+                                            <div className="item" style={{border: "1px solid #c2c0c0", margin:"10px", padding:"10px"}}>
+                                                <div className="blue-acnt" style={{borderBottom:"1px solid #c2c0c0", paddingBottom:"2px"}}>신랑</div>
+                                                <div className="font-acnt">
+                                                    <span>{invitationState.brmNm}</span>
+                                                </div>
+                                                <div className="font-acnt">
+                                                    <span>{invitationState.brmBank}</span>
+                                                    <span>{invitationState.brmAcnt}</span>
+                                                </div>
+                                            </div>
+                                        )}
+                                        {invitationState.brdAcnt && (
+                                            <div className="item" style={{border: "1px solid #c2c0c0", margin:"10px", padding:"10px"}}>
+                                                <div className="pink-acnt" style={{borderBottom:"1px solid #c2c0c0", paddingBottom:"2px"}}>신부</div>
+                                                <div className="font-acnt">
+                                                    <span>{invitationState.brdNm}</span>
+                                                </div>
+                                                <div className="font-acnt">
+                                                    <span>{invitationState.brdBank}</span>
+                                                    <span>{invitationState.brdAcnt}</span>
+                                                </div>
+                                            </div>
+                                        )}
+                                        {invitationState.brmfAcnt && (
+                                            <div className="item" style={{border: "1px solid #c2c0c0", margin:"10px", padding:"10px"}}>
+                                                <div className="blue-acnt" style={{borderBottom:"1px solid #c2c0c0", paddingBottom:"2px"}}>신랑 아버지</div>
+                                                <div className="font-acnt">
+                                                    <span>{invitationState.brmfNm}</span>
+                                                </div>
+                                                <div className="font-acnt">
+                                                    <span>{invitationState.brmfBank}</span>
+                                                    <span>{invitationState.brmfAcnt}</span>
+                                                </div>
+                                            </div>
+                                        )}
+                                        {invitationState.brmmAcnt && (
+                                            <div className="item" style={{border: "1px solid #c2c0c0", margin:"10px", padding:"10px"}}>
+                                                <div className="blue-acnt" style={{borderBottom:"1px solid #c2c0c0", paddingBottom:"2px"}}>신랑 어머니</div>
+                                                <div className="font-acnt">
+                                                    <span>{invitationState.brmmNm}</span>
+                                                </div>
+                                                <div className="font-acnt">
+                                                    <span>{invitationState.brmmBank}</span>
+                                                    <span>{invitationState.brmmAcnt}</span>
+                                                </div>
+                                            </div>
+                                        )}
+                                        {invitationState.brdfAcnt && (
+                                            <div className="item" style={{border: "1px solid #c2c0c0", margin:"10px", padding:"10px"}}>
+                                                <div className="pink-acnt" style={{borderBottom:"1px solid #c2c0c0", paddingBottom:"2px"}}>신부 아버지</div>
+                                                <div className="font-acnt">
+                                                    <span>{invitationState.brdfNm}</span>
+                                                </div>
+                                                <div className="font-acnt">
+                                                    <span>{invitationState.brdfBank}</span>
+                                                    <span>{invitationState.brdfAcnt}</span>
+                                                </div>
+                                            </div>
+                                        )}
+                                        {invitationState.brdmAcnt && (
+                                            <div className="item" style={{border: "1px solid #c2c0c0", margin:"10px", padding:"10px"}}>
+                                                <div className="pink-acnt" style={{borderBottom:"1px solid #c2c0c0", paddingBottom:"2px"}}>신부 어머니</div>
+                                                <div className="font-acnt">
+                                                    <span>{invitationState.brdmNm}</span>
+                                                </div>
+                                                <div className="font-acnt">
+                                                    <span>{invitationState.brdmBank}</span>
+                                                    <span>{invitationState.brdmAcnt}</span>
+                                                </div>
+                                            </div>
+                                        )}
+                                        
+                                        
+                                    
+                                </section>
+                                )}
+
 
                                 {/* [안내사항] useInfo 값의 true/false에 따라 이 섹션 활성화/비활성화 */}
                                 {invitationState.useInfo && (
@@ -3857,40 +3953,72 @@ function Create() {
                             </div> */}
 
                             {/* 목요일 이후 구현 (퍼블리싱 없음) */}
-                            {/* <div className="category">
+                            <div className="category">
                                 <div className="category-head">
-                                    <label for="" className="switch">
-                                        <input type="checkbox" checked/>
+                                    {/* value=useAcnt */}
+                                    <label className="switch">
+                                        <input 
+                                            type="checkbox" 
+                                            checked={invitationState.useAcnt} 
+                                            onChange={(e) => handleChange('useAcnt', e.target.checked)}
+                                        />
                                     </label>
+
                                     <strong>계좌번호</strong>
                                     <button 
-                                        className={`btn-toggle ${categories['paymentAccount'] ? 'active' : ''}`}
-                                        onClick={() => toggleCategory('paymentAccount')}
+                                        className={`btn-toggle ${categories['acnt'] ? 'active' : ''}`}
+                                        onClick={() => toggleCategory('acnt')}
                                     >여닫기</button>
                                 </div>
-                                {categories['paymentAccount'] && (
+                                {categories['acnt'] && (
 
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">타이틀</div>
                                         <div className="option-contents">
-                                            <input type="text" className="input-sts" placeholder="마음 전하실 곳"/>
+                                            <input
+                                                type="text"
+                                                className="input-sts"
+                                                placeholder="마음 전하실 곳"
+                                                value={invitationState.acntTitle}
+                                                onChange={(e) => handleChange("acntTitle", e.target.value)} // Update state
+                                            />
                                         </div>
                                     </div>
                                     <div className="option">
                                         <div className="option-label">안내문구</div>
                                         <div className="option-contents">
-                                            <textarea name="" id="" className="textarea-sts" rows="9">
-                                            멀리서도 축하의 마음을 
-                                            전하고 싶으신 분들을 위해 
-                                            계좌번호를 안내드립니다. 
+                                            
+                                            <ReactQuill
+                                                    theme="snow"
+                                                    value={invitationState.acntContent || 
+                                                        "멀리서도 축하의 마음을" + "<br/>" +
+                                                        "전하고 싶으신 분들을 위해 " + "<br/>" +
+                                                        "계좌번호를 안내드립니다. " + "<br/><br/>" +
+                                                        "소중한 축하를 보내주셔서 감사드리며, " + "<br/>" +
+                                                        "따뜻한 마음에 깊이 감사드립니다." + "<br/>"
+                                                }
+                                                    onChange={(content) => handleChange("acntContent", content)} // Update state
+                                                    modules={{
+                                                        toolbar: [
+                                                        // 텍스트 꾸미기
+                                                        ['bold', 'italic', 'underline', 'strike'],
+                                                        // 색상
+                                                        [{ 'color': [] }, { 'background': [] }],
+                                                        // 정렬
+                                                        [{ 'align': [] }],
+                                                        ],
+                                                    }}
+                                                    formats={[
+                                                        'bold', 'italic', 'underline', 'strike',
+                                                        'color', 'background',
+                                                        'align',
+                                                    ]}
+                                                />
 
-                                            소중한 축하를 보내주셔서 감사드리며, 
-                                            따뜻한 마음에 깊이 감사드립니다.
-                                            </textarea>
                                         </div>
                                     </div>
-                                    <div className="option">
+                                    {/* <div className="option">
                                         <div className="option-label">보여주기 방식</div>
                                         <div className="option-contents">
                                             <div className="radio-wrap">
@@ -3904,130 +4032,249 @@ function Create() {
                                                 </span>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     <div className="option">
                                         <div className="option-label">
-                                            <span className="check">
+                                            {/* <span className="check">
                                                 <input type="checkbox" id="bank_info_1" checked/>
                                                 <label for="bank_info_1"><i></i></label>
-                                            </span>
+                                            </span> */}
                                             신랑
                                         </div>
                                         <div className="option-contents">
                                             <div className="bank-info">
-                                                <input type="text" placeholder="은행" className="input-sts"/>
-                                                <input type="text" placeholder="계좌번호" className="input-sts"/>
-                                                <input type="text" placeholder="예금주" className="input-sts"/>
-                                                <span className="check">
+                                                <input
+                                                    type="text"
+                                                    className="input-sts"
+                                                    placeholder="은행"
+                                                    value={invitationState.brmBank}
+                                                    onChange={(e) => handleChange("brmBank", e.target.value)} // Update state
+                                                />
+                                                <input
+                                                    type="text"
+                                                    className="input-sts"
+                                                    placeholder="계좌번호"
+                                                    value={invitationState.brmAcnt}
+                                                    onChange={(e) => handleChange("brmAcnt", e.target.value)} // Update state
+                                                />
+                                                <input
+                                                    type="text"
+                                                    className="input-sts"
+                                                    placeholder="예금주"
+                                                    value={invitationState.brmNm}
+                                                    onChange={(e) => handleChange("brmNm", e.target.value)} // Update state
+                                                />
+                                                {/* <span className="check">
                                                     <input type="checkbox" id="bank_info_1_kakao"/>
                                                     <label for="bank_info_1_kakao"><i></i>카카오페이 추가</label>
-                                                </span>
+                                                </span> */}
                                             </div>
                                         </div>
                                     </div>
+
+
                                     <div className="option">
                                         <div className="option-label">
-                                            <span className="check">
+                                            {/* <span className="check">
                                                 <input type="checkbox" id="bank_info_2" checked/>
                                                 <label for="bank_info_2"><i></i></label>
-                                            </span>
+                                            </span> */}
                                             신부
                                         </div>
                                         <div className="option-contents">
                                             <div className="bank-info">
-                                                <input type="text" placeholder="은행" className="input-sts"/>
-                                                <input type="text" placeholder="계좌번호" className="input-sts"/>
-                                                <input type="text" placeholder="예금주" className="input-sts"/>
-                                                <span className="check">
+                                                <input
+                                                    type="text"
+                                                    className="input-sts"
+                                                    placeholder="은행"
+                                                    value={invitationState.brdBank}
+                                                    onChange={(e) => handleChange("brdBank", e.target.value)} // Update state
+                                                />
+                                                <input
+                                                    type="text"
+                                                    className="input-sts"
+                                                    placeholder="계좌번호"
+                                                    value={invitationState.brdAcnt}
+                                                    onChange={(e) => handleChange("brdAcnt", e.target.value)} // Update state
+                                                />
+                                                <input
+                                                    type="text"
+                                                    className="input-sts"
+                                                    placeholder="예금주"
+                                                    value={invitationState.brdNm}
+                                                    onChange={(e) => handleChange("brdNm", e.target.value)} // Update state
+                                                />
+                                                {/* <span className="check">
                                                     <input type="checkbox" id="bank_info_1_kakao"/>
                                                     <label for="bank_info_1_kakao"><i></i>카카오페이 추가</label>
-                                                </span>
+                                                </span> */}
                                             </div>
                                         </div>
                                     </div>
+
                                     <div className="option">
                                         <div className="option-label">
-                                            <span className="check">
-                                                <input type="checkbox" id="bank_info_3"/>
-                                                <label for="bank_info_3"><i></i></label>
-                                            </span>
+                                            {/* <span className="check">
+                                                <input type="checkbox" id="bank_info_2" checked/>
+                                                <label for="bank_info_2"><i></i></label>
+                                            </span> */}
                                             신랑 아버지
                                         </div>
                                         <div className="option-contents">
-                                            <div className="bank-info" style={{display : "none"}}>
-                                                <input type="text" placeholder="은행" className="input-sts"/>
-                                                <input type="text" placeholder="계좌번호" className="input-sts"/>
-                                                <input type="text" placeholder="예금주" className="input-sts"/>
-                                                <span className="check">
+                                            <div className="bank-info">
+                                                <input
+                                                    type="text"
+                                                    className="input-sts"
+                                                    placeholder="은행"
+                                                    value={invitationState.brmfBank}
+                                                    onChange={(e) => handleChange("brmfBank", e.target.value)} // Update state
+                                                />
+                                                <input
+                                                    type="text"
+                                                    className="input-sts"
+                                                    placeholder="계좌번호"
+                                                    value={invitationState.brmfAcnt}
+                                                    onChange={(e) => handleChange("brmfAcnt", e.target.value)} // Update state
+                                                />
+                                                <input
+                                                    type="text"
+                                                    className="input-sts"
+                                                    placeholder="예금주"
+                                                    value={invitationState.brmfNm}
+                                                    onChange={(e) => handleChange("brmfNm", e.target.value)} // Update state
+                                                />
+                                                {/* <span className="check">
                                                     <input type="checkbox" id="bank_info_1_kakao"/>
                                                     <label for="bank_info_1_kakao"><i></i>카카오페이 추가</label>
-                                                </span>
+                                                </span> */}
                                             </div>
                                         </div>
                                     </div>
+
                                     <div className="option">
                                         <div className="option-label">
-                                            <span className="check">
-                                                <input type="checkbox" id="bank_info_4"/>
-                                                <label for="bank_info_4"><i></i></label>
-                                            </span>
+                                            {/* <span className="check">
+                                                <input type="checkbox" id="bank_info_2" checked/>
+                                                <label for="bank_info_2"><i></i></label>
+                                            </span> */}
                                             신랑 어머니
                                         </div>
                                         <div className="option-contents">
-                                            <div className="bank-info" style={{display : "none"}}>
-                                                <input type="text" placeholder="은행" className="input-sts"/>
-                                                <input type="text" placeholder="계좌번호" className="input-sts"/>
-                                                <input type="text" placeholder="예금주" className="input-sts"/>
-                                                <span className="check">
+                                            <div className="bank-info">
+                                                <input
+                                                    type="text"
+                                                    className="input-sts"
+                                                    placeholder="은행"
+                                                    value={invitationState.brmmBank}
+                                                    onChange={(e) => handleChange("brmmBank", e.target.value)} // Update state
+                                                />
+                                                <input
+                                                    type="text"
+                                                    className="input-sts"
+                                                    placeholder="계좌번호"
+                                                    value={invitationState.brmmAcnt}
+                                                    onChange={(e) => handleChange("brmmAcnt", e.target.value)} // Update state
+                                                />
+                                                <input
+                                                    type="text"
+                                                    className="input-sts"
+                                                    placeholder="예금주"
+                                                    value={invitationState.brmmNm}
+                                                    onChange={(e) => handleChange("brmmNm", e.target.value)} // Update state
+                                                />
+                                                {/* <span className="check">
                                                     <input type="checkbox" id="bank_info_1_kakao"/>
                                                     <label for="bank_info_1_kakao"><i></i>카카오페이 추가</label>
-                                                </span>
+                                                </span> */}
                                             </div>
                                         </div>
                                     </div>
+
                                     <div className="option">
                                         <div className="option-label">
-                                            <span className="check">
-                                                <input type="checkbox" id="bank_info_5"/>
-                                                <label for="bank_info_5"><i></i></label>
-                                            </span>
+                                            {/* <span className="check">
+                                                <input type="checkbox" id="bank_info_2" checked/>
+                                                <label for="bank_info_2"><i></i></label>
+                                            </span> */}
                                             신부 아버지
                                         </div>
                                         <div className="option-contents">
-                                            <div className="bank-info" style={{display : "none"}}>
-                                                <input type="text" placeholder="은행" className="input-sts"/>
-                                                <input type="text" placeholder="계좌번호" className="input-sts"/>
-                                                <input type="text" placeholder="예금주" className="input-sts"/>
-                                                <span className="check">
+                                            <div className="bank-info">
+                                                <input
+                                                    type="text"
+                                                    className="input-sts"
+                                                    placeholder="은행"
+                                                    value={invitationState.brdfBank}
+                                                    onChange={(e) => handleChange("brdfBank", e.target.value)} // Update state
+                                                />
+                                                <input
+                                                    type="text"
+                                                    className="input-sts"
+                                                    placeholder="계좌번호"
+                                                    value={invitationState.brdfAcnt}
+                                                    onChange={(e) => handleChange("brdfAcnt", e.target.value)} // Update state
+                                                />
+                                                <input
+                                                    type="text"
+                                                    className="input-sts"
+                                                    placeholder="예금주"
+                                                    value={invitationState.brdfNm}
+                                                    onChange={(e) => handleChange("brdfNm", e.target.value)} // Update state
+                                                />
+                                                {/* <span className="check">
                                                     <input type="checkbox" id="bank_info_1_kakao"/>
                                                     <label for="bank_info_1_kakao"><i></i>카카오페이 추가</label>
-                                                </span>
+                                                </span> */}
                                             </div>
                                         </div>
                                     </div>
+
                                     <div className="option">
                                         <div className="option-label">
-                                            <span className="check">
-                                                <input type="checkbox" id="bank_info_6"/>
-                                                <label for="bank_info_6"><i></i></label>
-                                            </span>
+                                            {/* <span className="check">
+                                                <input type="checkbox" id="bank_info_2" checked/>
+                                                <label for="bank_info_2"><i></i></label>
+                                            </span> */}
                                             신부 어머니
                                         </div>
                                         <div className="option-contents">
-                                            <div className="bank-info" style={{display : "none"}}>
-                                                <input type="text" placeholder="은행" className="input-sts"/>
-                                                <input type="text" placeholder="계좌번호" className="input-sts"/>
-                                                <input type="text" placeholder="예금주" className="input-sts"/>
-                                                <span className="check">
+                                            <div className="bank-info">
+                                                <input
+                                                    type="text"
+                                                    className="input-sts"
+                                                    placeholder="은행"
+                                                    value={invitationState.brdmBank}
+                                                    onChange={(e) => handleChange("brdmBank", e.target.value)} // Update state
+                                                />
+                                                <input
+                                                    type="text"
+                                                    className="input-sts"
+                                                    placeholder="계좌번호"
+                                                    value={invitationState.brdmAcnt}
+                                                    onChange={(e) => handleChange("brdmAcnt", e.target.value)} // Update state
+                                                />
+                                                <input
+                                                    type="text"
+                                                    className="input-sts"
+                                                    placeholder="예금주"
+                                                    value={invitationState.brdmNm}
+                                                    onChange={(e) => handleChange("brdmNm", e.target.value)} // Update state
+                                                />
+                                                {/* <span className="check">
                                                     <input type="checkbox" id="bank_info_1_kakao"/>
                                                     <label for="bank_info_1_kakao"><i></i>카카오페이 추가</label>
-                                                </span>
+                                                </span> */}
                                             </div>
                                         </div>
                                     </div>
+
+                                    
+                                    
+                                    
                                 </div>
                             )}
-                            </div> */}
+                            </div>
+
                             {/* 목요일 이후 구현 (퍼블리싱 없음) */}
                             {/* <div className="category">
                                 <div className="category-head">

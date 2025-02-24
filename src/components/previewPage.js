@@ -1071,6 +1071,94 @@ function PreviewPage() {
                         </section>
                         ) : null}
 
+                        {/* [계좌번호] useAcnt 값의 true/false에 따라 이 섹션 활성화/비활성화 */}
+                        {inv.useAcnt && (
+                        <section className="calendar">
+                            <div >
+                                <span className="title" >{inv.acntTitle}</span>
+                                <span
+                                    className="infoP"
+                                    dangerouslySetInnerHTML={{ __html: inv.acntContent}}
+                                ></span>
+                            </div>
+                                {inv.brmAcnt && (
+                                    <div className="item" style={{border: "1px solid #c2c0c0", margin:"10px", padding:"10px"}}>
+                                        <div className="blue-acnt" style={{borderBottom:"1px solid #c2c0c0", paddingBottom:"2px"}}>신랑</div>
+                                        <div className="font-acnt">
+                                            <span>{inv.brmNm}</span>
+                                        </div>
+                                        <div className="font-acnt">
+                                            <span>{inv.brmBank}</span>
+                                            <span>{inv.brmAcnt}</span>
+                                        </div>
+                                    </div>
+                                )}
+                                {inv.brdAcnt && (
+                                    <div className="item" style={{border: "1px solid #c2c0c0", margin:"10px", padding:"10px"}}>
+                                        <div className="pink-acnt" style={{borderBottom:"1px solid #c2c0c0", paddingBottom:"2px"}}>신부</div>
+                                        <div className="font-acnt">
+                                            <span>{inv.brdNm}</span>
+                                        </div>
+                                        <div className="font-acnt">
+                                            <span>{inv.brdBank}</span>
+                                            <span>{inv.brdAcnt}</span>
+                                        </div>
+                                    </div>
+                                )}
+                                {inv.brmfAcnt && (
+                                    <div className="item" style={{border: "1px solid #c2c0c0", margin:"10px", padding:"10px"}}>
+                                        <div className="blue-acnt" style={{borderBottom:"1px solid #c2c0c0", paddingBottom:"2px"}}>신랑 아버지</div>
+                                        <div className="font-acnt">
+                                            <span>{inv.brmfNm}</span>
+                                        </div>
+                                        <div className="font-acnt">
+                                            <span>{inv.brmfBank}</span>
+                                            <span>{inv.brmfAcnt}</span>
+                                        </div>
+                                    </div>
+                                )}
+                                {inv.brmmAcnt && (
+                                    <div className="item" style={{border: "1px solid #c2c0c0", margin:"10px", padding:"10px"}}>
+                                        <div className="blue-acnt" style={{borderBottom:"1px solid #c2c0c0", paddingBottom:"2px"}}>신랑 어머니</div>
+                                        <div className="font-acnt">
+                                            <span>{inv.brmmNm}</span>
+                                        </div>
+                                        <div className="font-acnt">
+                                            <span>{inv.brmmBank}</span>
+                                            <span>{inv.brmmAcnt}</span>
+                                        </div>
+                                    </div>
+                                )}
+                                {inv.brdfAcnt && (
+                                    <div className="item" style={{border: "1px solid #c2c0c0", margin:"10px", padding:"10px"}}>
+                                        <div className="pink-acnt" style={{borderBottom:"1px solid #c2c0c0", paddingBottom:"2px"}}>신부 아버지</div>
+                                        <div className="font-acnt">
+                                            <span>{inv.brdfNm}</span>
+                                        </div>
+                                        <div className="font-acnt">
+                                            <span>{inv.brdfBank}</span>
+                                            <span>{inv.brdfAcnt}</span>
+                                        </div>
+                                    </div>
+                                )}
+                                {inv.brdmAcnt && (
+                                    <div className="item" style={{border: "1px solid #c2c0c0", margin:"10px", padding:"10px"}}>
+                                        <div className="pink-acnt" style={{borderBottom:"1px solid #c2c0c0", paddingBottom:"2px"}}>신부 어머니</div>
+                                        <div className="font-acnt">
+                                            <span>{inv.brdmNm}</span>
+                                        </div>
+                                        <div className="font-acnt">
+                                            <span>{inv.brdmBank}</span>
+                                            <span>{inv.brdmAcnt}</span>
+                                        </div>
+                                    </div>
+                                )}
+                                
+                                
+                            
+                        </section>
+                        )}
+
                         {/* [안내사항] useInfo 값의 true/false에 따라 이 섹션 활성화/비활성화 */}
                         {inv.useInfo && (
                             <section className="calendar">

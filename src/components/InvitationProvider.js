@@ -170,8 +170,32 @@ export const InvitationProvider = ({ children }) => {
     // 안내사항 // db컬럼 추가 필요 
     useInfo : false,
     infoList : [],
-
+     
+    // 계좌번호
+    useAcnt : false,
+    acntTitle  : "",
+    acntContent : "",
+    brmBank : "", // 신랑 계좌 정보
+    brmAcnt : "",
+    brmNm : "",
+    brdBank : "",  // 신부 계좌 정보
+    brdAcnt : "",
+    brdNm : "",
+    brmfBank : "", // 신랑 아빠 계좌 정보
+    brmfAcnt : "",
+    brmfNm : "",
+    brmmBank : "", // 신랑 엄마 계좌 정보
+    brmmAcnt : "",
+    brmmNm : "",
+    brdfBank : "", // 신부 아빠 계좌 정보
+    brdfAcnt : "",
+    brdfNm : "",
+    brdmBank : "", // 신부 엄마 계좌 정보
+    brdmAcnt : "",
+    brdmNm : "",
     
+    
+
     // 사용섹션 
     useProfile : true, // 프로필형 소개 
     useCalendar: false, // 달력
