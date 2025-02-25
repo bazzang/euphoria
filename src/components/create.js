@@ -5052,17 +5052,27 @@ function Create() {
                                     <div className="option">
                                         <div className="option-label">제목</div>
                                         <div className="option-contents">
-                                            <input className="input-sts" type="text"/>
+                                            <input
+                                                type="text"
+                                                className="input-sts"
+                                                value={invitationState.urlTitle}
+                                                onChange={(e) => handleChange("urlTitle", e.target.value)} // Update state
+                                            />
                                         </div>
                                     </div>
                                     <div className="option">
                                         <div className="option-label">내용</div>
                                         <div className="option-contents">
-                                            <textarea name="" id="" className="textarea-sts" rows="9"></textarea>
+                                            <input
+                                                type="text"
+                                                className="input-sts"
+                                                value={invitationState.urlContent}
+                                                onChange={(e) => handleChange("urlContent", e.target.value)} // Update state
+                                            />
                                         </div>
                                     </div>
                                 </div>
-                                )}
+                                )}s
                             </div>
 
 
