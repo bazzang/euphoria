@@ -302,6 +302,10 @@ function Create() {
         type1: '18%',
         type2: '22%',
         type3: '26%',
+        type4: '26%',
+        type5: '26%',
+        type6: '26%',
+        type7: '26%',
     });
 
     //레터링 위치 조절 
@@ -1290,7 +1294,7 @@ function Create() {
                                             style={{
                                                 color: color1,
                                                 top: letteringTop.type1, // 동적 스타일 적용
-                                                display: invitationState.letteringMsg === 'our wedding day' ? 'block' : 'none',
+                                                display: invitationState.letteringMsg === 'type1' ? 'block' : 'none',
                                             }}
                                             >
                                             our<br />wedding<br />day
@@ -1300,7 +1304,7 @@ function Create() {
                                             style={{
                                                 color: color1,
                                                 top: letteringTop.type2, // 동적 스타일 적용
-                                                display: invitationState.letteringMsg === "We're getting married_1" ? 'block' : 'none',
+                                                display: invitationState.letteringMsg === "type2" ? 'block' : 'none',
                                             }}
                                             >
                                             We're getting<br />married!
@@ -1310,11 +1314,53 @@ function Create() {
                                             style={{
                                                 color: color1,
                                                 top: letteringTop.type3, // 동적 스타일 적용
-                                                display: invitationState.letteringMsg === 'Just married' ? 'block' : 'none',
+                                                display: invitationState.letteringMsg === 'type3' ? 'block' : 'none',
                                             }}
                                             >
                                             Just married
                                         </strong>
+                                        <strong
+                                            className="lettering type4"
+                                            style={{
+                                                color: color1,
+                                                top: letteringTop.type4, // 동적 스타일 적용
+                                                display: invitationState.letteringMsg === 'type4' ? 'block' : 'none',
+                                            }}
+                                            >
+                                            With love,<br /> always
+                                        </strong>
+                                        <strong
+                                            className="lettering type5"
+                                            style={{
+                                                color: color1,
+                                                top: letteringTop.type5, // 동적 스타일 적용
+                                                display: invitationState.letteringMsg === 'type5' ? 'block' : 'none',
+                                            }}
+                                            >
+                                            Happy <br />wedding<br /> day
+                                        </strong>
+
+                                        <strong
+                                            className="lettering type6"
+                                            style={{
+                                                color: color1,
+                                                top: letteringTop.type6, // 동적 스타일 적용
+                                                display: invitationState.letteringMsg === 'type6' ? 'block' : 'none',
+                                            }}
+                                            >
+                                            Our first page
+                                        </strong>
+                                        <strong
+                                            className="lettering type7"
+                                            style={{
+                                                color: color1,
+                                                top: letteringTop.type7, // 동적 스타일 적용
+                                                display: invitationState.letteringMsg === 'type7' ? 'block' : 'none',
+                                            }}
+                                            >
+                                            Happily ever after
+                                        </strong>
+
 
                                         <p
                                             className="text"
@@ -2048,14 +2094,13 @@ function Create() {
                                                     value={invitationState.letteringMsg || ""}
                                                     onChange={(e) => handleChange("letteringMsg", e.target.value)} // letteringMsg 업데이트
                                                 >
-                                                    <option value="our wedding day">our wedding day</option>
-                                                    <option value="We're getting married_1">We're getting married_1</option>
-                                                    {/* <option>We're getting married_2</option>  */}
-                                                    <option value="Just married">Just married</option>
-                                                    {/* <option>With love, always</option> 
-                                                    <option>happy wedding day</option> 
-                                                    <option>Our first page</option> 
-                                                    <option>Happily ever after</option>  */}
+                                                    <option value="type1">our wedding day</option>
+                                                    <option value="type2">We're getting married</option>
+                                                    <option value="type3">Just married</option>
+                                                    <option value="type4">With love, always</option>
+                                                    <option value="type5">happy wedding day</option> 
+                                                    <option value="type6">Our first page</option> 
+                                                    <option value="type7">Happily ever after</option>
                                                    <option value="">선택안함</option>
                                                 </select>
                                                 <button className="btn-change tooltip">변경
@@ -2087,7 +2132,7 @@ function Create() {
                                     <div className="option">
                                         <div className="option-label">레터링 위치 <sup>필수</sup></div>
                                         <div className="option-contents">
-                                        {invitationState.letteringMsg === "our wedding day" && (
+                                        {invitationState.letteringMsg === "type1" && (
                                             <input
                                             type="range"
                                             min="10"
@@ -2096,7 +2141,7 @@ function Create() {
                                             onChange={(e) => handleRangeChange('type1', e.target.value)}
                                             />
                                         )}
-                                        {invitationState.letteringMsg === "We're getting married_1" && (
+                                        {invitationState.letteringMsg === "type2" && (
                                             <input
                                             type="range"
                                             min="10"
@@ -2105,13 +2150,49 @@ function Create() {
                                             onChange={(e) => handleRangeChange('type2', e.target.value)}
                                             />
                                         )}
-                                        {invitationState.letteringMsg === "Just married" && (
+                                        {invitationState.letteringMsg === "type3" && (
                                             <input
                                             type="range"
                                             min="10"
                                             max="80"
                                             value={parseInt(letteringTop.type3)}
                                             onChange={(e) => handleRangeChange('type3', e.target.value)}
+                                            />
+                                        )}
+                                        {invitationState.letteringMsg === "type4" && (
+                                            <input
+                                            type="range"
+                                            min="10"
+                                            max="80"
+                                            value={parseInt(letteringTop.type4)}
+                                            onChange={(e) => handleRangeChange('type4', e.target.value)}
+                                            />
+                                        )}
+                                        {invitationState.letteringMsg === "type5" && (
+                                            <input
+                                            type="range"
+                                            min="10"
+                                            max="80"
+                                            value={parseInt(letteringTop.type5)}
+                                            onChange={(e) => handleRangeChange('type5', e.target.value)}
+                                            />
+                                        )}
+                                        {invitationState.letteringMsg === "type6" && (
+                                            <input
+                                            type="range"
+                                            min="10"
+                                            max="80"
+                                            value={parseInt(letteringTop.type6)}
+                                            onChange={(e) => handleRangeChange('type6', e.target.value)}
+                                            />
+                                        )}
+                                        {invitationState.letteringMsg === "type7" && (
+                                            <input
+                                            type="range"
+                                            min="10"
+                                            max="80"
+                                            value={parseInt(letteringTop.type7)}
+                                            onChange={(e) => handleRangeChange('type7', e.target.value)}
                                             />
                                         )}
                                         

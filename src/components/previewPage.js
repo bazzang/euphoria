@@ -623,7 +623,7 @@ function PreviewPage() {
                                     style={{
                                         color: inv.letteringClr,
                                         top: inv.letteringHg,
-                                        display: inv.letteringMsg === 'our wedding day' ? 'block' : 'none',
+                                        display: inv.letteringMsg === 'type1' ? 'block' : 'none',
                                     }}
                                     >
                                     our<br />wedding<br />day
@@ -633,7 +633,7 @@ function PreviewPage() {
                                     style={{
                                         color: inv.letteringClr,
                                         top: inv.letteringHg,
-                                        display: inv.letteringMsg === "We're getting married_1" ? 'block' : 'none',
+                                        display: inv.letteringMsg === "type2" ? 'block' : 'none',
                                     }}
                                     >
                                     We're getting<br />married!
@@ -643,10 +643,51 @@ function PreviewPage() {
                                     style={{
                                         color: inv.letteringClr,
                                         top: inv.letteringHg,
-                                        display: inv.letteringMsg === 'Just married' ? 'block' : 'none',
+                                        display: inv.letteringMsg === 'type3' ? 'block' : 'none',
                                     }}
                                     >
                                     Just married
+                                </strong>
+                                <strong
+                                    className="lettering type4"
+                                    style={{
+                                        color: inv.letteringClr,
+                                        top: inv.letteringHg, // 동적 스타일 적용
+                                        display: inv.letteringMsg === 'type4' ? 'block' : 'none',
+                                    }}
+                                    >
+                                    With love,<br /> always
+                                </strong>
+                                <strong
+                                    className="lettering type5"
+                                    style={{
+                                        color: inv.letteringClr,
+                                        top: inv.letteringHg, 
+                                        display: inv.letteringMsg === 'type5' ? 'block' : 'none',
+                                    }}
+                                    >
+                                    Happy <br />wedding<br /> day
+                                </strong>
+
+                                <strong
+                                    className="lettering type6"
+                                    style={{
+                                        color: inv.letteringClr,
+                                        top: inv.letteringHg, 
+                                        display: inv.letteringMsg === 'type6' ? 'block' : 'none',
+                                    }}
+                                    >
+                                    Our first page
+                                </strong>
+                                <strong
+                                    className="lettering type7"
+                                    style={{
+                                        color: inv.letteringClr,
+                                        top: inv.letteringHg, 
+                                        display: inv.letteringMsg === 'type7' ? 'block' : 'none',
+                                    }}
+                                    >
+                                    Happily ever after
                                 </strong>
 
                                 <p
