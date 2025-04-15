@@ -1188,6 +1188,7 @@ function Create() {
                     return {
                       ...info,
                       file: url[0],
+                      imgUrl : "",
                     };
                   })
                 );
