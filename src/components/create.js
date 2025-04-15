@@ -1179,7 +1179,9 @@ function Create() {
 
 
             if (invitationState.infoList && invitationState.infoList.length > 0) {
+                console.log("안내사항 저장중1");
                 let temp = invitationState.infoList;
+                console.log("안내사항 저장중2", temp);
                 const updatedInfoList = await Promise.all(
                   temp.map(async (info) => {
                     const url = await handleS3Upload(info.file);
