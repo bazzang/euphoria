@@ -27,6 +27,7 @@ import 'react-quill/dist/quill.snow.css';
 import PhraseModal, {openPhraseModal} from './PhraseModal.js';
 import SalModal, {openSalModal} from './SalModal.js';
 import SmsIcon from './SmsIcon.js';
+import { uploadImageToS3 } from '../api/S3Uploader.js';
 
 // import PhraseSampleModal, {openPhraseSample} from './PhraseSampleModal.js';
 
@@ -873,6 +874,9 @@ function Create() {
     const [previewGallery, setPreviewGallery] = useState([]);
     
     const handleGalleryImageUpload = (event) => {
+
+        handleGalleryUpload(event);
+
         console.log('갤러리 업로드');
         const files = Array.from(event.target.files);
         const newImages = files.map((file) => ({
@@ -1160,7 +1164,21 @@ function Create() {
             console.error("Error while saving data:", error);
         }
     };
-    
+    // ----------------------------------------aws s3 test-----------------------------------------------
+    const { galleryImageUrls, setGalleryImageUrls } = useState([]);
+    const handleGalleryUpload = async (event) => {
+        const files = event.target.files;
+        const uploadedUrls = [];
+      
+        for (const file of files) {
+          const url = await uploadImageToS3(file, 'gallery');
+          uploadedUrls.push(url);
+        }
+      
+        setGalleryImageUrls(uploadedUrls);
+    };
+    // ----------------------------------------aws s3 test-----------------------------------------------
+
     
   return (
     <div className="contents-wrap">
@@ -2132,11 +2150,19 @@ function Create() {
                                     <div className="option">
                                         <div className="option-label">레터링 위치 <sup>필수</sup></div>
                                         <div className="option-contents">
-                                        {invitationState.letteringMsg === "type1" && (
+                                        {invitationState.letteringMsg === "" && (
                                             <input
                                             type="range"
                                             min="10"
                                             max="80"
+                                            value=""
+                                            />
+                                        )}
+                                        {invitationState.letteringMsg === "type1" && (
+                                            <input
+                                            type="range"
+                                            min="10"
+                                            max="70"
                                             value={parseInt(letteringTop.type1)}
                                             onChange={(e) => handleRangeChange('type1', e.target.value)}
                                             />
