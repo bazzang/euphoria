@@ -1070,17 +1070,13 @@ function Create() {
     // };
 
     const fetchInv = async () => {
-        console.log('최종저장');
         try {
-            const payload = {
-              invitation: {
-                ...invitationState,
-                ordererNm: orderDetails.ordererName,
-                ordererCall: orderDetails.ordererCall,
-              },
-              transportationList: transportationList,
-              interviewList: interviewList,
-            };
+            const payload = buildInvitationPayload(
+                invitationState,
+                orderDetails,
+                transportationList,
+                interviewList
+            );
             console.log('S3저장확인', payload);
             // const response = await axios.post("https://api.euphoriacard.co.kr/api/invitation", payload, {
             //   headers: {
@@ -1138,6 +1134,39 @@ function Create() {
 
 
     }
+
+    const buildInvitationPayload = (state, orderDetails, transportationList, interviewList) => {
+        const {
+          mainPhotoUrl,
+          calendarImage,
+          groomPhotoUrl,
+          bridePhotoUrl,
+          endingImage,
+          urlImage,
+          galleryImages,
+          infoList,
+          // 나머지 상태도 자동 포함
+          ...rest
+        } = state;
+      
+        return {
+          invitation: {
+            ...rest, // 나머지 내용 자동 포함
+            mainPhotoUrl,
+            calendarImage,
+            groomPhotoUrl,
+            bridePhotoUrl,
+            endingImage,
+            urlImage,
+            galleryImages,
+            infoList,
+            ordererNm: orderDetails?.ordererName || '',
+            ordererCall: orderDetails?.ordererCall || '',
+          },
+          transportationList: transportationList || [],
+          interviewList: interviewList || [],
+        };
+    };
 
     const fetchSaveFiles = async () => {
         try {
