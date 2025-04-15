@@ -875,7 +875,7 @@ function Create() {
     
     const handleGalleryImageUpload = (event) => {
 
-        handleGalleryUpload(event);
+        handleS3GalleryUpload(event);
 
         console.log('갤러리 업로드');
         const files = Array.from(event.target.files);
@@ -1166,14 +1166,20 @@ function Create() {
     };
     // ----------------------------------------aws s3 test-----------------------------------------------
     const { galleryImageUrls, setGalleryImageUrls } = useState([]);
-    const handleGalleryUpload = async (event) => {
-        const files = event.target.files;
+    const handleS3GalleryUpload = async (event) => {
+        const files = Array.from(event.target.files);
         const uploadedUrls = [];
       
         for (const file of files) {
-          const url = await uploadImageToS3(file, 'gallery');
-          uploadedUrls.push(url);
+            try {
+              // ✅ Presigned 요청 + S3 업로드를 순차적으로!
+              const url = await uploadImageToS3(file, 'gallery');
+              uploadedUrls.push(url);
+            } catch (err) {
+              console.error('S3 업로드 실패:', err);
+            }
         }
+        
       
         setGalleryImageUrls(uploadedUrls);
     };

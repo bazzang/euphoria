@@ -9,7 +9,8 @@ import { v4 as uuidv4 } from 'uuid';
  * @returns {Promise<string>} 업로드된 S3 URL
  */
 export const uploadImageToS3 = async (file, folder = 'gallery') => {
-  const fileName = `${uuidv4()}_${file.name}`;
+  const cleanFileName = encodeURIComponent(file.name.replace(/\s+/g, '_'));
+  const fileName = `${uuidv4()}_${cleanFileName}`;
   const s3Key = `${folder}/${fileName}`;
 
 //   const { data } = await axios.get(`https://api.euphoriacard.co.kr/api/s3/presigned-put-url?key=${s3Key}`);
