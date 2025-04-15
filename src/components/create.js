@@ -1132,14 +1132,14 @@ function Create() {
 
     const fetchSaveFiles = async () => {
         let urls = {
-            mainPhotoFile : "",
-            calendarFile : "",
-            groomPhotoFile : "",
-            bridePhotoFile : "",
-            endingPhotoFile : "",
-            urlPhotoFile : "",
-            infoList : [],
-            gallery : []
+            // mainPhotoFile : "",
+            // calendarFile : "",
+            // groomPhotoFile : "",
+            // bridePhotoFile : "",
+            // endingPhotoFile : "",
+            // urlPhotoFile : "",
+            // infoList : [],
+            // gallery : []
         };
         try {
             // const formData = new FormData();
@@ -1190,7 +1190,13 @@ function Create() {
                   })
                 );
                 urls.infoList = updatedInfoList;
-              }
+
+
+                // invitationState.infoList.forEach(info => {
+                //     let temp = handleS3Upload(info.file);
+                //     urls.urlPhotoFile = urls.urlPhotoFile[0];
+                // });
+            }
 
             // 서버로 데이터 전송
             // const response = await axios.post("https://api.euphoriacard.co.kr/api/gallery", formData, {
