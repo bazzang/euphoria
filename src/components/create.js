@@ -1070,6 +1070,7 @@ function Create() {
     // };
 
     const fetchInv = async () => {
+        console.log('최종저장');
         try {
             const payload = {
               invitation: {
@@ -1148,6 +1149,7 @@ function Create() {
             // 주요 이미지 파일 처리
             if (invitationState.mainPhotoFile) {
                 let url = await handleS3Upload(invitationState.mainPhotoFile);
+                console.log('mainS3url ===>', url)
                 setInvitationState((prev) => ({
                     ...prev,
                     mainPhotoFile: url,
