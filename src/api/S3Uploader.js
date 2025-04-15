@@ -14,6 +14,8 @@ export const uploadImageToS3 = async (file, folder = 'gallery') => {
   const fileName = `${todayPrefix}_${uuidv4()}.${extension}`;
   const s3Key = `${folder}/${fileName}`;
 
+  console.log('📦 S3 업로드 키:', s3Key); 
+  
 //   const { data } = await axios.get(`https://api.euphoriacard.co.kr/api/s3/presigned-put-url?key=${s3Key}`);
 const { data } = await axios.get(`https://api.euphoriacard.co.kr/api/s3/presigned-put-url`, {
   params: {

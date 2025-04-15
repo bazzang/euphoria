@@ -1172,9 +1172,10 @@ function Create() {
       
         for (const file of files) {
             try {
-              // ✅ Presigned 요청 + S3 업로드를 순차적으로!
+              // Presigned 요청 + S3 업로드를 순차적으로!
               const url = await uploadImageToS3(file, 'gallery');
               uploadedUrls.push(url);
+              console.log("create에서 받은 url ", url)
             } catch (err) {
               console.error('S3 업로드 실패:', err);
             }
