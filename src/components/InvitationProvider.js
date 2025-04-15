@@ -30,7 +30,7 @@ export const InvitationProvider = ({ children }) => {
     // 메인정보
     mainType: "포스터(풀페이지)", // 메인화면 청첩장 타입
     mainPhotoUrl: "", // 메인사진저장경로
-    letteringMsg: 'our wedding day', // 레터링문구
+    letteringMsg: 'type1', // 레터링문구
     letteringClr: "#FFFFFF", // 레터링문구색상
     letteringHg : '', // 레터링문구 위치 
     mainTxt: "", // 메인텍스트
