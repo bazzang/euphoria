@@ -13,7 +13,12 @@ export const uploadImageToS3 = async (file, folder = 'gallery') => {
   const s3Key = `${folder}/${fileName}`;
 
 //   const { data } = await axios.get(`https://api.euphoriacard.co.kr/api/s3/presigned-put-url?key=${s3Key}`);
-  const { data } = await axios.get(`https://api.euphoriacard.co.kr/api/s3/presigned-put-url?key=${s3Key}`);
+const { data } = await axios.get(`https://api.euphoriacard.co.kr/api/s3/presigned-put-url`, {
+  params: {
+    key: s3Key,
+    contentType: file.type
+  }
+});
 
   const response = await fetch(data.uploadUrl, {
     method: 'PUT',
