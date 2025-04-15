@@ -1149,21 +1149,27 @@ function Create() {
             // 주요 이미지 파일 처리
             if (invitationState.mainPhotoFile) {
                 urls.mainPhotoFile = await handleS3Upload(invitationState.mainPhotoFile);
+                urls.mainPhotoFile = urls.mainPhotoFile[0];
             }
             if (invitationState.calendarFile) {
                 urls.calendarFile = await handleS3Upload(invitationState.calendarFile);
+                urls.calendarFile = urls.calendarFile[0];
             }
             if (invitationState.groomPhotoFile) {
                 urls.groomPhotoFile = await handleS3Upload(invitationState.groomPhotoFile);
+                urls.groomPhotoFile = urls.groomPhotoFile[0];
             }
             if (invitationState.bridePhotoFile) {
                 urls.bridePhotoFile = await handleS3Upload(invitationState.bridePhotoFile);
+                urls.bridePhotoFile = urls.bridePhotoFile[0];
             }
             if (invitationState.endingPhotoFile) {
                 urls.endingPhotoFile = await handleS3Upload(invitationState.endingPhotoFile);
+                urls.endingPhotoFile = urls.endingPhotoFile[0];
             }
             if (invitationState.urlPhotoFile) {
                 urls.urlPhotoFile = await handleS3Upload(invitationState.urlPhotoFile);
+                urls.urlPhotoFile = urls.urlPhotoFile[0];
             }
     
             // 갤러리 이미지 처리 (배열로 추가)
@@ -1179,7 +1185,7 @@ function Create() {
                     const url = await handleS3Upload(info.file);
                     return {
                       ...info,
-                      file: url,
+                      file: url[0],
                     };
                   })
                 );
