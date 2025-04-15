@@ -1069,15 +1069,10 @@ function Create() {
     //     }
     // };
 
-    const fetchInv = async () => {
+    const fetchInv = async (data) => {
+
+        console.log(data);
         try {
-            const payload = buildInvitationPayload(
-                invitationState,
-                orderDetails,
-                transportationList,
-                interviewList
-            );
-            console.log('S3저장확인', payload);
             // const response = await axios.post("https://api.euphoriacard.co.kr/api/invitation", payload, {
             //   headers: {
             //     "Content-Type": "application/json"
@@ -1135,104 +1130,52 @@ function Create() {
 
     }
 
-    const buildInvitationPayload = (state, orderDetails, transportationList, interviewList) => {
-        const {
-          mainPhotoUrl,
-          calendarImage,
-          groomPhotoUrl,
-          bridePhotoUrl,
-          endingImage,
-          urlImage,
-          galleryImages,
-          infoList,
-          // 나머지 상태도 자동 포함
-          ...rest
-        } = state;
-      
-        return {
-          invitation: {
-            ...rest, // 나머지 내용 자동 포함
-            mainPhotoUrl,
-            calendarImage,
-            groomPhotoUrl,
-            bridePhotoUrl,
-            endingImage,
-            urlImage,
-            galleryImages,
-            infoList,
-            ordererNm: orderDetails?.ordererName || '',
-            ordererCall: orderDetails?.ordererCall || '',
-          },
-          transportationList: transportationList || [],
-          interviewList: interviewList || [],
-        };
-    };
-
     const fetchSaveFiles = async () => {
+        let urls = {
+            mainPhotoFile : "",
+            calendarFile : "",
+            groomPhotoFile : "",
+            bridePhotoFile : "",
+            endingPhotoFile : "",
+            urlPhotoFile : "",
+            infoList : [],
+            gallery : []
+        };
         try {
-
             // const formData = new FormData();
             // formData.append("ordererName", invitationState.ordererCall);
             // formData.append("ordererCall", invitationState.ordererNm);
     
             // 주요 이미지 파일 처리
             if (invitationState.mainPhotoFile) {
-                let url = await handleS3Upload(invitationState.mainPhotoFile);
-                console.log('mainS3url ===>', url)
-                setInvitationState((prev) => ({
-                    ...prev,
-                    mainPhotoFile: url,
-                }));
+                urls.mainPhotoFile = await handleS3Upload(invitationState.mainPhotoFile);
             }
             if (invitationState.calendarFile) {
-                let url = await handleS3Upload(invitationState.calendarFile);
-                setInvitationState((prev) => ({
-                    ...prev,
-                    calendarFile: url,
-                }));
+                urls.calendarFile = await handleS3Upload(invitationState.calendarFile);
             }
             if (invitationState.groomPhotoFile) {
-                let url = await handleS3Upload(invitationState.groomPhotoFile);
-                setInvitationState((prev) => ({
-                    ...prev,
-                    groomPhotoFile: url,
-                }));
+                urls.groomPhotoFile = await handleS3Upload(invitationState.groomPhotoFile);
             }
             if (invitationState.bridePhotoFile) {
-                let url = await handleS3Upload(invitationState.bridePhotoFile);
-                setInvitationState((prev) => ({
-                    ...prev,
-                    bridePhotoFile: url,
-                }));
+                urls.bridePhotoFile = await handleS3Upload(invitationState.bridePhotoFile);
             }
             if (invitationState.endingPhotoFile) {
-                let url = await handleS3Upload(invitationState.endingPhotoFile);
-                setInvitationState((prev) => ({
-                    ...prev,
-                    endingPhotoFile: url,
-                }));
+                urls.endingPhotoFile = await handleS3Upload(invitationState.endingPhotoFile);
             }
             if (invitationState.urlPhotoFile) {
-                let url = await handleS3Upload(invitationState.urlPhotoFile);
-                setInvitationState((prev) => ({
-                    ...prev,
-                    urlPhotoFile: url,
-                }));
+                urls.urlPhotoFile = await handleS3Upload(invitationState.urlPhotoFile);
             }
     
             // 갤러리 이미지 처리 (배열로 추가)
             if (invitationState.galleryImages && invitationState.galleryImages.length > 0) {
-                const uploadedGalleryUrls = await handleS3GalleryUpload(invitationState.galleryImages);
-                setInvitationState((prev) => ({
-                    ...prev,
-                    galleryImages: uploadedGalleryUrls
-                }));
+                urls.gallery = await handleS3GalleryUpload(invitationState.galleryImages);
             }
 
 
             if (invitationState.infoList && invitationState.infoList.length > 0) {
+                let temp = invitationState.infoList;
                 const updatedInfoList = await Promise.all(
-                  invitationState.infoList.map(async (info) => {
+                  temp.map(async (info) => {
                     const url = await handleS3Upload(info.file);
                     return {
                       ...info,
@@ -1240,11 +1183,7 @@ function Create() {
                     };
                   })
                 );
-              
-                setInvitationState((prev) => ({
-                  ...prev,
-                  infoList: updatedInfoList,
-                }));
+                urls.infoList = updatedInfoList;
               }
 
             // 서버로 데이터 전송
@@ -1256,7 +1195,7 @@ function Create() {
 
             
             // 🔹 fetchInv 실행 후 response 값 받기
-            await fetchInv();
+            await fetchInv(urls);
             // console.log("fetchInv 완료:", invseq);
 
             // 🔹 fetchInfoListSave 실행 (fetchInv의 response를 전달)
