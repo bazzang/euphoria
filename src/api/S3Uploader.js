@@ -15,7 +15,7 @@ export const uploadImageToS3 = async (file, folder = 'gallery') => {
   const s3Key = `${folder}/${fileName}`;
 
   console.log('📦 S3 업로드 키:', s3Key); 
-  
+
 //   const { data } = await axios.get(`https://api.euphoriacard.co.kr/api/s3/presigned-put-url?key=${s3Key}`);
 const { data } = await axios.get(`https://api.euphoriacard.co.kr/api/s3/presigned-put-url`, {
   params: {
@@ -38,6 +38,19 @@ const { data } = await axios.get(`https://api.euphoriacard.co.kr/api/s3/presigne
 
   return data.fileUrl;
 };
+
+export const uploadImagesToS3 = async (files, folder = 'gallery') => {
+  const fileArray = Array.isArray(files) ? files : [files];
+  const uploadedUrls = [];
+
+  for (const file of fileArray) {
+    const url = await uploadImageToS3(file, folder);
+    uploadedUrls.push(url);
+  }
+
+  return uploadedUrls;
+};
+
 
 const getTodayPrefix = () => {
   const today = new Date();
