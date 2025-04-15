@@ -1178,7 +1178,7 @@ function Create() {
             }
 
 
-            if (invitationState.infoList && invitationState.infoList.length > 0) {
+            if (infoList && infoList.length > 0) {
                 console.log("안내사항 저장중1");
                 let temp = infoList;
                 console.log("안내사항 저장중2", temp);
