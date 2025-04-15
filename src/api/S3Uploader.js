@@ -9,8 +9,9 @@ import { v4 as uuidv4 } from 'uuid';
  * @returns {Promise<string>} 업로드된 S3 URL
  */
 export const uploadImageToS3 = async (file, folder = 'gallery') => {
-  const cleanFileName = encodeURIComponent(file.name.replace(/\s+/g, '_'));
-  const fileName = `${uuidv4()}_${cleanFileName}`;
+  const todayPrefix = getTodayPrefix(); // 예: 20250415
+  const extension = file.name.split('.').pop(); // 확장자 추출
+  const fileName = `${todayPrefix}_${uuidv4()}.${extension}`;
   const s3Key = `${folder}/${fileName}`;
 
 //   const { data } = await axios.get(`https://api.euphoriacard.co.kr/api/s3/presigned-put-url?key=${s3Key}`);
@@ -34,4 +35,12 @@ const { data } = await axios.get(`https://api.euphoriacard.co.kr/api/s3/presigne
   }
 
   return data.fileUrl;
+};
+
+const getTodayPrefix = () => {
+  const today = new Date();
+  const y = today.getFullYear();
+  const m = String(today.getMonth() + 1).padStart(2, '0');
+  const d = String(today.getDate()).padStart(2, '0');
+  return `${y}${m}${d}`;
 };
