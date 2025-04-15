@@ -1180,7 +1180,7 @@ function Create() {
 
             if (invitationState.infoList && invitationState.infoList.length > 0) {
                 console.log("안내사항 저장중1");
-                let temp = invitationState.infoList;
+                let temp = infoList;
                 console.log("안내사항 저장중2", temp);
                 const updatedInfoList = await Promise.all(
                   temp.map(async (info) => {
