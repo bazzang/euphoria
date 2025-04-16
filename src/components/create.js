@@ -1217,18 +1217,25 @@ function Create() {
 
             let tempInfoList = [];
 
-            console.log('💥문제의 부분 ', infoList);
-            console.log('💥문제의 부분 ', infoList.length);
-            if (infoList && infoList.length > 0) {
-                console.log('💥문제의 부분 2', infoList);
+            // title: "", content: "", file : "", useBtn : false, btnTxt : "", link : "", imgUrl : ""
+            if (infoList[0].file != "" || infoList[0].title != "" || infoList[0].content != "" ) {
                 const updatedInfoList = await Promise.all(
                   infoList.map(async (info) => {
-                    const url = await handleS3Upload(info.file);
-                    return {
-                      ...info,
-                      file: url[0],
-                      imgUrl : "",
-                    };
+                    if(info.file){
+                        const url = await handleS3Upload(info.file);
+                        return {
+                            ...info,
+                            file: url[0],
+                            imgUrl : "",
+                        };
+                    }else{
+                        return {
+                            ...info,
+                            file: "",
+                            imgUrl : "",
+                        };
+                    }
+                    
                   })
                 );
                 tempInfoList = updatedInfoList;
