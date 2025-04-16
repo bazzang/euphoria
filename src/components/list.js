@@ -212,7 +212,8 @@ function ProductionList() {
                         <div className="wd-thumb"
                         
                         style={{
-                            backgroundImage: `url('data:image/jpeg;base64,${item.imageData}')`,
+                            // backgroundImage: `url('data:image/jpeg;base64,${item.imageData}')`,
+                            backgroundImage: `url('${item.pic1}')`,
                             backgroundSize: "cover",        // 비율을 유지하면서 요소를 채움
                             backgroundPosition: "center",   // 이미지를 중앙 정렬
                             backgroundRepeat: "no-repeat",  // 이미지 반복 방지
