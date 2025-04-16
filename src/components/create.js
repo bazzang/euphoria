@@ -1078,11 +1078,12 @@ function Create() {
         const filtered2 = interviewList.filter(item => item.question !== "" || item.answer !== "");
 
         let payload = {
+            galleryList : data,
             invitation: invitationState, // invitationState를 전송
             transportationList : filtered1,
             interviewList : filtered2,
             infoList : info,
-            gList : data
+            
         };
 
         try {
