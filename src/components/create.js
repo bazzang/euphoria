@@ -1076,7 +1076,7 @@ function Create() {
         
         const filtered1 = transportationList.filter(item => item.method !== "" || item.details !== "");
         const filtered2 = interviewList.filter(item => item.question !== "" || item.answer !== "");
-        
+
         let payload = {
             invitation: invitationState, // invitationState를 전송
             transportationList : filtered1,
@@ -1165,42 +1165,60 @@ function Create() {
                 let temp = await handleS3Upload(invitationState.mainPhotoFile);
                 urls.push({
                     pic1 : temp[0],
-                    type : "main"
+                    type : "main",
+                    seq: null,
+                    invSeq: null,
+                    userId: null
                 })
             }
             if (invitationState.calendarFile) {
                 let temp = await handleS3Upload(invitationState.calendarFile);
                 urls.push({
                     pic1 : temp[0],
-                    type : "calendar"
+                    type : "calendar",
+                    seq: null,
+                    invSeq: null,
+                    userId: null
                 })
             }
             if (invitationState.groomPhotoFile) {
                 let temp = await handleS3Upload(invitationState.groomPhotoFile);
                 urls.push({
                     pic1 : temp[0],
-                    type : "groom"
+                    type : "groom",
+                    seq: null,
+                    invSeq: null,
+                    userId: null
                 })
             }
             if (invitationState.bridePhotoFile) {
                 let temp = await handleS3Upload(invitationState.bridePhotoFile);
                 urls.push({
                     pic1 : temp[0],
-                    type : "bride"
+                    type : "bride",
+                    seq: null,
+                    invSeq: null,
+                    userId: null
                 })
             }
             if (invitationState.endingPhotoFile) {
                 let temp = await handleS3Upload(invitationState.endingPhotoFile);
                 urls.push({
                     pic1 : temp[0],
-                    type : "ending"
+                    type : "ending",
+                    seq: null,
+                    invSeq: null,
+                    userId: null
                 })
             }
             if (invitationState.urlPhotoFile) {
                 let temp = await handleS3Upload(invitationState.urlPhotoFile);
                 urls.push({
                     pic1 : temp[0],
-                    type : "url"
+                    type : "url",
+                    seq: null,
+                    invSeq: null,
+                    userId: null
                 })
             }
     
@@ -1211,7 +1229,10 @@ function Create() {
                 temp.forEach(item => {
                     urls.push({
                         pic1 : item,
-                        type : "gallery"
+                        type : "gallery",
+                        seq: null,
+                        invSeq: null,
+                        userId: null
                     })
                 });
 
