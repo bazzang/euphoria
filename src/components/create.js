@@ -1074,11 +1074,13 @@ function Create() {
         console.log(data);
         console.log("안내사항 데이터", info);
         
-
+        const filtered1 = transportationList.filter(item => item.method !== "" || item.details !== "");
+        const filtered2 = interviewList.filter(item => item.question !== "" || item.answer !== "");
+        
         let payload = {
             invitation: invitationState, // invitationState를 전송
-            transportationList : transportationList,
-            interviewList : interviewList,
+            transportationList : filtered1,
+            interviewList : filtered2,
             infoList : info,
             gList : data
         };
