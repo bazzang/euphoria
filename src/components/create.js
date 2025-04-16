@@ -5403,7 +5403,7 @@ function Create() {
             
             {/* <div className="preview-tooltip">실시간으로 확인해보세요! <button className="preview-tooltip-close">닫기</button></div> */}
             <button className="btn-save" onClick={handleOpenDialog}>저장</button>
-            {/* <button className="btn-preview">미리보기</button> */}
+            <button className="btn-preview">미리보기</button>
         </div>
     </div>
   )
