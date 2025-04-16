@@ -1001,74 +1001,6 @@ function Create() {
 
     // -------------------------------------------------------------------------------------------------
 
-    // const fetchInfoListSave = async (invSeq) => {
-    //     if(!invitationState.useInfo){
-    //         navigate('/production-list', {
-    //             state: {
-    //                 ordererNm: invitationState.ordererNm,
-    //                 ordererCall: invitationState.ordererCall,
-    //             }
-    //         });
-    //     }
-
-    //     const formData = new FormData();
-
-    //     // JSON 데이터 변환 (file 제외)
-    //     const jsonData = infoList.map(({ file, imgUrl, ...rest }, index) => ({
-    //         ...rest,
-    //         index, // 각 데이터의 index 추가
-    //         invSeq
-    //     }));
-    
-    //     formData.append("jsonData", JSON.stringify(jsonData));
-    
-    //     // 이미지 파일 추가 (file이 있는 경우만)
-    //     infoList.forEach((item, index) => {
-    //         if (item.file) {
-    //             const fileName = `info_${index}`;
-    //             console.log(`파일 추가: ${fileName}`);
-    //             formData.append("infoImages", item.file, fileName);
-    //         }
-    //     });
-    
-    //     try {
-    //         const response = await fetch("https://api.euphoriacard.co.kr/api/info", {
-    //             method: "POST",
-    //             body: formData
-    //         });
-            
-    //         // 🔹 응답이 JSON인지 확인 후 처리
-    //         const responseText = await response.text();
-    //         console.log("서버 응답:", responseText);
-
-    //         if (!response.ok) {
-    //             throw new Error(`Server Error: ${response.status} - ${responseText}`);
-    //         }
-
-    //         if(responseText == "200"){
-    //             navigate('/production-list', {
-    //                 state: {
-    //                     ordererNm: invitationState.ordererNm,
-    //                     ordererCall: invitationState.ordererCall,
-    //                 }
-    //             });
-    //         }
-    //         //  // 🔹 JSON 응답일 경우에만 파싱
-    //         // let result;
-    //         // try {
-    //         //     result = JSON.parse(responseText);
-    //         // } catch (jsonError) {
-    //         //     throw new Error(`JSON Parsing Error: ${jsonError.message}, Server Response: ${responseText}`);
-    //         // }
-    //         // console.log("Upload Success:", result);
-
-            
-
-    //     } catch (error) {
-    //         console.error("Upload Error:", error);
-    //     }
-    // };
-
     const fetchInv = async (data, info) => {
 
         console.log(data);
@@ -1107,59 +1039,14 @@ function Create() {
             console.error("초대장 저장 실패 ❌:", error);
         }
 
-        // invitationState.transportationList = transportationList;
-        // invitationState.interviewList = interviewList;
-        // // SaveInvitationReqVo에 맞게 데이터 구성
-        // let gids = [];
-        // if(res){
-        //     gids = res.result;
-        // }
-        // let data = {
-        //     invitation: invitationState, // invitationState를 전송
-        //     transportationList : transportationList,
-        //     interviewList : interviewList,
-        //     galleryIds: gids,// res.result, // res.result를 galleryIds로 전송
-        // };
-
-        // // axiosPost("/api/invitation", data).then(response => {
-        // //     console.log("저장  response : ",response)
-        // //     navigate('/production-list', {
-        // //         state: {
-        // //             ordererNm: invitationState.ordererNm,
-        // //             ordererCall: invitationState.ordererCall,
-        // //         }
-        // //     });
-        // // });
-        // try {
-        //     const response = await axiosPost("/api/invitation", data);
-        //     console.log("fetchInv response:", response.data);
-    
-        //     // 🔹 response 반환하여 fetchInfoListSave에서 사용 가능하게 함
-        //     return response.data;
-        // } catch (error) {
-        //     console.error("fetchInv Error:", error);
-        //     throw error; // fetchSaveFiles에서 catch할 수 있도록 예외 던짐
-        // }
 
 
     }
 
     const fetchSaveFiles = async () => {
         let urls = [];
-            // mainPhotoFile : "",
-            // calendarFile : "",
-            // groomPhotoFile : "",
-            // bridePhotoFile : "",
-            // endingPhotoFile : "",
-            // urlPhotoFile : "",
-            // infoList : [],
-            // gallery : []
-
-            //pic1 : "" , type: ""
+            
         try {
-            // const formData = new FormData();
-            // formData.append("ordererName", invitationState.ordererCall);
-            // formData.append("ordererCall", invitationState.ordererNm);
     
             // 주요 이미지 파일 처리
             if (invitationState.mainPhotoFile) {
@@ -1268,19 +1155,6 @@ function Create() {
 
             await fetchInv(urls, tempInfoList);
 
-            // 서버로 데이터 전송
-            // const response = await axios.post("https://api.euphoriacard.co.kr/api/gallery", formData, {
-            //     headers: {
-            //         "Content-Type": "multipart/form-data",
-            //     },
-            // });
-            
-            
-            // console.log("fetchInv 완료:", invseq);
-
-            // 🔹 fetchInfoListSave 실행 (fetchInv의 response를 전달)
-            // await fetchInfoListSave(invseq);
-            
         } catch (error) {
             console.error("Error while saving data:", error);
         }
