@@ -1080,7 +1080,7 @@ function Create() {
             transportationList : transportationList,
             interviewList : interviewList,
             infoList : info,
-            gallery : data
+            gList : data
         };
 
         try {
