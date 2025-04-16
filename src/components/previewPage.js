@@ -357,8 +357,9 @@ function PreviewPage() {
     useEffect(() => {
         const newImages = [];
         galList.forEach((img) => {
-            const fixedFilename = encodeURIComponent((img.pic1).replace(/\\/g, '/'));
-            const imageUrl = `https://api.euphoriacard.co.kr/api/image?filename=${fixedFilename}/`;
+            // const fixedFilename = encodeURIComponent((img.pic1).replace(/\\/g, '/'));
+            // const imageUrl = `https://api.euphoriacard.co.kr/api/image?filename=${fixedFilename}/`;
+            const imageUrl = img.pic1;
             switch (img.type) {
                 case "main":
                     setMainImg(imageUrl);
@@ -387,27 +388,27 @@ function PreviewPage() {
     }, [galList]); // gallImgs가 아닌 galList에 의존
 
 
-    useEffect(() => {
-        console.log("inv.confirmedAt ??? ", inv.confirmedAt);
-        if (infoList.length > 0) {
-          const updatedInfoList = infoList.map((info) => {
-            // file이 존재하고 아직 변환되지 않은 경우에만 변환
-            if (info.file && !info.file.startsWith("https://api.euphoriacard.co.kr/api/image?filename=")) {
-              const fixedFilename = encodeURIComponent(info.file.replace(/\\/g, '/'));
-              return {
-                ...info,
-                file: `https://api.euphoriacard.co.kr/api/image?filename=${fixedFilename}/`
-              };
-            }
-            return info;
-          });
+    // useEffect(() => {
+    //     console.log("inv.confirmedAt ??? ", inv.confirmedAt);
+    //     if (infoList.length > 0) {
+    //       const updatedInfoList = infoList.map((info) => {
+    //         // file이 존재하고 아직 변환되지 않은 경우에만 변환
+    //         if (info.file && !info.file.startsWith("https://api.euphoriacard.co.kr/api/image?filename=")) {
+    //           const fixedFilename = encodeURIComponent(info.file.replace(/\\/g, '/'));
+    //           return {
+    //             ...info,
+    //             file: `https://api.euphoriacard.co.kr/api/image?filename=${fixedFilename}/`
+    //           };
+    //         }
+    //         return info;
+    //       });
       
-          // 기존 infoList와 업데이트된 값이 다를 경우에만 상태 업데이트
-          if (JSON.stringify(updatedInfoList) !== JSON.stringify(infoList)) {
-            setInfoList(updatedInfoList);
-          }
-        }
-      }, [infoList]);
+    //       // 기존 infoList와 업데이트된 값이 다를 경우에만 상태 업데이트
+    //       if (JSON.stringify(updatedInfoList) !== JSON.stringify(infoList)) {
+    //         setInfoList(updatedInfoList);
+    //       }
+    //     }
+    //   }, [infoList]);
 
     const handleImageClick = (img, idx) => {
         openBasicModal(img, idx);
