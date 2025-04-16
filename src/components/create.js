@@ -1216,8 +1216,11 @@ function Create() {
             }
 
             let tempInfoList = [];
-            if (infoList && infoList.length > 0) {
 
+            console.log('💥문제의 부분 ', infoList);
+            console.log('💥문제의 부분 ', infoList.length);
+            if (infoList && infoList.length > 0) {
+                console.log('💥문제의 부분 2', infoList);
                 const updatedInfoList = await Promise.all(
                   infoList.map(async (info) => {
                     const url = await handleS3Upload(info.file);
