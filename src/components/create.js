@@ -28,9 +28,9 @@ import PhraseModal, {openPhraseModal} from './PhraseModal.js';
 import SalModal, {openSalModal} from './SalModal.js';
 import SmsIcon from './SmsIcon.js';
 import { uploadImageToS3, uploadImagesToS3 } from '../api/S3Uploader.js';
-import HandwritingTitle from './HandwritingTitle.js'; 
-import Test1 from '../components/animationWriting/testTxt1.js';
-import zIndex from '@mui/material/styles/zIndex.js';
+// import HandwritingTitle from './HandwritingTitle.js'; 
+// import Test1 from '../components/animationWriting/testTxt1.js';
+// import zIndex from '@mui/material/styles/zIndex.js';
 
 // import PhraseSampleModal, {openPhraseSample} from './PhraseSampleModal.js';
 
