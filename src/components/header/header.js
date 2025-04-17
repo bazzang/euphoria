@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { useNavigate, useLocation } from 'react-router-dom'; // 페이지 이동을 위해 useNavigate import
 import Menu from './menuWrap.js';
 import logoimg from '../../images/logo.svg';
