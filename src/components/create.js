@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom'; // 페이지 이동을 위해 useNavigate import
 import axios from 'axios';
 import "../styles/common.css";
@@ -28,6 +29,8 @@ import PhraseModal, {openPhraseModal} from './PhraseModal.js';
 import SalModal, {openSalModal} from './SalModal.js';
 import SmsIcon from './SmsIcon.js';
 import { uploadImageToS3, uploadImagesToS3 } from '../api/S3Uploader.js';
+
+
 // import HandwritingTitle from './HandwritingTitle.js'; 
 // import Test1 from '../components/animationWriting/testTxt1.js';
 // import zIndex from '@mui/material/styles/zIndex.js';
@@ -1251,7 +1254,17 @@ function Create() {
         {val : "", content : "선택안함"},
     ])
 
+    // -------------------------------------------------------------------------------------------------
 
+    // *********************************[스크롤연동] 로딩 ***********************************************
+
+    // -------------------------------------------------------------------------------------------------
+    
+    const mainRef = useRef(null);
+    const groomRef = useRef(null);
+    const brideRef = useRef(null);
+    const Ref = useRef(null);
+    const galleryRef = useRef(null);
 
 
 
@@ -1395,6 +1408,7 @@ function Create() {
                             {!isLoading && isAnimationFinished || !isPopupVisible && (
                             <div className="frame">
 
+                                {/* 메인*/}
                                 <section className="main">
                                     {/* <img className="bg" src={bgimg} alt="bg"/> */}
                                     <img className="bg" src={backgroundImage} alt="bg" />

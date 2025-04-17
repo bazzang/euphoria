@@ -64,14 +64,18 @@ function Header() {
         }
         
     }, []);
-
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     
     return (
         <div className="header-wrap">
             <div className="container">
                 <header>
                     <div className="hd-left">
-                        <button className="btn-menu">menu</button>
+                        {/* 모바일 메뉴버튼 */}
+                        {/* <button className="btn-menu">menu</button>  */}
+                        <button className="btn-menu" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                          menu
+                        </button>
                         <a href="https://euphoriacard.co.kr/">
                             <img className="hd-logo" src={logoimg} alt="Photomag" />
                         </a>
@@ -97,7 +101,8 @@ function Header() {
                     </div>
                 </header>
             </div>
-            <Menu />
+            {/* <Menu /> */}
+            {isMenuOpen && <Menu isOpen={isMenuOpen} />}
         </div>
     );
 }
