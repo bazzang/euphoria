@@ -213,7 +213,23 @@ export const InvitationProvider = ({ children }) => {
     useEnding : false,  // land 
     useContactBrideAndGroom : false, // 신랑신부 연락하기
     useVideo : false, // 영상
-    useMap : false
+    useMap : false,
+    
+    // 20250417 추가 로딩화면
+    useLoading : false, 
+    loadType : "loading_1", //로딩화면타입
+    drawTxt : "", //드로우형 로딩화면문구
+    drawFontClr : "#C4989D", //드로우형 폰트컬러
+    drawBgClr : "#FFFDF8", // 드로우형 배경컬러
+    drawImgFile : "", // 이미지형 실제 사진 s3 url 전송
+    drawImgUrl : "", // 이미지형 미리보기용 
+    drawImgTxt : "",  // 이미지형 문구
+    typingClr : "", // 타이핑형 배경 컬러
+    typingTxt : "", // 타이핑형 문구
+
+
+
+
     
     
 

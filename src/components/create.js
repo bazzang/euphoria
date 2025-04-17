@@ -28,6 +28,9 @@ import PhraseModal, {openPhraseModal} from './PhraseModal.js';
 import SalModal, {openSalModal} from './SalModal.js';
 import SmsIcon from './SmsIcon.js';
 import { uploadImageToS3, uploadImagesToS3 } from '../api/S3Uploader.js';
+import HandwritingTitle from './HandwritingTitle.js'; 
+import Test1 from '../components/animationWriting/testTxt1.js';
+import zIndex from '@mui/material/styles/zIndex.js';
 
 // import PhraseSampleModal, {openPhraseSample} from './PhraseSampleModal.js';
 
@@ -165,6 +168,12 @@ function Create() {
                 setCategories((prevCategories) => ({
                     ...prevCategories,
                     shareOption: value, 
+                }));
+                break;
+            case "useLoading" :  // 로딩화면
+                setCategories((prevCategories) => ({
+                    ...prevCategories,
+                    loading: value, 
                 }));
                 break;
 
@@ -1159,8 +1168,11 @@ function Create() {
             console.error("Error while saving data:", error);
         }
     };
-    // ----------------------------------------aws s3 test-----------------------------------------------
+    // -------------------------------------------------------------------------------------------------
 
+    // *********************************[사진저장] aws s3 ***********************************************
+
+    // -------------------------------------------------------------------------------------------------
     // 갤러리용
     const handleS3GalleryUpload = async (files) => {
         const uploadedUrls = await uploadImagesToS3(files, 'gallery');
@@ -1173,7 +1185,76 @@ function Create() {
         return uploadedUrl; 
     };
 
-    // ----------------------------------------aws s3 test-----------------------------------------------
+    
+    // -------------------------------------------------------------------------------------------------
+
+    // *********************************[로딩화면] 로딩 ***********************************************
+
+    // -------------------------------------------------------------------------------------------------
+    
+    const [isLoading, setIsLoading] = useState(true);  // 로딩 보여줄지
+    const [isAnimationFinished, setIsAnimationFinished] = useState(false);  // 애니메이션 완료 여부
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            // typeWriter();
+          setIsAnimationFinished(true);
+        }, 2000); // 2초짜리 로딩 애니메이션이라고 가정
+      
+        return () => clearTimeout(timer);
+    },  [
+        invitationState.loadType,
+        invitationState.drawTxt,
+        invitationState.drawBgClr,
+        invitationState.drawFontClr,
+        invitationState.drawImgUrl,
+        invitationState.drawImgTxt,
+        invitationState.typingClr,
+        invitationState.typingTxt
+    ]);
+
+    let txtindex = 0;
+    let speed = 100; // 글자 타이핑 속도 (밀리초 단위)
+    const loadingTxt = "신랑❤️신부 결혼합니다."; // 타이핑할 문구
+    function typeWriter() {
+        if (txtindex < loadingTxt.length) {
+          document.getElementById("text").textContent += loadingTxt.charAt(txtindex);
+          txtindex++;
+          setTimeout(typeWriter, speed);
+        }
+    }
+
+
+    const [loadingTextList, setLoadingTextList] = useState([
+        {val : "txt1", content : "We are getting married(필기체)"},
+        {val : "txt2", content : "We are getting married(굴림체)"},
+        {val : "txt3", content : "저희 결혼합니다(필기체)"},
+        {val : "txt4", content : "저희 결혼합니다(굴림체)"},
+        {val : "txt5", content : "결혼식에 초대합니다(필기체)"},
+        {val : "txt6", content : "결혼식에 초대합니다(굴림체)"},
+        {val : "txt7", content : "초대합니다(필기체)"},
+        {val : "txt8", content : "초대합니다(굴림체)"},
+        {val : "txt9", content : "WE'RE GETTING MARRIED!"},
+        {val : "txt10", content : "WELCOME TO OUR WEDDING"},
+        {val : "txt11", content : "Come to Our Wedding!"},
+    ])
+
+
+    const [loadingClrList, setLoadingClrList] = useState([
+        {val : "clr1", content : "연핑크"},
+        {val : "clr2", content : "핑크"},
+        {val : "clr3", content : "오렌지"},
+        {val : "clr4", content : "레몬"},
+        {val : "clr5", content : "그린"},
+        {val : "clr6", content : "민트"},
+        {val : "clr7", content : "블루"},
+        {val : "clr8", content : "퍼플"},
+        {val : "", content : "선택안함"},
+    ])
+
+
+
+
+
 
     
   return (
@@ -1184,8 +1265,22 @@ function Create() {
                     <div className="create-preview">
 
                         <div className="frame-wrap">
+                            {isLoading && !isAnimationFinished && !isPopupVisible && (
+                                <div className="frame" id="popup" >
+                                        <div className="loading-screen">
+                                            {/* <HandwritingTitle />
+                                            <span id="text"></span><span id="cursor"></span> */}
+                                            
+                                            💍 청첩장 로딩 중이에요...
+                                            {/* <Test1 />11 */}
+                                            
+                                        </div>
+
+                                    
+                                </div>
+                            )}
                             
-                            {isPopupVisible && (
+                            {!isLoading && isAnimationFinished || isPopupVisible && (
                             <div className="frame" id="popup">
                                 <section className="calendar">
                                     <div style={{width:"100%", justifyContent: "space-between", paddingBottom: "10px", marginTop:"-30px", borderBottom: "1px solid #c7c7c7"}}>
@@ -1297,6 +1392,7 @@ function Create() {
                             </div>
                             )}
 
+                            {!isLoading && isAnimationFinished || !isPopupVisible && (
                             <div className="frame">
 
                                 <section className="main">
@@ -1996,7 +2092,7 @@ function Create() {
 
                             </div>
 
-
+                            )}
                             {/* <!-- // 2024-11-13 미리보기 영역 --> */}
 
 
@@ -4616,14 +4712,16 @@ function Create() {
                                 )}
                             </div>
 
-
-
                             
-                            {/* 목요일 이후 구현 (디자인, 퍼블리싱 없음) */}
-                            {/* <div className="category">
+                            {/* 로딩화면 */}
+                            <div className="category">
                                 <div className="category-head">
                                     <label for="" className="switch">
-                                        <input type="checkbox" checked/>
+                                        <input 
+                                            type="checkbox" 
+                                            checked={invitationState.useLoading} 
+                                            onChange={(e) => handleChange('useLoading', e.target.checked)}
+                                        />
                                     </label>
                                     <strong>로딩화면</strong>
 
@@ -4640,47 +4738,203 @@ function Create() {
                                         <div className="option-contents">
                                             <div className="radio-wrap">
                                                 <span className="radio">
-                                                    <input type="radio" name="loading" id="loading_1" checked/>
-                                                    <label for="loading_1"><i></i>드로우(텍스트형)</label>
+                                                    <input type="radio" name="loading" id="loading_1" 
+                                                    value="loading_1"
+                                                    checked={invitationState.loadType === "loading_1"} 
+                                                    onChange={(e) => handleChange('loadType', e.target.value)}
+                                                    />
+                                                    {/* <label for="loading_1"><i></i>드로우(텍스트형)</label> */}
+                                                    <label for="loading_1"><i></i>텍스트</label>
                                                 </span>
                                                 <span className="radio">
-                                                    <input type="radio" name="loading" id="loading_2"/>
-                                                    <label for="loading_2"><i></i>드로우(이미지형)</label>
+                                                    <input type="radio" name="loading" id="loading_2"
+                                                    value="loading_2"
+                                                    checked={invitationState.loadType === "loading_2"} 
+                                                    onChange={(e) => handleChange('loadType', e.target.value)}
+                                                    />
+                                                    {/* <label for="loading_2"><i></i>드로우(이미지형)</label> */}
+                                                    <label for="loading_2"><i></i>이미지</label>
                                                 </span>
                                                 <span className="radio">
-                                                    <input type="radio" name="loading" id="loading_3"/>
+                                                    <input type="radio" name="loading" id="loading_3"
+                                                    value="loading_3"
+                                                    checked={invitationState.loadType === "loading_3"} 
+                                                    onChange={(e) => handleChange('loadType', e.target.value)}
+                                                    />
                                                     <label for="loading_3"><i></i>타이핑</label>
                                                 </span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="option">
-                                        <div className="option-label">문구<sup>필수</sup></div>
-                                        <div className="option-contents">
-                                            <input type="text" className="input-sts" value="We’re getting Married!"/>
-                                        </div>
-                                    </div>
-                                    <div className="option">
-                                        <div className="option-label">배경색<sup>필수</sup></div>
-                                        <div className="option-contents">
-                                            <div className="color-picker">
-                                                <span className="color-value">#93EEF4</span>
-                                                <input className="color-input" type="color" value="#93EEF4"/>
+                                    
+                                    {invitationState.loadType === "loading_1" && 
+                                        <>
+                                        
+                                            {/* 드로우(텍스트형) 옵션 */}
+                                            <div className="option">
+                                                <div className="option-label">문구<sup>필수</sup></div>
+                                                <div className="option-contents">
+                                                    <div className="input-change">
+                                                        <select
+                                                        className="input-sts"
+                                                        value={invitationState.drawTxt || ""}
+                                                        onChange={(e) => handleChange("drawTxt", e.target.value)}
+                                                        >
+                                                        <option value="">문구를 선택하세요</option>
+                                                            {loadingTextList.map((item) => (
+                                                                <option key={item.val} value={item.val}>
+                                                                {item.content}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div className="option">
-                                        <div className="option-label">폰트색<sup>필수</sup></div>
-                                        <div className="option-contents">
-                                            <div className="color-picker">
-                                                <span className="color-value">#93EEF4</span>
-                                                <input className="color-input" type="color" value="#93EEF4"/>
+                                            <div className="option">
+                                                <div className="option-label">배경색<sup>필수</sup></div>
+                                                <div className="option-contents">
+                                                    <div className="color-picker">
+                                                        <span className="color-value">{invitationState.drawBgClr}</span>
+                                                        <input
+                                                            className="color-input"
+                                                            type="color"
+                                                            value={invitationState.drawBgClr || "#fff"}
+                                                            onChange={(e) => handleChange("drawBgClr", e.target.value)}
+                                                        />
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
+                                            <div className="option">
+                                                <div className="option-label">폰트색<sup>필수</sup></div>
+                                                <div className="option-contents">
+                                                    <div className="color-picker">
+                                                        <span className="color-value">{invitationState.drawFontClr}</span>
+                                                        <input
+                                                            className="color-input"
+                                                            type="color"
+                                                            value={invitationState.drawFontClr || "#C4989D"}
+                                                            onChange={(e) => handleChange("drawFontClr", e.target.value)}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </>
+                                    }
+                                    {invitationState.loadType === "loading_2" && 
+                                        <>
+                                            {/* 드로우(이미지형) 옵션 */}
+                                            <div className="option">
+                                                <div className="option-label">배경사진</div>
+                                                <div className="option-contents">
+                                                    <div className="img-uploader">
+                                                        <div className="img-upload">
+                                                            <input
+                                                                type="file"
+                                                                accept="image/*"
+                                                                id="drawImgFile"
+                                                                style={{ display: "none" }}
+                                                                onChange={(e) => {
+                                                                    const file = e.target.files[0];
+                                                                    if (file) {
+                                                                        const imageUrl = URL.createObjectURL(file);
+                                                                        handleChange("drawImgUrl", imageUrl);
+                                                                        handleFileChange(e, 'drawImgFile');
+                                                                    }
+                                                                }}
+                                                            />
+
+                                                            <button
+                                                                className="img-upload-add"
+                                                                onClick={() => document.getElementById('drawImgFile').click()}
+                                                            />
+                                                        </div>
+                                                        {invitationState.drawImgUrl  && (
+                                                            <div className="img-upload fin">
+                                                            <div className="img-upload-thumb">
+                                                                <img 
+                                                                    src={invitationState.drawImgUrl} 
+                                                                    alt="배경사진" 
+                                                                />
+                                                            </div>
+                                                            <button className="img-upload-cancel" 
+                                                                onClick={() =>
+                                                                invitationState.drawImgUrl = ""  }>삭제</button>
+                                                        </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="option">
+                                                <div className="option-label">문구<sup>필수</sup></div>
+                                                <div className="option-contents">
+                                                    <div className="input-change">
+                                                        <select
+                                                        className="input-sts"
+                                                        value={invitationState.drawImgTxt || ""}
+                                                        onChange={(e) => handleChange("drawImgTxt", e.target.value)}
+                                                        >
+                                                        <option value="">문구를 선택하세요</option>
+                                                            {loadingTextList.map((item) => (
+                                                                <option key={item.val} value={item.val}>
+                                                                {item.content}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        
+                                        </>
+                                    }
+                                    {invitationState.loadType === "loading_3" && 
+                                        <>
+                                        
+                                            {/* 타이핑 */}
+                                            <div className="option">
+                                                <div className="option-label">색상<sup>필수</sup></div>
+                                                <div className="option-contents">
+                                                    <div className="radio-wrap">
+                                                    {loadingClrList.map((item, idx) => (
+                                                        <span className="radio" key={item.val || `none-${idx}`}>
+                                                        <input
+                                                            type="radio"
+                                                            name="typingClr" // name 지정해줘야 그룹으로 묶여서 단일 선택 가능해져
+                                                            id={item.val || ""}
+                                                            value={item.val}
+                                                            checked={invitationState.typingClr === item.val}
+                                                            onChange={(e) => handleChange('typingClr', e.target.value)}
+                                                        />
+                                                        <label htmlFor={item.val || ''}><i></i>{item.content}</label>
+                                                        </span>
+                                                    ))}
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div className="option">
+                                                <div className="option-label">로딩문구<sup>필수</sup></div>
+                                                <div className="option-contents">
+                                                    <input
+                                                        type="text"
+                                                        className="input-sts"
+                                                        placeholder="We're getting married"
+                                                        value={invitationState.typingTxt}
+                                                        onChange={(e) => handleChange("typingTxt", e.target.value)} // Update state
+                                                    />
+                                                </div>
+                                            </div>
+                                        
+                                        </>
+                                    }
+                                    
+                                    
+
+                                    
+
                                 </div>
                                 )}
-                            </div> */}
+                            </div>
 
 
 
