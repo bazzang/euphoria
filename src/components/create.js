@@ -179,6 +179,12 @@ function Create() {
                     loading: value, 
                 }));
                 break;
+            case "useTimeLine" :  // 타임라인
+                setCategories((prevCategories) => ({
+                    ...prevCategories,
+                    timeLine: value, 
+                }));
+                break;
 
             default : 
                 break;
@@ -588,6 +594,87 @@ function Create() {
 
     useEffect(() => {
     }, [infoList]);
+
+    // -------------------------------------------------------------------------------------------------
+
+    // *********************************[타임라인]  ***********************************************
+
+    // -------------------------------------------------------------------------------------------------
+    const [tlList, setTlList]  = useState([]);
+    
+    // 초기값 설정
+    useEffect(() => {
+        if (tlList.length === 0) {
+            setTlList([{ date : "" , title: "", file : "",  imgUrl : "", content: ""}]);
+        }
+    }, [tlList]);
+
+    // 타임라인 추가
+    const addTimeLine = () => {
+        setTlList((prevList) => [
+        ...prevList,
+        { date : "" , title: "", file : "",  imgUrl : "", content: ""},
+        ]);
+    };
+
+    // 타임라인 삭제
+    const removeTimeLine = (index) => {
+        setTlList((prevList) =>
+        prevList.filter((_, i) => i !== index)
+        );
+    };
+
+    // 타임라인 위로 이동
+    const moveUpTimeLine = (index) => {
+        if (index === 0) return; // 첫 번째 요소는 위로 이동 불가
+        setTlList((prevList) => {
+        const newList = [...prevList];
+        [newList[index - 1], newList[index]] = [
+            newList[index],
+            newList[index - 1],
+        ];
+        return newList;
+        });
+    };
+
+    // 타임라인 아래로 이동
+    const moveDownTimeLine = (index) => {
+        if (index === tlList.length - 1) return; // 마지막 요소는 아래로 이동 불가
+        setTlList((prevList) => {
+        const newList = [...prevList];
+        [newList[index], newList[index + 1]] = [
+            newList[index + 1],
+            newList[index],
+        ];
+        return newList;
+        });
+    };
+
+    // 타임라인 입력값 업데이트
+    const handleInputChangeTimeLine = (index, field, value) => {
+        setTlList((prevList) =>
+          prevList.map((item, i) =>
+            i === index ? { ...item, [field]: value } : item
+          )
+        );
+    };
+
+    // 사진 파일 저장
+    const handleTlFileUpload = (event, index) => {
+        const file = event.target.files[0];
+        if (!file) return;
+    
+        // 이미지 URL 생성
+        const imageUrl = URL.createObjectURL(file);
+        setTlList((prevList) =>
+            prevList.map((item, i) =>
+                i === index ? { ...item, file: file, imgUrl: imageUrl  } : item
+            )
+        );
+    };
+
+    useEffect(() => {
+    }, [tlList]);
 
     // -------------------------------------------------------------------------------------------------
 
@@ -1013,7 +1100,7 @@ function Create() {
 
     // -------------------------------------------------------------------------------------------------
 
-    const fetchInv = async (data, info) => {
+    const fetchInv = async (data, info, timeline) => {
 
         console.log(data);
         console.log("안내사항 데이터", info);
@@ -1027,7 +1114,7 @@ function Create() {
             transportationList : filtered1,
             interviewList : filtered2,
             infoList : info,
-            
+            tlList : timeline,
         };
 
         try {
@@ -1054,7 +1141,7 @@ function Create() {
 
 
     }
-
+    
     const fetchSaveFiles = async () => {
         let urls = [];
             
@@ -1111,11 +1198,21 @@ function Create() {
                     userId: null
                 })
             }
-            if (invitationState.urlPhotoFile) {
+            if (invitationState.urlPhotoFile) { // 공유하기 사진
                 let temp = await handleS3Upload(invitationState.urlPhotoFile);
                 urls.push({
                     pic1 : temp[0],
                     type : "url",
+                    seq: null,
+                    invSeq: null,
+                    userId: null
+                })
+            }
+            if (invitationState.salutPhotoFile) { // 인사말 사진
+                let temp = await handleS3Upload(invitationState.salutPhotoFile);
+                urls.push({
+                    pic1 : temp[0],
+                    type : "salut",
                     seq: null,
                     invSeq: null,
                     userId: null
@@ -1141,7 +1238,8 @@ function Create() {
             let tempInfoList = [];
 
             // title: "", content: "", file : "", useBtn : false, btnTxt : "", link : "", imgUrl : ""
-            if (infoList[0].file != "" || infoList[0].title != "" || infoList[0].content != "" ) {
+            // if (infoList[0].file != "" || infoList[0].title != "" || infoList[0].content != "" ) {
+            if(invitationState.useInfo){
                 const updatedInfoList = await Promise.all(
                   infoList.map(async (info) => {
                     if(info.file){
@@ -1165,7 +1263,33 @@ function Create() {
 
             }
 
-            await fetchInv(urls, tempInfoList);
+            // 타임라인
+            let tempTlList = [];
+            // { date : "" , title: "", file : "",  imgUrl : "", content: ""},
+            if (invitationState.useTimeLine) {
+                const updatedInfoList = await Promise.all(
+                    tlList.map(async (tl) => {
+                    if(tl.file){
+                        const url = await handleS3Upload(tl.file);
+                        return {
+                            ...tl,
+                            file: url[0],
+                            imgUrl : "",
+                        };
+                    }else{
+                        return {
+                            ...tl,
+                            file: "",
+                            imgUrl : "",
+                        };
+                    }
+                    
+                  })
+                );
+                tempTlList = updatedInfoList;
+            }
+
+            await fetchInv(urls, tempInfoList, tempTlList);
 
         } catch (error) {
             console.error("Error while saving data:", error);
@@ -1260,11 +1384,7 @@ function Create() {
 
     // -------------------------------------------------------------------------------------------------
     const [isPreviewOpen, setIsPreviewOpen] = useState(false);
-
-
-
-
-
+    
     // -------------------------------------------------------------------------------------------------
 
     // *********************************[스크롤연동] 로딩 ***********************************************
@@ -1555,10 +1675,18 @@ function Create() {
                                         dangerouslySetInnerHTML={{ __html: invitationState.salutations }}
                                         ></span>
                                     </div>
-                                   
+                                    <img 
+                                        src={invitationState.salutPhotoUrl || ""} 
+                                        alt="인사말" 
+                                        style={{
+                                            visibility: invitationState.salutPhotoUrl ? "visible" : "hidden",
+                                            
+                                        }}
+                                    />
                                 </section>
                                 ) : null}
 
+                                {/* 프로필형 */}
                                 {/* useProfile 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
                                 {invitationState.useProfile && (
                                 <section className="profile"> 
@@ -1680,6 +1808,7 @@ function Create() {
                                 </section>
                                 )}
                                 
+                                {/* 메인하단예식정보 */}
                                 {invitationState.weddingHallName && (
                                 <section className='calendar'>
                                     <p className="info">{parseInt(invitationState.weddingDate.split("-")[0], 10)}년&nbsp;
@@ -1782,6 +1911,7 @@ function Create() {
 
 
                                 {/* useVideo 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
+                                {/* 식전영상상 */}
                                 {invitationState.useVideo && (
                                 <section className="gallery">
                                     <strong className="title">
@@ -1798,8 +1928,35 @@ function Create() {
                                 </section>
                                 )}
 
+                                {/* [타임라인] useLoading 값의 true/false에 따라 이 섹션 활성화/비활성화 */}
+                                {invitationState.useTimeLine && (
+                                <section className="timeline">
+                                    <div className='title-wrap'>
+                                        <h2 className='timeline-title'>{invitationState.timeLineTitle}</h2>
+                                    </div>
+                                    
+                                    {tlList &&
+                                    tlList.map((list, index) => (
+                                        <div className={`item ${index % 2 === 0 ? 'row' : 'row-reverse'}`} key={index}>
+                                        <div className="left">
+                                            {list.imgUrl && (
+                                            <img className="bg" src={list.imgUrl} alt="tl" />
+                                            )}
+                                            <span className="year">{list.date}</span>
+                                        </div>
 
-                                {/* useGallery 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
+                                        <div className="center-line"></div>
+
+                                        <div className="right">
+                                            <strong className="title">{list.title || ""}</strong>
+                                            <span className="content">{list.content}</span>
+                                        </div>
+                                        </div>
+                                    ))}
+                                </section>
+                                )}
+
+                                {/* [갤러리]useGallery 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
                                 {invitationState.useGallery && (
                                 <section className="gallery">
                                     <strong className="title">
@@ -2978,21 +3135,47 @@ function Create() {
                                             </div>
                                         </div>
                                     </div>
-                                    {/* <div className="option">
+                                    <div className="option">
                                         <div className="option-label">사진</div>
                                         <div className="option-contents">
                                             <div className="img-uploader">
                                                 <div className="img-upload">
-                                                    <button className="img-upload-add"></button>
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        id="salutPhotoInput"
+                                                        style={{ display: "none" }}
+                                                        onChange={(e) => {
+                                                            const file = e.target.files[0];
+                                                            if (file) {
+                                                                const imageUrl = URL.createObjectURL(file);
+                                                                handleChange("salutPhotoUrl", imageUrl);
+                                                                handleFileChange(e, 'salutPhoto');
+                                                            }
+                                                        }}
+                                                    />
+
+                                                    <button
+                                                        className="img-upload-add"
+                                                        onClick={() => document.getElementById('salutPhotoInput').click()}
+                                                    />
                                                 </div>
+                                                {invitationState.salutPhotoUrl  && (
                                                 <div className="img-upload fin">
-                                                    <div className="img-upload-thumb"><img src="./images/create/sample.png" alt="sample"/></div>
-                                                    <button className="img-upload-cancel">삭제</button>
+                                                    <div className="img-upload-thumb">
+                                                        <img 
+                                                            src={invitationState.salutPhotoUrl || bgimg} 
+                                                            alt="인사말" 
+                                                        />
+                                                    </div>
+                                                    <button className="img-upload-cancel" onClick={() =>invitationState.salutPhotoUrl = "" }>삭제</button>
                                                 </div>
+                                                )}
                                             </div>
-                                            <div className="mt-10"><button className="btn-positioning">위치 조정</button></div>
+                                            {/* <div className="mt-10"><button className="btn-positioning">위치 조정</button></div> */}
                                         </div>
-                                    </div> */}
+                                    </div>
+
                                 </div>
                             )}
                             </div>
@@ -3253,11 +3436,15 @@ function Create() {
                             )}
                             </div>
 
-                            {/* 목요일 이후 구현 (퍼블리싱 없음) */}
-                            {/* <div className="category">
+                            {/* 타임라인 */}
+                            <div className="category">
                                 <div className="category-head">
                                     <label for="" className="switch">
-                                        <input type="checkbox" checked/>
+                                        <input 
+                                            type="checkbox" 
+                                            checked={invitationState.useTimeLine} 
+                                            onChange={(e) => handleChange('useTimeLine', e.target.checked)}
+                                        />
                                     </label>
                                     <strong>타임라인</strong>
                                     <button 
@@ -3266,12 +3453,17 @@ function Create() {
                                     >여닫기</button>
                                 </div>
                                 {categories['timeLine'] && (
-                                </div>
                                 <div className="category-body">
                                     <div className="option">
                                         <div className="option-label">타이틀</div>
                                         <div className="option-contents">
-                                            <input type="text" className="input-sts" placeholder="우리의 시간"/>
+                                            <input 
+                                                type="text" 
+                                                className="input-sts" 
+                                                placeholder="우리의 시간"
+                                                onChange={(e) => 
+                                                    handleChange("timeLineTitle", e.target.value)} 
+                                            />
                                         </div>
                                     </div>
                                     <div className="option">
@@ -3279,69 +3471,142 @@ function Create() {
                                         <div className="option-contents">
                                             <div className="radio-wrap">
                                                 <span className="radio">
-                                                    <input type="radio" name="timeline1" id="timeline1_1" checked/>
+                                                    <input type="radio" name="timeline1" id="timeline1_1" 
+                                                    value="timeline1_1"
+                                                    checked={invitationState.timeLineType === "timeline1_1"} 
+                                                    onChange={(e) => handleChange('timeLineType', e.target.value)}
+                                                    />
                                                     <label for="timeline1_1"><i></i>원형</label>
                                                 </span>
                                                 <span className="radio">
-                                                    <input type="radio" name="timeline1" id="timeline1_2"/>
+                                                    <input type="radio" name="timeline1" id="timeline1_2"
+                                                    value="timeline1_2"
+                                                    checked={invitationState.timeLineType === "timeline1_2"} 
+                                                    onChange={(e) => handleChange('timeLineType', e.target.value)}
+                                                    />
                                                     <label for="timeline1_2"><i></i>사각형</label>
                                                 </span>
                                             </div>
+
                                         </div>
                                     </div>
+
+                                    {tlList.map((tl, index) => (
                                     <div className="add-box">
                                         <div className="add-head">
                                             <div>
-                                                <button className="add-box-up">위로</button>
-                                                <button className="add-box-down">아래로</button>
+                                                <button
+                                                className="add-box-up"
+                                                onClick={() => moveUpTimeLine(index)}
+                                                disabled={index === 0} // 첫 번째 요소 비활성화
+                                                >위로</button>
+                                                <button
+                                                className="add-box-down"
+                                                onClick={() => moveDownTimeLine(index)}
+                                                disabled={index === tlList.length - 1} // 마지막 요소 비활성화
+                                                >아래로</button>
                                             </div>
-                                            <button className="add-box-delete">삭제</button>
+                                            <button className="add-box-delete" onClick={() => removeTimeLine(index)}>삭제</button>
                                         </div>
                                         <div className="add-body">
                                             <div className="option">
                                                 <div className="option-label">날짜</div>
                                                 <div className="option-contents">
-                                                    <input type="date" className="input-sts"/>
+                                                    <input 
+                                                        type="text" 
+                                                        className="input-sts" 
+                                                        value={tl.date}
+                                                        onChange={(e) => 
+                                                            handleInputChangeTimeLine(index, "date", e.target.value)
+                                                        } 
+                                                    />
                                                 </div>
                                             </div>
                                             <div className="option">
                                                 <div className="option-label">제목</div>
                                                 <div className="option-contents">
-                                                    <input type="text" className="input-sts"/>
+                                                    <input 
+                                                        type="text" 
+                                                        className="input-sts" 
+                                                        value={tl.title}
+                                                        onChange={(e) => 
+                                                            handleInputChangeTimeLine(index, "title", e.target.value)
+                                                        } 
+                                                    />
                                                 </div>
                                             </div>
+
                                             <div className="option">
                                                 <div className="option-label">사진</div>
                                                 <div className="option-contents">
                                                     <div className="img-uploader">
                                                         <div className="img-upload">
-                                                            <button className="img-upload-add"></button>
+                                                            <input
+                                                                type="file"
+                                                                accept="image/*"
+                                                                id={`${index}timeline`}
+                                                                style={{ display: "none" }}
+                                                                onChange={(e) => {
+                                                                    const file = e.target.files[0];
+                                                                    if (file) {
+                                                                        const imageUrl = URL.createObjectURL(file);
+                                                                        handleInputChangeTimeLine(index, "imgUrl", imageUrl);
+                                                                        handleTlFileUpload(e, index);
+                                                                    }
+                                                                }}
+                                                            />
+                                                            <button
+                                                                className="img-upload-add"
+                                                                onClick={() => document.getElementById(`${index}timeline`).click()}
+                                                            />
                                                         </div>
+                                                        {tl.imgUrl  && (
                                                         <div className="img-upload fin">
-                                                            <div className="img-upload-thumb"><img src="./images/create/sample.png" alt="sample"/></div>
-                                                            <button className="img-upload-cancel">삭제</button>
+                                                            <div className="img-upload-thumb">
+                                                                <img 
+                                                                    src={tl.imgUrl} 
+                                                                />
+                                                            </div>
+                                                            <button className="img-upload-cancel" onClick={() =>tl.imgUrl = "" }>삭제</button>
+                                                            
                                                         </div>
+                                                        
+                                                        )}
                                                     </div>
+
                                                     <div className="mt-10"><button className="btn-positioning">위치 조정</button></div>
                                                 </div>
                                             </div>
+
+
                                             <div className="option">
                                                 <div className="option-label">내용</div>
                                                 <div className="option-contents">
-                                                    <textarea name="" id="" rows="7" className="textarea-sts"></textarea>
+                                                    <textarea
+                                                        rows="7"
+                                                        className="textarea-sts"
+                                                        value={tl.content}
+                                                        onChange={(e) =>
+                                                            handleInputChangeTimeLine(index, "content", e.target.value)
+                                                        }
+                                                    />
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    ))}
                                     <div className="add-btn">
-                                        <button className="add-box-add">타임라인 추가</button>
+                                        <button className="add-box-add" onClick={addTimeLine}>타임라인 추가</button>
                                     </div>
                                 </div>
                             )}
-                            </div> */}
+                            </div>
 
 
 
+                            
+
+                            {/* 갤러리 */}
                             <div className="category" >
                                 <div className="category-head" >
 
@@ -4694,7 +4959,7 @@ function Create() {
                                                     />
                                                 </div>
                                                 {invitationState.endingImage  && (
-                                                    <div className="img-upload fin">
+                                                <div className="img-upload fin">
                                                     <div className="img-upload-thumb">
                                                         <img 
                                                             src={invitationState.endingImage || bgimg} 

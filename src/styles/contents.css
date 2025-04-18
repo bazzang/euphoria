@@ -10,7 +10,7 @@
 
 /* @import url('https://fonts.googleapis.com/css2?family=Borel&family=Knewave&family=Lobster&family=Pacifico&family=Playfair+Display:ital@0;1&family=Yellowtail&family=Yesteryear&display=swap'); */
 /* @import url('https://fonts.googleapis.com/css2?family=Borel&family=Handlee&family=Knewave&family=Lobster&family=Pacifico&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Yellowtail&family=Yesteryear&display=swap'); */
-@import url('https://fonts.googleapis.com/css2?family=Borel&family=Charmonman:wght@400;700&family=Handlee&family=Knewave&family=Lobster&family=Pacifico&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Yellowtail&family=Yesteryear&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Borel&family=Charmonman:wght@400;700&family=Dancing+Script:wght@400..700&family=Handlee&family=Knewave&family=Limelight&family=Lobster&family=Pacifico&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Yellowtail&family=Yesteryear&display=swap');
 
 /* ====================== */
 /* create */
@@ -131,6 +131,35 @@
 .frame .transportion {margin:50px 0;padding:0 28px;}
 .frame .transportion .title {color:#D49BA2;;font-family: "Nanum Myeongjo";font-size:18px;display:block;margin-bottom:12px;display:block;font-weight:bold;margin-top:24px;}
 .frame .transportion .text {font-family: "Nanum Myeongjo";font-size:16px;font-weight:400;color:#363636;line-height:1.6;margin-bottom:12px;word-break:break-all;font-weight:bold;}
+
+/* 미리보기 타임라인 20250418 추가 */
+.frame .timeline {margin:70px 0; }
+.frame .timeline .title-wrap {display: flex; flex-direction: column; align-items: center;}
+.frame .timeline .title-wrap .timeline-title { color:#C4989D;font-family: "Nanum Myeongjo"; font-weight:bold; font-size:18px; /* 연핑크 톤 */ margin-bottom: 30px; text-align: center;}
+.frame .timeline .item {display: flex; align-items: center; justify-content: center; position: relative;  font-family: 'Pretendard', sans-serif;}
+.frame .timeline .item.row {
+  flex-direction: row;
+}
+
+/* row-reverse: 반대 방향 (이미지 오른쪽) */
+.frame .timeline .item.row-reverse {
+  flex-direction: row-reverse;
+}
+.frame .timeline .item .center-line{width: 1px; height: 130px; background-color: #ddd; position: relative;}
+.frame .timeline .item .center-line::before {content: ''; position: absolute; top: 50%; left: 50%; width: 8px; height: 8px; background-color: pink; border-radius: 50%; transform: translate(-50%, -50%);}
+
+.frame .timeline .item .left, .frame .timeline .item .right {display: flex; flex-direction: column; align-items: center; flex: 1;}
+.frame .timeline .item .left img.bg {width: 100px; height: 100px; border-radius: 60px; background-color: #f9f9f9; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);}
+.frame .timeline .item .left .year {font-family: "Dancing Script", cursive; font-optical-sizing: auto; font-weight: weight; font-style: normal; margin-top: 10px;   font-size: 14px;  color: #999999; }
+.frame .timeline .item .left .title {font-family: "Nanum Myeongjo";font-size:16px;font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #333333;}
+.frame .timeline .item .left .content {font-family: "Nanum Myeongjo";font-size:16px;font-size: 14px; color: #888;}
+
+.frame .timeline .item .right img.bg {width: 100px; height: 100px; border-radius: 60px; background-color: #f9f9f9; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);}
+.frame .timeline .item .right .year {font-family: "Dancing Script", cursive; font-optical-sizing: auto; font-weight: weight; font-style: normal; margin-top: 10px;   font-size: 14px;  color: #999999; }
+.frame .timeline .item .right .title {font-family: "Nanum Myeongjo";font-size:16px;font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #333333;}
+.frame .timeline .item .right .content {font-family: "Nanum Myeongjo";font-size:16px;font-size: 14px; color: #888;}
+
+
 /* //2024-11-13 미리보기 영역 */
 
 .preview-focus {text-align:center; margin-top:24px;}

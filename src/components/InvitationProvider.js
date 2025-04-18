@@ -155,7 +155,8 @@ export const InvitationProvider = ({ children }) => {
     useSalutations : false,
     salutationsTitle : "",
     salutations : "",
-
+    salutPhotoFile : "", 
+    salutPhotoUrl : "",
 
     // 혼주 연락하기 
     useParentsContactInfo : false,
@@ -202,7 +203,7 @@ export const InvitationProvider = ({ children }) => {
     urlImage : "",
 
     // 사용섹션 
-    useProfile : true, // 프로필형 소개 
+    useProfile : false, // 프로필형 소개 
     useCalendar: false, // 달력
     useGallery : false, // 갤러리 사용 여부 
     useNotice : false, // 안내문 사용 여부 
@@ -215,7 +216,12 @@ export const InvitationProvider = ({ children }) => {
     useVideo : false, // 영상
     useMap : false,
     
-    // 20250417 추가 로딩화면
+    // 타임라인
+    useTimeLine : false, // 타임라인 사용 여부
+    timeLineTitle : "우리의 시간" , // 타임라인 타이틀
+    timeLineType : "timeline1_1", // 타임라인 사진 모양
+
+    // 20250418 추가 안된 컬럼 
     useLoading : false, 
     loadType : "loading_1", //로딩화면타입
     drawTxt : "", //드로우형 로딩화면문구
@@ -226,6 +232,9 @@ export const InvitationProvider = ({ children }) => {
     drawImgTxt : "",  // 이미지형 문구
     typingClr : "", // 타이핑형 배경 컬러
     typingTxt : "", // 타이핑형 문구
+
+    
+
 
 
 
