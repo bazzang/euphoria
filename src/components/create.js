@@ -1256,6 +1256,17 @@ function Create() {
 
     // -------------------------------------------------------------------------------------------------
 
+    // *********************************[모바일] 미리보기 버튼 ******************************************
+
+    // -------------------------------------------------------------------------------------------------
+    const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+
+
+
+
+
+    // -------------------------------------------------------------------------------------------------
+
     // *********************************[스크롤연동] 로딩 ***********************************************
 
     // -------------------------------------------------------------------------------------------------
@@ -1276,8 +1287,8 @@ function Create() {
             <div className="create-wrap">
                 <div className="create">
                     <div className="create-preview">
-
-                        <div className="frame-wrap">
+                    {/* <div className={`create-preview ${isPreviewOpen ? 'active' : ''}`}> */}
+                        <div className="frame-wrap"  >
                             {isLoading && !isAnimationFinished && !isPopupVisible && (
                                 <div className="frame" id="popup" >
                                         <div className="loading-screen">
@@ -2120,7 +2131,6 @@ function Create() {
 
 
                         </div>
-{/* TODO */}
                         {/* <div className="preview-focus">
                             <label for="" className="switch">
                                 <input type="checkbox" checked />
@@ -2131,7 +2141,8 @@ function Create() {
 
                     </div>
 
-                    <div className="create-contents">
+                    {/* <div className="create-contents"> */}
+                    <div className={`create-contents ${isPreviewOpen ? 'hidden' : ''}`}>
 
                             <div className="category">
                                 <div className="category-head" >
@@ -5671,8 +5682,15 @@ function Create() {
             
             {/* <div className="preview-tooltip">실시간으로 확인해보세요! <button className="preview-tooltip-close">닫기</button></div> */}
             <button className="btn-save" onClick={handleOpenDialog}>저장</button>
-            <button className="btn-preview">미리보기</button>
+            <button className="btn-preview" onClick={() => setIsPreviewOpen(!isPreviewOpen)}>
+                {isPreviewOpen ? '돌아가기' : '미리보기'}
+            </button>
+            {/* <button className="btn-preview" onClick={() => setIsPreviewOpen(false)}>돌아가기</button> */}
+            
+            
         </div>
+
+        
     </div>
   )
 }
