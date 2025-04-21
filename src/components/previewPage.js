@@ -405,6 +405,10 @@ function PreviewPage() {
 
     // -------------------------------------------------------------------------------------------------
     const [isGuestbookOpen, setIsGuestbookOpen] = useState(false);
+    // 방명록 삭제
+    const [deleteTargetIndex, setDeleteTargetIndex] = useState(null); // 삭제할 index
+    const [deletePassword, setDeletePassword] = useState('');
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
     const openGuestbookModal = () => {
         setIsGuestbookOpen(true);
     };
@@ -420,19 +424,35 @@ function PreviewPage() {
         ));
     };
     
-    const handleConfirmDelete = (index) => {
-        const pw = guestbookList[index].password;
-        // TODO: 비밀번호 검증 & 삭제 로직 실행
-        console.log(`삭제 요청: index=${index}, pw=${pw}`);
+    const handleConfirmDelete = async (index, enteredPassword) => {
+        const guestbook = guestbookList[index];
+      
+        try {
+          const response = await axios.post("https://api.euphoriacard.co.kr/api/preview/delete", {
+            seq: guestbook.seq,
+            pwd: enteredPassword,
+            master : inv.masterPwd
+          });
+      
+          if (response.status === 200) {
+            // 삭제 성공: 리스트에서 제거
+            setGuestbookList(prev => prev.filter((_, i) => i !== index));
+            alert("삭제되었습니다.");
+          }
+        } catch (error) {
+          if (error.response && error.response.status === 401) {
+            alert("비밀번호가 일치하지 않습니다.");
+          } else {
+            console.error("삭제 중 오류 발생:", error);
+            alert("서버 오류로 삭제에 실패했습니다.");
+          }
+        }
+      
+        // 입력 초기화 및 모달 닫기
+        setDeletePassword('');
+        setShowDeleteModal(false);
     };
     
-    const handleLoadMore = () => {
-        // 더보기 로직
-    };
-    
-    const handleViewAll = () => {
-        // 전체보기 로직
-    }
     const [guestbook, setGuestbook] = useState({
         invSeq : itemId,
         guestNm : "",
@@ -448,7 +468,7 @@ function PreviewPage() {
 
     };
     const [showAllGuestbooks, setShowAllGuestbooks] = useState(false);
-    
+
     // 방명록 등록
     const fetchGuestbook = async () => {
 
@@ -467,6 +487,8 @@ function PreviewPage() {
         }
 
     }
+
+
     
   return (
     <>
@@ -655,7 +677,32 @@ function PreviewPage() {
         
         )}
 
-
+        {showDeleteModal && (
+        <div className="modal-overlay active">
+            <div className="guestbook-modal">
+            <div className="guestbook-header">
+                <h2>방명록 삭제</h2>
+                <button className="close-btn" onClick={() => setShowDeleteModal(false)}>✕</button>
+            </div>
+            <div className="guestbook-body">
+                <label htmlFor="deletePwd">비밀번호 입력</label>
+                <input
+                type="password"
+                id="deletePwd"
+                value={deletePassword}
+                onChange={(e) => setDeletePassword(e.target.value)}
+                placeholder="작성 시 입력한 비밀번호를 입력해주세요."
+                />
+                <button
+                className="submit-btn"
+                onClick={() => handleConfirmDelete(deleteTargetIndex, deletePassword)}
+                >
+                삭제
+                </button>
+            </div>
+            </div>
+        </div>
+        )}
 
         <div className="frame" style={{width: "100%", maxWidth: "428px", margin: "0 auto",  boxShadow:" 0 0 10px rgba(0, 0, 0, 0.1)", backgroundColor: "white" }}>
             
@@ -1327,24 +1374,20 @@ function PreviewPage() {
                                 {(showAllGuestbooks ? guestbookList : guestbookList.slice(0, 3)).map((item, index) => (
                                     <div className="guestbook-item" key={index}>
                                         <div className="top">
-                                        <span className="name">{item.guestNm}</span>
-                                        <span className="date">{item.createAt}</span>
+                                            <span className="name">{item.guestNm}</span>
+                                            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                                                <span className="date">{item.createAt}</span>
+                                                <button
+                                                    className="delete-trigger"
+                                                    onClick={() => {
+                                                        setDeleteTargetIndex(index);
+                                                        setShowDeleteModal(true);
+                                                    }}
+                                                >✕</button>
+                                            </div>
                                         </div>
                                         <p className="message">{item.content}</p>
 
-                                        {item.showDelete && (
-                                        <div className="delete-box">
-                                            <input
-                                            type="password"
-                                            placeholder="비밀번호를 입력하세요."
-                                            value={item.password || ''}
-                                            onChange={(e) => handlePasswordChange(index, e.target.value)}
-                                            />
-                                            <button className="btn-confirm" onClick={() => handleConfirmDelete(index)}>
-                                            확인
-                                            </button>
-                                        </div>
-                                        )}
                                     </div>
                                 ))}
                                 </>
