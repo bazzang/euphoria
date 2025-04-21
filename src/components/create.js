@@ -185,6 +185,12 @@ function Create() {
                     timeLine: value, 
                 }));
                 break;
+            case "useGuestbook" :  // 방명록록
+                setCategories((prevCategories) => ({
+                    ...prevCategories,
+                     guestbook: value, 
+                }));
+                break;
 
             default : 
                 break;
@@ -1396,8 +1402,20 @@ function Create() {
     const brideRef = useRef(null);
     const Ref = useRef(null);
     const galleryRef = useRef(null);
+    
+    // -------------------------------------------------------------------------------------------------
 
+    // *********************************[방명록] 방명록 ***********************************************
 
+    // -------------------------------------------------------------------------------------------------
+    const [isGuestbookOpen, setIsGuestbookOpen] = useState(false);
+    const openGuestbookModal = () => {
+        setIsGuestbookOpen(true);
+    };
+    
+    const closeGuestbookModal = () => {
+        setIsGuestbookOpen(false);
+    };
 
 
     
@@ -1534,6 +1552,33 @@ function Create() {
                                     
                                 </section>
                             </div>
+                            )}
+
+                            {isGuestbookOpen && (
+                                <div className="frame" id="popup" >
+                                    <div className={`modal-overlay ${isGuestbookOpen ? 'active' : ''}`}>
+                                        <div className="guestbook-modal">
+                                        <div className="guestbook-header">
+                                            <h2>방명록 작성</h2>
+                                            <button className="close-btn" onClick={closeGuestbookModal}>✕</button>
+                                        </div>
+
+                                        <div className="guestbook-body">
+                                            <label htmlFor="name">성함</label>
+                                            <input type="text" id="name" placeholder="" />
+
+                                            <label htmlFor="message">내용</label>
+                                            <textarea id="message" rows="5" placeholder=""></textarea>
+
+                                            <label htmlFor="password">비밀번호</label>
+                                            <input type="password" id="password" placeholder="비밀번호 입력 (수정·삭제 시 필요)" />
+
+                                            <button className="submit-btn">작성</button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            
                             )}
 
                             {!isLoading && isAnimationFinished || !isPopupVisible && (
@@ -2220,6 +2265,23 @@ function Create() {
                                 </section>
                                 )}
 
+                                {/* [방명록]  */}
+                                {invitationState.useGuestbook && (
+                                <section className="guestbook">
+                                    <div className="guestbook-empty">
+                                        <h2 className="guestbook-title">방명록</h2>
+                                        <p className="guestbook-message">
+                                        아직 작성된 방명록이 없습니다.<br />
+                                        첫 방명록을 작성해주세요.
+                                        </p>
+                                        <div className="guestbook-buttons">
+                                            <button className="btn-outline">전체보기</button>
+                                            <button className="btn-primary" onClick={openGuestbookModal}>작성</button>
+                                        </div>
+                                    </div>
+                                </section>
+                                    
+                                )}
 
                                 {/* [안내사항] useInfo 값의 true/false에 따라 이 섹션 활성화/비활성화 */}
                                 {invitationState.useInfo && (
@@ -4459,7 +4521,7 @@ function Create() {
                             )}
                             </div> */}
 
-                            {/* 목요일 이후 구현 (퍼블리싱 없음) */}
+                            {/* 계좌번호 */}
                             <div className="category">
                                 <div className="category-head">
                                     {/* value=useAcnt */}
@@ -4782,11 +4844,15 @@ function Create() {
                             )}
                             </div>
 
-                            {/* 목요일 이후 구현 (퍼블리싱 없음) */}
-                            {/* <div className="category">
+                            {/* [방명록] */}
+                            <div className="category">
                                 <div className="category-head">
-                                    <label for="" className="switch">
-                                        <input type="checkbox" checked/>
+                                    <label className="switch">
+                                        <input 
+                                            type="checkbox" 
+                                            checked={invitationState.useGuestbook} 
+                                            onChange={(e) => handleChange('useGuestbook', e.target.checked)}
+                                        />
                                     </label>
                                     <strong>방명록</strong>
                                     <button 
@@ -4830,7 +4896,7 @@ function Create() {
                                     </div>
                                 </div>
                             )}
-                            </div> */}
+                            </div>
 
 
 

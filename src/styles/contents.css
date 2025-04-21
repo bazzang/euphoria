@@ -156,8 +156,18 @@
 
 .frame .timeline .item .right img.bg {width: 100px; height: 100px; border-radius: 60px; background-color: #f9f9f9; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);}
 .frame .timeline .item .right .year {font-family: "Dancing Script", cursive; font-optical-sizing: auto; font-weight: weight; font-style: normal; margin-top: 10px;   font-size: 14px;  color: #999999; }
-.frame .timeline .item .right .title {font-family: "Nanum Myeongjo";font-size:16px;font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #333333;}
+.frame .timeline .item .right .title {font-family: "Nanum Myeongjo";font-size:15px;font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #333333;}
 .frame .timeline .item .right .content {font-family: "Nanum Myeongjo";font-size:16px;font-size: 14px; color: #888;}
+
+/* 미리보기 방명록 */
+.frame .guestbook {margin:70px 0;}
+.frame .guestbook .guestbook-empty {text-align: center; padding: 40px 20px; font-family: 'Pretendard', sans-serif;}
+.frame .guestbook .guestbook-empty .guestbook-title {font-family: "Nanum Myeongjo";font-size: 18px; font-weight: bold; color: #d58c98; /* 연핑크 */ margin-bottom: 20px;}
+.frame .guestbook .guestbook-empty .guestbook-message {font-family: "Nanum Myeongjo";color: #d58c98; font-size: 14px; line-height: 1.6; margin-bottom: 40px;}
+.frame .guestbook .guestbook-empty .guestbook-buttons {display: flex; justify-content: space-between; gap: 10px; margin:20px;}
+.frame .guestbook .guestbook-empty .guestbook-buttons .btn-outline{font-family: "Nanum Myeongjo"; flex: 1; padding: 10px; border: 1px solid #ddd; background-color: white; color: #555; border-radius: 6px; cursor: pointer; font-size: 14px;}
+.frame .guestbook .guestbook-empty .guestbook-buttons .btn-primary{font-family: "Nanum Myeongjo"; flex: 1; padding: 10px; border: none; background-color: #f4c7cc; color: white; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 14px;}
+.frame .guestbook .guestbook-empty .guestbook-buttons .btn-primary:hover{background-color: #eaa8af;}
 
 
 /* //2024-11-13 미리보기 영역 */
@@ -543,3 +553,70 @@ input[type="range"]::-moz-range-thumb {height:18px; width:50px; background-color
     }
   }
 
+
+  .modal-overlay {
+    
+    display: none;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 99;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* 모달 활성화 시 */
+  .modal-overlay.active {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+  }
+  
+  /* 모달 본체 */
+  .guestbook-modal {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    width: 320px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    font-family: 'Pretendard', sans-serif;
+    animation: fadeInUp 0.3s ease;
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* 방명록 미리보기 팝업 */
+  .guestbook-header {display: flex;justify-content: space-between; align-items: center;border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 20px; }
+  .guestbook-header h2 { font-family: "Nanum Myeongjo"; font-weight: bold; font-size: 16px; color: #333;}  
+  .close-btn {background: none;border: none; font-size: 20px; color: #999; cursor: pointer;}
+  .guestbook-body label {font-family: "Nanum Myeongjo"; display: block; font-size: 14px; margin-bottom: 6px; color: #555;}  
+  .guestbook-body input,.guestbook-body textarea {width: 100%; padding: 10px; border: 1px solid #eee; border-radius: 8px; margin-bottom: 16px; font-size: 14px; box-sizing: border-box;}
+  .submit-btn {font-family: "Nanum Myeongjo"; width: 100%; padding: 12px;background-color: #f4c7cc; border: none; border-radius: 8px; font-size: 15px; font-weight: bold; color: white; cursor: pointer; transition: 0.2s;}
+  .submit-btn:hover {background-color: #eaa8af; }
+  /* 방명록 리스트 */
+  .guestbook-list {font-family: 'Pretendard', sans-serif; display: flex; flex-direction: column; gap: 12px; padding: 20px;}
+  .guestbook-item {background: #fefefe; border-radius: 8px; box-shadow: 0 1px 5px rgba(0, 0, 0, 0.06); padding: 16px; font-size: 14px; position: relative;}
+  .guestbook-item .top {font-family: "Nanum Myeongjo";display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 8px; color: #333; }
+  .guestbook-item .top .date {font-family: "Nanum Myeongjo"; font-weight: normal; font-size: 12px; color: #888;}
+  .guestbook-item .message { font-family: "Nanum Myeongjo";color: #444; line-height: 1.5; margin-bottom: 10px; }
+  .guestbook-item .delete-box { display: flex; gap: 8px; margin-top: 10px;}
+  .guestbook-item .delete-box input { flex: 1; padding: 8px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 13px; }
+  
+  .guestbook-item .delete-box .btn-confirm {padding: 8px 16px; background-color: #f4c7cc; border: none; color: white;font-weight: bold; border-radius: 6px;cursor: pointer;}
+  
+  .guestbook-footer { display: flex; justify-content: center; gap: 10px; margin-top: 20px;}
+  
+  .guestbook-footer .btn-outline {padding: 10px 16px; border: 1px solid #ddd; border-radius: 6px; background: white; font-weight: bold; color: #333; cursor: pointer; }
+  
+  

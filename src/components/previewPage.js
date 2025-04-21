@@ -40,6 +40,7 @@ function PreviewPage() {
     const [galList, setGalList] = useState([]);
     const [inv, setInv] = useState({});
     const [tlList, setTlList] = useState([]);
+    const [guestbookList, setGuestbookList] = useState([]);
 
     useEffect(() => {
         if(!itemId){
@@ -84,6 +85,7 @@ function PreviewPage() {
             setInterviewList(response.data.itvList);
             setInfoList(response.data.infolist);
             setTlList(response.data.tlList);
+            setGuestbookList(response.data.guestbookList);
         } catch (error) {
             console.error("Error fetching order list: ", error);
         }
@@ -398,9 +400,73 @@ function PreviewPage() {
     };
     
     // -------------------------------------------------------------------------------------------------
-    // *********************************[URL 공유하기] ************************************************
-    // -------------------------------------------------------------------------------------------------
+    
+    // *********************************[방명록] 방명록 ***********************************************
 
+    // -------------------------------------------------------------------------------------------------
+    const [isGuestbookOpen, setIsGuestbookOpen] = useState(false);
+    const openGuestbookModal = () => {
+        setIsGuestbookOpen(true);
+    };
+    
+    const closeGuestbookModal = () => {
+        setIsGuestbookOpen(false);
+    };
+
+    const handlePasswordChange = (index, value) => {
+        setGuestbookList(prev =>
+            prev.map((item, i) =>
+            i === index ? { ...item, password: value } : item
+        ));
+    };
+    
+    const handleConfirmDelete = (index) => {
+        const pw = guestbookList[index].password;
+        // TODO: 비밀번호 검증 & 삭제 로직 실행
+        console.log(`삭제 요청: index=${index}, pw=${pw}`);
+    };
+    
+    const handleLoadMore = () => {
+        // 더보기 로직
+    };
+    
+    const handleViewAll = () => {
+        // 전체보기 로직
+    }
+    const [guestbook, setGuestbook] = useState({
+        invSeq : itemId,
+        guestNm : "",
+        content : "",
+        pwd : ""
+    })
+    const handleChange = (key, value) => {
+        
+        setGuestbook((prev) => ({
+          ...prev,
+          [key]: value,
+        }));
+
+    };
+    
+    // 방명록 등록
+    const fetchGuestbook = async () => {
+
+        try {
+            const response = await axios.post("https://api.euphoriacard.co.kr/api/preview/guestbook", guestbook, {
+                headers: {
+                "Content-Type": "application/json"
+                }
+            });
+        
+            console.log("저장 완료:", response.data);
+            closeGuestbookModal();
+
+        } catch (error) {
+            console.error("초대장 저장 실패 ❌:", error);
+        }
+
+    }
+    
   return (
     <>
           {/* <SEO title={inv.groomLastName + "와 " + inv.brideLastName} description={inv.mainTxt} image={mainImg} /> */}
@@ -544,8 +610,49 @@ function PreviewPage() {
                     
                 </section>
             </div>
-            )}
+        )}
 
+        {/* 방명록 */}
+        {isGuestbookOpen && (
+                <div className={`modal-overlay ${isGuestbookOpen ? 'active' : ''}`}>
+                    <div className="guestbook-modal">
+                    <div className="guestbook-header">
+                        <h2>방명록 작성</h2>
+                        <button className="close-btn" onClick={closeGuestbookModal}>✕</button>
+                    </div>
+
+                    <div className="guestbook-body">
+                        <label htmlFor="name">성함</label>
+                        <input
+                            type="text"
+                            className="input-sts"
+                            value={guestbook.guestNm}
+                            onChange={(e) => handleChange("guestNm", e.target.value)} // Update state
+                        />
+
+                        <label htmlFor="message">내용</label>
+                        <textarea
+                            className="textarea-sts"
+                            rows="4"
+                            value={guestbook.content} // Bind to invitationState
+                            onChange={(e) => handleChange("content", e.target.value)} // Update state
+                        ></textarea>
+
+                        <label htmlFor="password">비밀번호</label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            placeholder="비밀번호 입력 (삭제 시 필요)" 
+                            value={guestbook.pwd} // Bind to invitationState
+                            onChange={(e) => handleChange("pwd", e.target.value)} // Update state
+                        />
+
+                        <button className="submit-btn" onClick={fetchGuestbook}>작성</button>
+                    </div>
+                    </div>
+                </div>
+        
+        )}
 
 
 
@@ -961,8 +1068,8 @@ function PreviewPage() {
                             tlList.map((list, index) => (
                                 <div className={`item ${index % 2 === 0 ? 'row' : 'row-reverse'}`} key={index}>
                                 <div className="left">
-                                    {list.imgUrl && (
-                                    <img className="bg" src={list.imgUrl} alt="tl" />
+                                    {list.file && (
+                                    <img className="bg" src={list.file} alt="tl" />
                                     )}
                                     <span className="year">{list.date}</span>
                                 </div>
@@ -1207,7 +1314,60 @@ function PreviewPage() {
                             
                         </section>
                         )}
+                        
 
+                        {inv.useGuestbook && (
+                        <section className="guestbook">
+                            <div className="guestbook-empty">
+                            <h2 className="guestbook-title">방명록</h2>
+
+                            {guestbookList && guestbookList.length > 0 ? (
+                                <>
+                                {guestbookList.map((item, index) => (
+                                    <div className="guestbook-item" key={index}>
+                                    <div className="top">
+                                        <span className="name">{item.guestNm}</span>
+                                        <span className="date">{item.createAt}
+                                        <button onClick={closeGuestbookModal}>✕</button>
+                                        </span>
+                                        
+                                    </div>
+                                    
+                                    <p className="message">{item.content}</p>
+
+                                    {item.showDelete && (
+                                        <div className="delete-box">
+                                        <input
+                                            type="password"
+                                            placeholder="비밀번호를 입력하세요."
+                                            value={item.password || ''}
+                                            onChange={(e) => handlePasswordChange(index, e.target.value)}
+                                        />
+                                        <button className="btn-confirm" onClick={() => handleConfirmDelete(index)}>
+                                            확인
+                                        </button>
+                                        </div>
+                                    )}
+                                    </div>
+                                ))}
+                                </>
+                            ) : (
+                                <p className="guestbook-message">
+                                아직 작성된 방명록이 없습니다.<br />
+                                첫 방명록을 작성해주세요.
+                                </p>
+                            )}
+
+                            <div className="guestbook-buttons">
+                                <button className="btn-outline">전체보기</button>
+                                <button className="btn-primary" onClick={openGuestbookModal}>
+                                작성
+                                </button>
+                            </div>
+                            </div>
+                        </section>
+                        )}
+                        
                         {/* [안내사항] useInfo 값의 true/false에 따라 이 섹션 활성화/비활성화 */}
                         {inv.useInfo && (
                             <section className="calendar">

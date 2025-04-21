@@ -221,6 +221,11 @@ export const InvitationProvider = ({ children }) => {
     timeLineTitle : "우리의 시간" , // 타임라인 타이틀
     timeLineType : "timeline1_1", // 타임라인 사진 모양
 
+    // 방명록
+    useGuestbook : false, // 방명록 사용여부 
+    guestbookTitle : "", // 방명록 타이틀 
+    masterPwd : "", // 방명록 마스터 비밀번호
+
     // 20250418 추가 안된 컬럼 
     useLoading : false, 
     loadType : "loading_1", //로딩화면타입
@@ -232,6 +237,8 @@ export const InvitationProvider = ({ children }) => {
     drawImgTxt : "",  // 이미지형 문구
     typingClr : "", // 타이핑형 배경 컬러
     typingTxt : "", // 타이핑형 문구
+
+    
 
     
 
