@@ -2000,7 +2000,7 @@ function Create() {
 
 
 
-                                {/*useNotice 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
+                                {/*[안내문] useNotice 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
                                 {invitationState.useNotice && (
                                 <section className="infomation">
                                     <div className="infomation-box">
@@ -2015,7 +2015,7 @@ function Create() {
                                 </section>
                                 )}
 
-                                {/* useFlower 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
+                                {/* [화환] useFlower 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
                                 {invitationState.useFlower && (
                                 <section className="flower">
                                     <div className="flower-box" onClick={onClickFlower}>

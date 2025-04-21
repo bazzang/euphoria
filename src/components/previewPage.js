@@ -39,6 +39,7 @@ function PreviewPage() {
     const [interviewList, setInterviewList] = useState([]);
     const [galList, setGalList] = useState([]);
     const [inv, setInv] = useState({});
+    const [tlList, setTlList] = useState([]);
 
     useEffect(() => {
         if(!itemId){
@@ -80,8 +81,9 @@ function PreviewPage() {
             setTrsptList(response.data.tvolist);
             setInv(response.data.ivo);
             setGalList(response.data.gvolist);
-            setInterviewList(response.data.qalist);
+            setInterviewList(response.data.itvList);
             setInfoList(response.data.infolist);
+            setTlList(response.data.tlList);
         } catch (error) {
             console.error("Error fetching order list: ", error);
         }
@@ -311,49 +313,10 @@ function PreviewPage() {
     const [groomImg, setGroomImg] = useState(); 
     const [calendarImg, setCalendarImg] = useState(); 
     const [endingImg, setEndingImg] = useState(); 
+    const [salutImg, setSalutImg] = useState(); 
     const [gallImgs, setGallImgs] = useState([]); // 상태로 설정
     
-    // function setImg() {
-
-    //     const newImages = [];
-    //     galList.forEach(img => {
-    //         const fixedFilename = encodeURIComponent((img.pic1).replace(/\\/g, '/'));
-    //         const imageUrl = `https://api.euphoriacard.co.kr/api/image?filename=${fixedFilename}`;
-    //         switch(img.type){
-    //             case "main" : 
-    //                 setMainImg(imageUrl);
-    //                 break;
-    //             case "bride" : 
-    //                 setBrideImg(imageUrl);
-    //                 break;
-    //             case "groom" : 
-    //                 setGroomImg(imageUrl);
-    //                 break;
-    //             case "calendar" : 
-    //                 setCalendarImg(imageUrl);
-    //                 break;
-    //             case "ending" : 
-    //                 setEndingImg(imageUrl);
-    //                 break;
-    //             case "gallery":
-    //                 newImages.push(imageUrl);
-    //                 break;
-    //             default:
-    //                 break;
-    //         }
-    //     });
-        
-    //     setGallImgs(newImages); // 상태 업데이트
-        
-    // }
-    // useEffect(() => {
-    //     if (gallImgs.length > 0) {
-    //         setImg();
-    //     }
-    // }, [galList]); // gallist가 업데이트되면 setImg 호출
-    // useEffect(() => {
-        //     setImg();
-        // }, [galList]);
+    
     useEffect(() => {
         const newImages = [];
         galList.forEach((img) => {
@@ -375,6 +338,9 @@ function PreviewPage() {
                     break;
                 case "ending":
                     setEndingImg(imageUrl);
+                    break;
+                case "salut":
+                    setSalutImg(imageUrl);
                     break;
                 case "gallery":
                     newImages.push(imageUrl);
@@ -592,31 +558,7 @@ function PreviewPage() {
                     <div className="frame"> 
                         
                         <section className="main" style={{height:"900px"}}> 
-                            {/* <div className="cardbg-img">
-                                <img src={typo} className="main-typo"/>
-                                <img src={page3_bg} className="marry-main-bg"/> 
-                            </div>
-                            <div className="info-card">
-                                <div className="title-name">
-                                    <p>김견우</p>
-                                    <p>그리고</p>
-                                    <p>임직녀</p>
-                                </div>
-                                <div className="name-txt">
-                                    <strong>김견우</strong><span className="cursive">and</span><strong> 임직녀</strong>
-                                    <div className="m-days">
-                                        <div className="wedding-info">
-                                            <span className="marry-year">2024년</span>
-                                            <span className="marry-month">10월</span>
-                                            <span className="marry-date">31일</span>
-                                            <span className="marry-day">목요일</span>
-                                            <span className="marry-hour">오후 1시</span>
-                                        </div>
-                                        <p className="marry-location">아가테아트 1층 팬톤홀</p>
-                                    </div>
-                                </div>
-                            </div> */}
-
+                            
                             <img className="bg" src={mainImg} alt="bg" />
                             <div className="cts">
                                 <strong
@@ -748,7 +690,14 @@ function PreviewPage() {
                                 dangerouslySetInnerHTML={{ __html: inv.salutations }}
                                 ></span>
                             </div>
-                            
+                            <img 
+                                src={inv.salutPhotoUrl || ""} 
+                                alt="인사말" 
+                                style={{
+                                    visibility: inv.salutPhotoUrl ? "visible" : "hidden",
+                                    
+                                }}
+                            />
                         </section>
                         ) : null}
                         
@@ -1000,6 +949,34 @@ function PreviewPage() {
                             </div>
                         </section>
                         ) : null}
+
+                        {/* [타임라인] useLoading 값의 true/false에 따라 이 섹션 활성화/비활성화 */}
+                        {inv.useTimeLine && (
+                        <section className="timeline">
+                            <div className='title-wrap'>
+                                <h2 className='timeline-title'>{inv.timeLineTitle}</h2>
+                            </div>
+                            
+                            {tlList &&
+                            tlList.map((list, index) => (
+                                <div className={`item ${index % 2 === 0 ? 'row' : 'row-reverse'}`} key={index}>
+                                <div className="left">
+                                    {list.imgUrl && (
+                                    <img className="bg" src={list.imgUrl} alt="tl" />
+                                    )}
+                                    <span className="year">{list.date}</span>
+                                </div>
+
+                                <div className="center-line"></div>
+
+                                <div className="right">
+                                    <strong className="title">{list.title || ""}</strong>
+                                    <span className="content">{list.content}</span>
+                                </div>
+                                </div>
+                            ))}
+                        </section>
+                        )}
 
 
                         {/* 갤러리 */}
