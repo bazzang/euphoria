@@ -447,6 +447,7 @@ function PreviewPage() {
         }));
 
     };
+    const [showAllGuestbooks, setShowAllGuestbooks] = useState(false);
     
     // 방명록 등록
     const fetchGuestbook = async () => {
@@ -1323,31 +1324,27 @@ function PreviewPage() {
 
                             {guestbookList && guestbookList.length > 0 ? (
                                 <>
-                                {guestbookList.map((item, index) => (
+                                {(showAllGuestbooks ? guestbookList : guestbookList.slice(0, 3)).map((item, index) => (
                                     <div className="guestbook-item" key={index}>
-                                    <div className="top">
+                                        <div className="top">
                                         <span className="name">{item.guestNm}</span>
-                                        <span className="date">{item.createAt}
-                                        <button onClick={closeGuestbookModal}>✕</button>
-                                        </span>
-                                        
-                                    </div>
-                                    
-                                    <p className="message">{item.content}</p>
+                                        <span className="date">{item.createAt}</span>
+                                        </div>
+                                        <p className="message">{item.content}</p>
 
-                                    {item.showDelete && (
+                                        {item.showDelete && (
                                         <div className="delete-box">
-                                        <input
+                                            <input
                                             type="password"
                                             placeholder="비밀번호를 입력하세요."
                                             value={item.password || ''}
                                             onChange={(e) => handlePasswordChange(index, e.target.value)}
-                                        />
-                                        <button className="btn-confirm" onClick={() => handleConfirmDelete(index)}>
+                                            />
+                                            <button className="btn-confirm" onClick={() => handleConfirmDelete(index)}>
                                             확인
-                                        </button>
+                                            </button>
                                         </div>
-                                    )}
+                                        )}
                                     </div>
                                 ))}
                                 </>
@@ -1359,7 +1356,10 @@ function PreviewPage() {
                             )}
 
                             <div className="guestbook-buttons">
-                                <button className="btn-outline">전체보기</button>
+                                {/* <button className="btn-outline">전체보기</button> */}
+                                <button className="btn-outline" onClick={() => setShowAllGuestbooks(!showAllGuestbooks)}>
+                                {showAllGuestbooks ? '접기' : '전체보기'}
+                                </button>
                                 <button className="btn-primary" onClick={openGuestbookModal}>
                                 작성
                                 </button>
