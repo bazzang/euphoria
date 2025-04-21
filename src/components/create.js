@@ -1985,7 +1985,12 @@ function Create() {
                                         <div className={`item ${index % 2 === 0 ? 'row' : 'row-reverse'}`} key={index}>
                                         <div className="left">
                                             {list.imgUrl && (
-                                            <img className="bg" src={list.imgUrl} alt="tl" />
+                                            // <img className="bg" src={list.imgUrl} alt="tl" />
+                                            <img
+                                            className={invitationState.timeLineType === 'timeline1_2' ? 'bg-rectangle' : 'bg'}
+                                            src={list.imgUrl}
+                                            alt="tl"
+                                            />
                                             )}
                                             <span className="year">{list.date}</span>
                                         </div>

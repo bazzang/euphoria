@@ -147,14 +147,15 @@
 }
 .frame .timeline .item .center-line{width: 1px; height: 130px; background-color: #ddd; position: relative;}
 .frame .timeline .item .center-line::before {content: ''; position: absolute; top: 50%; left: 50%; width: 8px; height: 8px; background-color: pink; border-radius: 50%; transform: translate(-50%, -50%);}
-
 .frame .timeline .item .left, .frame .timeline .item .right {display: flex; flex-direction: column; align-items: center; flex: 1;}
 .frame .timeline .item .left img.bg {width: 100px; height: 100px; border-radius: 60px; background-color: #f9f9f9; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);object-fit: cover;  object-position: center; }
+.frame .timeline .item .left img.bg-rectangle {width: 100px; height: 100px; border-radius: 5px; background-color: #f9f9f9; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);object-fit: cover;  object-position: center; }
 .frame .timeline .item .left .year {font-family: "Dancing Script", cursive; font-optical-sizing: auto; font-weight: weight; font-style: normal; margin-top: 10px;   font-size: 14px;  color: #999999; }
 .frame .timeline .item .left .title {font-family: "Nanum Myeongjo";font-size:16px;font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #333333;}
 .frame .timeline .item .left .content {font-family: "Nanum Myeongjo";font-size:16px;font-size: 14px; color: #888;}
 
 .frame .timeline .item .right img.bg {width: 100px; height: 100px; border-radius: 60px; background-color: #f9f9f9; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);object-fit: cover;  object-position: center; }
+.frame .timeline .item .right img.bg-rectangle {width: 100px; height: 100px; border-radius: 5px; background-color: #f9f9f9; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);object-fit: cover;  object-position: center; }
 .frame .timeline .item .right .year {font-family: "Dancing Script", cursive; font-optical-sizing: auto; font-weight: weight; font-style: normal; margin-top: 10px;   font-size: 14px;  color: #999999; }
 .frame .timeline .item .right .title {font-family: "Nanum Myeongjo";font-size:15px;font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #333333;}
 .frame .timeline .item .right .content {font-family: "Nanum Myeongjo";font-size:16px;font-size: 14px; color: #888;}

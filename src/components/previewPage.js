@@ -1117,7 +1117,11 @@ function PreviewPage() {
                                 <div className={`item ${index % 2 === 0 ? 'row' : 'row-reverse'}`} key={index}>
                                 <div className="left">
                                     {list.file && (
-                                    <img className="bg" src={list.file} alt="tl" />
+                                        <img
+                                        className={inv.timeLineType === 'timeline1_2' ? 'bg-rectangle' : 'bg'}
+                                        src={list.file}
+                                        alt="tl"
+                                        />
                                     )}
                                     <span className="year">{list.date}</span>
                                 </div>
