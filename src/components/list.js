@@ -133,6 +133,15 @@ function ProductionList() {
         return createdDate.toISOString().replace("T", " ").slice(0, 19);
     }
 
+    // 컨펌된 사용기간 시간 계산 
+    function formattedDateforConfirmed (date) {
+        // 결혼식 후 30일까지 사용 가능 
+        const createdDate = new Date(date);
+        createdDate.setDate(createdDate.getDate() + 30);
+        createdDate.setHours(createdDate.getHours() + 9);
+        return createdDate.toISOString().replace("T", " ").slice(0, 19);
+    }
+
     // url 복사하기 
     const copyToClipboard = (url) => {
         navigator.clipboard.writeText(url).then(() => {
@@ -239,7 +248,14 @@ function ProductionList() {
 
 
                                         </li> 
-                                        <li>사용기간 : <span className="red">{formattedDate(item.createdAt)}</span> 까지</li> 
+                                        {item.confirmedAt ? 
+                                        (
+                                            <li>사용기간 : <span className="red">{formattedDateforConfirmed(item.weddingDate)}</span> 까지</li> 
+                                        ) : 
+                                        (
+                                            <li>사용기간 : <span className="red">{formattedDate(item.createdAt)}</span> 까지</li> 
+                                        )}
+                                        
                                     </ul>
                                 </div>
                                 {/* <div className="wd-btn">
