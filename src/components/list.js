@@ -213,8 +213,8 @@ function ProductionList() {
                         
                         style={{
                             // backgroundImage: `url('data:image/jpeg;base64,${item.imageData}')`,
-                            // backgroundImage: `url('${item.pic1}')`,
-                            backgroundImage: item.pic1,
+                            backgroundImage: `url('${item.pic1}')`,
+                            // backgroundImage: item.pic1,
                             backgroundSize: "cover",        // 비율을 유지하면서 요소를 채움
                             backgroundPosition: "center",   // 이미지를 중앙 정렬
                             backgroundRepeat: "no-repeat",  // 이미지 반복 방지
@@ -223,19 +223,7 @@ function ProductionList() {
                             borderRadius: "10px",           // 모서리 둥글게
                             boxShadow: "0px 0px 25px rgba(0, 0, 0, 0.15)", // 그림자 효과
                         }}>
-                            {/* <img src={`data:image/jpeg;base64,${item.imageData}`} alt="" /> */}
-                            {/* <div
-                            style={{
-                                backgroundImage: `url('data:image/jpeg;base64,${item.imageData}')`,
-                                backgroundSize: "cover",        // 비율을 유지하면서 요소를 채움
-                                backgroundPosition: "center",   // 이미지를 중앙 정렬
-                                backgroundRepeat: "no-repeat",  // 이미지 반복 방지
-                                width: "100px",                 // 너비 설정
-                                height: "300px",                // 높이 설정
-                                borderRadius: "10px",           // 모서리 둥글게
-                                boxShadow: "0px 0px 25px rgba(0, 0, 0, 0.15)", // 그림자 효과
-                            }}
-                            ></div> */}
+                           
                         </div>
                         <div className="wd-contents">
                             <div className="wd-info">
