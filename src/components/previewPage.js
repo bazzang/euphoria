@@ -69,13 +69,9 @@ function PreviewPage() {
     
     const fetchInvData = async() => {
         try {
-            const response = await axios.post("https://api.euphoriacard.co.kr/api/invitation/detail", itemId,
-              {
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              }
-            );
+            const response = await axios.post("https://api.euphoriacard.co.kr/api/invitation/detail", { itemId }, {
+                headers: { "Content-Type": "application/json" }
+              });
         
             console.log("Response Data: ", response.data);
 
@@ -88,6 +84,7 @@ function PreviewPage() {
             setGuestbookList(response.data.guestbookList);
         } catch (error) {
             console.error("Error fetching order list: ", error);
+            alert("초대장 정보를 불러오지 못했습니다. 다시 시도해주세요.");
         }
     }
 
@@ -102,8 +99,7 @@ function PreviewPage() {
         
     }, [inv]);
     
-
-
+  
     // -------------------------------------------------------------------------------------------------
     // *********************************[지도] 지도 api  ************************************************
     // -------------------------------------------------------------------------------------------------
@@ -503,6 +499,14 @@ function PreviewPage() {
           window.open(`https://euphoria-psi.vercel.app/preview?itemId=${itemId}` , '_blank');
         }
     };
+    // ✅ 여기서 조건부로 화면 자체를 조기 종료 (오류 UI 렌더링)
+    if (!inv || !inv.weddingDate) {
+        return (
+            <div style={{ padding: '30px', textAlign: 'center' }}>
+            초대장 데이터를 불러오는 중 문제가 발생했습니다.
+            </div>
+        );
+    }
     
   return (
     <>
