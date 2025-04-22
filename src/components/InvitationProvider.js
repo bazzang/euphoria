@@ -238,7 +238,14 @@ export const InvitationProvider = ({ children }) => {
     typingClr : "", // 타이핑형 배경 컬러
     typingTxt : "", // 타이핑형 문구
 
-    
+    // 카카오톡 공유 버튼 
+    useKakaoShare : false, // use_kakaoshare
+    kakaoThumbUrl : "",
+    kakaoThumbFile : "",
+    kakaoTitle : "",  // kakao_title
+    kakaoContent : "",  // kakao_content
+    isLocationButtonEnabled : false, // is_location_btn_enabled
+
 
     
 
