@@ -493,7 +493,15 @@ function PreviewPage() {
     // -------------------------------------------------------------------------------------------------
     const isKakaoInApp = navigator.userAgent.toLowerCase().includes('kakaotalk');
     const handleOpenInChrome = () => {
-        window.location.href = 'intent://euphoria-psi.vercel.app/#Intent;scheme=https;package=com.android.chrome;end';
+        const isAndroid = /android/i.test(navigator.userAgent);
+      
+        if (isAndroid) {
+          window.location.href =
+            'intent://euphoria-psi.vercel.app/#Intent;scheme=https;package=com.android.chrome;end';
+        } else {
+          // iOS fallback → 그냥 새 탭으로 열기
+          window.open(`https://euphoria-psi.vercel.app/preview?itemId=${itemId}` , '_blank');
+        }
     };
     
   return (
