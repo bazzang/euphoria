@@ -2118,41 +2118,43 @@ function Create() {
                                                 style={{ width: "100%", height: `${invitationState.mapHeight}`}}
                                             ></div> */}
                                             <MapComponent mapId="map2" address={invitationState.weddingHallAddress} mapHeight={invitationState.mapHeight} />
-
-                                            <div className="map-btns">
-                                            {/* 티맵 */}
-                                            <a 
-                                                 href={`tmap://search?name=${encodeURIComponent(invitationState.weddingHallAddress)}`}
-                                                 target="_blank"
-                                                 rel="noopener noreferrer"
-                                                className="map-btn"
-                                            >
-                                                <img src={map_t} alt=""/>
-                                                티맵
-                                            </a>
+                                            {invitationState.navigationRemove && (
+                                                <div className="map-btns">
+                                                    {/* 티맵 */}
+                                                    <a 
+                                                        href={`tmap://search?name=${encodeURIComponent(invitationState.weddingHallAddress)}`}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="map-btn"
+                                                    >
+                                                        <img src={map_t} alt=""/>
+                                                        티맵
+                                                    </a>
+                                                    
+                                                    {/* 카카오 내비 */}
+                                                    <a 
+                                                        href={`kakaonavi://search?q=${encodeURIComponent(invitationState.weddingHallAddress)}`}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="map-btn"
+                                                    >
+                                                        <img src={map_kakao} alt=""/>
+                                                        카카오 내비
+                                                    </a>
+                                                    
+                                                    {/* 네이버 지도 */}
+                                                    <a 
+                                                        href={`nmap://search?query=${encodeURIComponent(invitationState.weddingHallAddress)}`}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="map-btn"
+                                                    >
+                                                        <img src={map_naver} alt=""/>
+                                                        네이버 지도
+                                                    </a>
+                                                </div>
+                                            )}
                                             
-                                            {/* 카카오 내비 */}
-                                            <a 
-                                                href={`kakaonavi://search?q=${encodeURIComponent(invitationState.weddingHallAddress)}`}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="map-btn"
-                                            >
-                                                <img src={map_kakao} alt=""/>
-                                                카카오 내비
-                                            </a>
-                                            
-                                            {/* 네이버 지도 */}
-                                            <a 
-                                                href={`nmap://search?query=${encodeURIComponent(invitationState.weddingHallAddress)}`}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="map-btn"
-                                            >
-                                                <img src={map_naver} alt=""/>
-                                                네이버 지도
-                                            </a>
-                                        </div>
                                         </div>
                                         {/* <div className="map-btns">
                                             <a href="#" className="map-btn"><img src={map_t} alt=""/>티맵</a>
@@ -4036,7 +4038,8 @@ function Create() {
                                         <div className="option-contents">
                                             <div className="check-wrap">
                                                 <span className="check">
-                                                    <input type="checkbox" id="navigation"/>
+                                                    <input type="checkbox" id="navigation"
+                                                    onChange={(e) => handleChange("navigationRemove", e.target.checked)}/>
                                                     <label for="navigation"><i></i>네비게이션 삭제</label>
                                                 </span>
                                             </div>
