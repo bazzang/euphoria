@@ -824,13 +824,23 @@ function PreviewPage() {
         )}
 
         <div className="frame" style={{width: "100%", maxWidth: "428px", margin: "0 auto",  boxShadow:" 0 0 10px rgba(0, 0, 0, 0.1)", backgroundColor: "white" }}>
-        <button onClick={shareKakao}>카카오톡 공유</button>
+        {/* <button onClick={shareKakao}>카카오톡 공유</button> */}
+            
             {/* 메인 */}
             {/* <div className="create-preview">
                 <div className="noframe-wrap">
                     <div className="frame"> */}
                     <div className="frame"> 
-                        
+                        <div className='kakao-wrap'>
+                            <div className='kakao-box'>
+                                <a id="kakaotalk-sharing-btn" href="javascript:;" onClick={shareKakao} className='kakaotalk-sharing-btn' >
+                                    <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
+                                    alt="카카오톡 공유 보내기 버튼"
+                                    style={{width:"45px"}} />
+                                </a>
+                            </div>
+                        </div>
+                    
                         <section className="main" style={{height:"900px"}}> 
                             
                             <img className="bg" src={mainImg} alt="bg" />
@@ -1632,7 +1642,7 @@ function PreviewPage() {
                             </p>
                         </section>
                         ) : null}
-
+                        
                     </div>    
             {/* </div>         
             </div> */}
