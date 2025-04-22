@@ -2122,9 +2122,9 @@ function Create() {
                                             <div className="map-btns">
                                             {/* 티맵 */}
                                             <a 
-                                                href={`https://apis.openapi.sk.com/tmap/app/routes?appKey=TpWtOTtdJv3PGa01rxTRS1PfjuWBzvRo8vZwImL2&name=${encodeURIComponent(invitationState.weddingHallName)}&lon=${invitationState.longitude}&lat=${invitationState.latitude}`} 
-                                                target="_blank" 
-                                                rel="noopener noreferrer"
+                                                 href={`tmap://search?name=${encodeURIComponent(invitationState.weddingHallAddress)}`}
+                                                 target="_blank"
+                                                 rel="noopener noreferrer"
                                                 className="map-btn"
                                             >
                                                 <img src={map_t} alt=""/>
@@ -2133,8 +2133,8 @@ function Create() {
                                             
                                             {/* 카카오 내비 */}
                                             <a 
-                                                href={`kakaomap://route?sp=37.5665,126.9780&ep=${invitationState.latitude},${invitationState.longitude}&by=CAR`} 
-                                                target="_blank" 
+                                                href={`kakaonavi://search?q=${encodeURIComponent(invitationState.weddingHallAddress)}`}
+                                                target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="map-btn"
                                             >
@@ -2144,8 +2144,8 @@ function Create() {
                                             
                                             {/* 네이버 지도 */}
                                             <a 
-                                                href={`nmap://route/car?dlat=${invitationState.latitude}&dlng=${invitationState.longitude}&dname=${encodeURIComponent(invitationState.weddingHallName)}&appname=com.example.myapp`} 
-                                                target="_blank" 
+                                                href={`nmap://search?query=${encodeURIComponent(invitationState.weddingHallAddress)}`}
+                                                target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="map-btn"
                                             >
@@ -4031,7 +4031,7 @@ function Create() {
                                             <p className="notice">지도 레벨은 1부터 14레벨이 있으며 숫자가 작을수록 지도 확대 수준이 높습니다.</p>
                                         </div>
                                     </div> */}
-                                    {/* <div className="option">
+                                    <div className="option">
                                         <div className="option-label">네비게이션</div>
                                         <div className="option-contents">
                                             <div className="check-wrap">
@@ -4052,7 +4052,7 @@ function Create() {
                                                 </span>
                                             </div>
                                         </div>
-                                    </div> */}
+                                    </div>
                                 </div>
                             )}
                             </div> 

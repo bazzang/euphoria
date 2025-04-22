@@ -1251,11 +1251,34 @@ function PreviewPage() {
                                     </div>
                                 </div>
                                 ) : null}
-                                {/* <div className="map-btns">
-                                    <a href="#" className="map-btn"><img src={map_t} alt=""/>티맵</a>
-                                    <a href="#" className="map-btn"><img src={map_kakao} alt=""/>카카오 내비</a>
-                                    <a href="#" className="map-btn"><img src={map_naver} alt=""/>네이버 지도</a>
-                                </div> */}
+                                {!inv.navigationRemove ? (
+                                <div className="map-btns">
+                                    <a 
+                                        href={`tmap://search?name=${encodeURIComponent(inv.weddingHallAddress)}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="map-btn"
+                                    >
+                                        <img src={map_t} alt=""/>티맵
+                                    </a>
+                                    <a 
+                                        href={`kakaonavi://search?q=${encodeURIComponent(inv.weddingHallAddress)}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="map-btn"
+                                    >
+                                        <img src={map_kakao} alt=""/>카카오 내비
+                                    </a>
+                                    <a 
+                                        href={`nmap://search?query=${encodeURIComponent(inv.weddingHallAddress)}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="map-btn"
+                                    >
+                                        <img src={map_naver} alt=""/>네이버 지도
+                                    </a>
+                                </div>
+                                ) : null}
                             </div>
                         </section>
                         ) : null}
