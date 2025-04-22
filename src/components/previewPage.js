@@ -488,6 +488,10 @@ function PreviewPage() {
 
     }
 
+    // -------------------------------------------------------------------------------------------------
+    // *********************************[카톡인앱] 카톡인앱 > 외부브라우저 ***********************************************
+    // -------------------------------------------------------------------------------------------------
+    const isKakaoInApp = navigator.userAgent.toLowerCase().includes('kakaotalk');
 
     
   return (
@@ -505,7 +509,17 @@ function PreviewPage() {
             <meta property="og:url" content={window.location.href} />
             <meta name="twitter:card" content="summary_large_image" />
         </Helmet> */}
-
+        {isKakaoInApp && (
+        <div className="inapp-notice">
+            ⚠️ 카카오톡에서는 일부 기능이 정상 작동하지 않을 수 있어요.<br />
+            👉 <a
+                href="intent://euphoria-psi.vercel.app/#Intent;scheme=https;package=com.android.chrome;end"
+                style={{ color: '#d58c98', textDecoration: 'underline', fontWeight: 'bold' }}
+            >
+                브라우저에서 열기
+            </a>
+        </div>
+        )}
         {inv.confirmedAt === null  && (
             <div className="watermark">
                 <p>구매 후 워터마크를 제거해주세요.
