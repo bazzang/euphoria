@@ -29,6 +29,8 @@ import PhraseModal, {openPhraseModal} from './PhraseModal.js';
 import SalModal, {openSalModal} from './SalModal.js';
 import SmsIcon from './SmsIcon.js';
 import { uploadImageToS3, uploadImagesToS3 } from '../api/S3Uploader.js';
+import GallerySlider from './gallerySlider.js';
+import CircleGallery from './CircleGallery.js';
 
 
 // import HandwritingTitle from './HandwritingTitle.js'; 
@@ -1417,6 +1419,21 @@ function Create() {
         setIsGuestbookOpen(false);
     };
 
+    // -------------------------------------------------------------------------------------------------
+
+    // *********************************[갤러리] 타입별 클릭 이벤트 ***********************************************
+
+    // -------------------------------------------------------------------------------------------------
+    const [selectedIndex, setSelectedIndex] = useState(null);
+
+    const handleCircleImageClick = (index) => {
+        setSelectedIndex(index); // 슬라이더 열기
+    };
+
+    const closeSlider = () => {
+        setSelectedIndex(null);
+    };
+
 
     
   return (
@@ -1578,6 +1595,27 @@ function Create() {
                                         </div>
                                     </div>
                                 </div>
+                            
+                            )}
+
+                            {selectedIndex && (
+                                    <div className={`modal-overlay ${selectedIndex ? 'active' : ''}`}>
+                                        <div className="gallery-modal" style={{width:"100%", height:"100%"}}>
+                                        <div className="gallery-header">
+                                            <button className="close-btn" onClick={closeSlider}>✕</button>
+                                        </div>
+                                        <div className="gallery-body">
+
+                                            <GallerySlider 
+                                                images={previewGallery} 
+                                                showProgressBar={invitationState.galleryProgressBarVisible}
+                                                className=""
+                                            />    
+                                        </div>
+                                        
+
+                                        </div>
+                                    </div>
                             
                             )}
 
@@ -2010,27 +2048,40 @@ function Create() {
                                 {invitationState.useGallery && (
                                 <section className="gallery">
                                     <strong className="title">
-                                    {/* <strong className="title" data-aos="fade-up" data-aos-duration="100"> */}
-                                        {invitationState.galleryTitle || "갤러리"}</strong>
+                                        {invitationState.galleryTitle || "갤러리"}
+                                    </strong>
+                                    {/* 그리드 */}
+                                    {invitationState.galleryType === "grid" && (
                                         <div className="gallery-list">
-                                    {/* <div className="gallery-list" data-aos="fade-up" data-aos-duration="100"> */}
-
-                                    {/* 이걸로 안보여서 아래 소스 사용  */}
-                                        {/* {invitationState.galleryImages &&
-                                            invitationState.galleryImages.map((image, index) => (
-                                                <div className="gallery-item" key={index}>
-                                                    <img src={image} alt={`gallery-${index}`} />
-                                                </div>
-                                        ))} */}
-
                                         {previewGallery &&
                                             previewGallery.map((image, index) => (
-                                                <div className="gallery-item" key={index}>
+                                                <div className="gallery-item" key={index} onClick={handleCircleImageClick}>
                                                     <img src={image.previewUrl} alt={`gallery-${index}`} />
                                                 </div>
-                                        ))}
+                                            ))
+                                        }
+                                        </div>
+                                    )}    
+                                    {/* 서클 */}
+                                    {invitationState.galleryType === "circle" && (
+                                        <CircleGallery 
+                                            images={previewGallery} 
+                                            showProgressBar={invitationState.galleryProgressBarVisible}
+                                            onImageClick={handleCircleImageClick}
+                                        />    
+                                    )}
                                         
-                                    </div>
+                                    {/* 슬라이드 */}
+                                    {invitationState.galleryType === "slide" && (
+                                        <GallerySlider images={previewGallery} showProgressBar={invitationState.galleryProgressBarVisible}/>    
+                                    )}
+
+
+                                    {/* 그리드형 서클형 슬라이더 */}
+                                    {selectedIndex !== null && (
+                                        <GallerySlider images={previewGallery} showProgressBar={invitationState.galleryProgressBarVisible}/>    
+                                    )}
+                                    
                                 </section>
                                 )}
 
@@ -3705,25 +3756,38 @@ function Create() {
                                             />
                                         </div>
                                     </div>
-                                    {/* <div className="option">
+                                    <div className="option">
                                         <div className="option-label">타입</div>
                                         <div className="option-contents">
                                             <div className="radio-wrap">
                                                 <span className="radio">
-                                                    <input type="radio" name="gallery" id="gallery_1" checked/>
-                                                    <label for="gallery_1"><i></i>그리드</label>
+                                                    <input type="radio" name="gallery" id="gal_grid"
+                                                    value="grid"
+                                                    checked={invitationState.galleryType === "grid"} 
+                                                    onChange={(e) => handleChange('galleryType', e.target.value)}
+                                                    />
+                                                    <label for="gal_grid"><i></i>그리드</label>
                                                 </span>
                                                 <span className="radio">
-                                                    <input type="radio" name="gallery" id="gallery_2"/>
-                                                    <label for="gallery_2"><i></i>써클</label>
+                                                    <input type="radio" name="gallery" id="gal_circle"
+                                                    value="circle"
+                                                    checked={invitationState.galleryType === "circle"} 
+                                                    onChange={(e) => handleChange('galleryType', e.target.value)}
+                                                    />
+                                                    <label for="gal_circle"><i></i>써클</label>
                                                 </span>
                                                 <span className="radio">
-                                                    <input type="radio" name="gallery" id="gallery_2"/>
-                                                    <label for="gallery_2"><i></i>슬라이드</label>
+                                                    <input type="radio" name="gallery" id="gal_slide"
+                                                    value="slide"
+                                                    checked={invitationState.galleryType === "slide"} 
+                                                    onChange={(e) => handleChange('galleryType', e.target.value)}
+                                                    />
+                                                    <label for="gal_slide"><i></i>슬라이드</label>
                                                 </span> 
+                                                
                                             </div>
                                         </div>
-                                    </div> */}
+                                    </div>
                                     <div className="option">
                                         <div className="option-label">사진</div>
                                         <div className="option-contents">
@@ -3791,23 +3855,30 @@ function Create() {
                                             </div>
                                         </div>
                                     </div>
-                                    {/* 목요일 이후 구현 (퍼블리싱 없음) */}
-                                    {/* <div className="option">
+                                    <div className="option">
                                         <div className="option-label">하단 진행바</div>
                                         <div className="option-contents">
                                             <div className="radio-wrap">
                                                 <span className="radio">
-                                                    <input type="radio" name="gallery_bar" id="gallery_bar_1"/>
+                                                    <input type="radio" name="gallery_bar" id="gallery_bar_1" 
+                                                    value="true"
+                                                    checked={invitationState.galleryProgressBarVisible === "true"} 
+                                                    onChange={(e) => handleChange('galleryProgressBarVisible', e.target.value)}
+                                                    />
                                                     <label for="gallery_bar_1"><i></i>표시</label>
                                                 </span>
                                                 <span className="radio">
-                                                    <input type="radio" name="gallery_bar" id="gallery_bar_2" checked/>
+                                                    <input type="radio" name="gallery_bar" id="gallery_bar_2" 
+                                                    value="false"
+                                                    checked={invitationState.galleryProgressBarVisible === "false"} 
+                                                    onChange={(e) => handleChange('galleryProgressBarVisible', e.target.value)}
+                                                    />
                                                     <label for="gallery_bar_2"><i></i>미표시</label>
                                                 </span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="option">
+                                    {/* <div className="option">
                                         <div className="option-label">썸네일</div>
                                         <div className="option-contents">
                                             <button className="btn-positioning">위치 조정</button>

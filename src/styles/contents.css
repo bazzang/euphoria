@@ -585,6 +585,30 @@ input[type="range"]::-moz-range-thumb {height:18px; width:50px; background-color
     font-family: 'Pretendard', sans-serif;
     animation: fadeInUp 0.3s ease;
   }
+
+
+  /* 갤러리 모달 본체 */
+  .gallery-modal {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* 세로 가운데 정렬 */
+    align-items: center;
+    background-color: white;
+    box-sizing: border-box;
+    padding-top: 50px; /* 닫기 버튼 공간 */
+    padding-bottom: 60px; /* 페이징 공간 */
+  }
+  .gallery-modal .gallery-header {position: absolute; top: 20px; right: 20px; z-index: 10;}
+  .gallery-modal .gallery-header .close-btn {background: none; border: none; font-size: 24px; cursor: pointer;}
+  .gallery-modal .swiper { width: 100%; max-width: 420px; height: auto !important; display: flex; align-items: center; justify-content: center;}
+  .gallery-modal .gallery-img { width: 100%; height: auto; object-fit: contain; border-radius: 8px; }
+  .gallery-modal .progress-bar-wrap {position: absolute; bottom: 32px; left: 0; width: 100%; height: 4px; background-color: #f1f1f1;}
+  .gallery-modal .progress-bar {height: 100%; background-color: #f2b6c5; transition: width 0.3s ease; }
+  .gallery-modal .gallery-pagination { position: absolute; bottom: 0px; width: 100%; text-align: center; color: #999; font-size: 14px; }
+ 
   
   @keyframes fadeInUp {
     from {

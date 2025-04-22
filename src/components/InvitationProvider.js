@@ -98,7 +98,7 @@ export const InvitationProvider = ({ children }) => {
     galleryTitle: "갤러리", // 갤러리 제목
     galleryType: "grid", // 갤러리 타입 (grid, slider 등)
     galleryImages: [], // 갤러리 이미지 목록
-    galleryProgressBarVisible: false, // 하단 진행바 표시 여부
+    galleryProgressBarVisible: "true", // 하단 진행바 표시 여부
     galleryThumbnailsVisible: false, // 썸네일 표시 여부
 
     // 지도 설정 변수

@@ -18,6 +18,8 @@ import CallIcon from './CallIcon.js'
 import BasicModal, { openBasicModal } from "./BasicModal.js";
 import MapComponent from './map.js';
 import SmsIcon from './SmsIcon.js';
+import GallerySlider from './gallerySlider.js';
+import CircleGallery from './CircleGallery.js';
 // import { Helmet } from 'react-helmet-async';
 // import SEO from './Seo.js';
 
@@ -485,6 +487,19 @@ function PreviewPage() {
     }
 
     // -------------------------------------------------------------------------------------------------
+    // *********************************[갤러리] 타입별 클릭 이벤트 ***********************************************
+    // -------------------------------------------------------------------------------------------------
+    const [selectedIndex, setSelectedIndex] = useState(null);
+
+    const handleCircleImageClick = (index) => {
+        setSelectedIndex(index); // 슬라이더 열기
+    };
+
+    const closeSlider = () => {
+        setSelectedIndex(null);
+    };
+    
+    // -------------------------------------------------------------------------------------------------
     // *********************************[카톡인앱] 카톡인앱 > 외부브라우저 ***********************************************
     // -------------------------------------------------------------------------------------------------
     const isKakaoInApp = navigator.userAgent.toLowerCase().includes('kakaotalk');
@@ -737,6 +752,27 @@ function PreviewPage() {
             </div>
             </div>
         </div>
+        )}
+
+        {selectedIndex && (
+            <div className={`modal-overlay ${selectedIndex ? 'active' : ''}`}>
+                <div className="gallery-modal" style={{width:"100%", height:"100%"}}>
+                <div className="gallery-header">
+                    <button className="close-btn" onClick={closeSlider}>✕</button>
+                </div>
+                <div className="gallery-body">
+
+                    <GallerySlider 
+                        images={gallImgs} 
+                        showProgressBar={inv.galleryProgressBarVisible}
+                        className=""
+                    />    
+                </div>
+                
+
+                </div>
+            </div>
+        
         )}
 
         <div className="frame" style={{width: "100%", maxWidth: "428px", margin: "0 auto",  boxShadow:" 0 0 10px rgba(0, 0, 0, 0.1)", backgroundColor: "white" }}>
@@ -1175,22 +1211,60 @@ function PreviewPage() {
 
                         {/* 갤러리 */}
                         {inv.useGallery ? (
+                        // <section className="gallery">
+                        //     {/* <strong className="title" data-aos="fade-up" data-aos-duration="600"> */}
+                        //     <strong className="title">
+                        //         {inv.galleryTitle || "갤러리"}
+                        //     </strong>
+                        //     {/* <div className="gallery-list" data-aos="fade-up" data-aos-duration="600"> */}
+                        //     <div className="gallery-list">
+                        //         {gallImgs &&
+                        //             gallImgs.map((image, index) => (
+                        //                 <div className="gallery-item" key={index} onClick={() => handleImageClick(image)}>
+                        //                     <img src={image} alt={`gallery-${index}`} />
+                        //                 </div>
+                        //         ))}
+                                
+                        //     </div>
+                        // </section>
                         <section className="gallery">
-                            {/* <strong className="title" data-aos="fade-up" data-aos-duration="600"> */}
                             <strong className="title">
                                 {inv.galleryTitle || "갤러리"}
                             </strong>
-                            {/* <div className="gallery-list" data-aos="fade-up" data-aos-duration="600"> */}
-                            <div className="gallery-list">
+                            {/* 그리드 */}
+                            {inv.galleryType === "grid" && (
+                                <div className="gallery-list">
                                 {gallImgs &&
                                     gallImgs.map((image, index) => (
-                                        <div className="gallery-item" key={index} onClick={() => handleImageClick(image)}>
-                                            <img src={image} alt={`gallery-${index}`} />
+                                        <div className="gallery-item" key={index} onClick={handleCircleImageClick}>
+                                            <img src={image.previewUrl} alt={`gallery-${index}`} />
                                         </div>
-                                ))}
+                                    ))
+                                }
+                                </div>
+                            )}    
+                            {/* 서클 */}
+                            {inv.galleryType === "circle" && (
+                                <CircleGallery 
+                                    images={gallImgs} 
+                                    showProgressBar={inv.galleryProgressBarVisible}
+                                    onImageClick={handleCircleImageClick}
+                                />    
+                            )}
                                 
-                            </div>
+                            {/* 슬라이드 */}
+                            {inv.galleryType === "slide" && (
+                                <GallerySlider images={gallImgs} showProgressBar={inv.galleryProgressBarVisible}/>    
+                            )}
+
+
+                            {/* 그리드형 서클형 슬라이더 */}
+                            {selectedIndex !== null && (
+                                <GallerySlider images={gallImgs} showProgressBar={inv.galleryProgressBarVisible}/>    
+                            )}
+                            
                         </section>
+
                         ) : null}
                         
                         {/* 웨딩 인터뷰 useInterview 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}

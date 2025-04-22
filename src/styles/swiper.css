@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Borel&family=Charmonman:wght@400;700&family=Dancing+Script:wght@400..700&family=Handlee&family=Knewave&family=Limelight&family=Lobster&family=Pacifico&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Yellowtail&family=Yesteryear&display=swap');
+
+.gallery-wrap {
+    text-align: center;
+  }
+  
+  .gallery-title {
+    font-family: 'Nanum Myeongjo';
+    font-size: 18px;
+    color: #d58c98;
+    margin-bottom: 20px;
+  }
+  
+  /* .gallery-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+   */
+  .progress-bar-wrap {
+    height: 4px;
+    background-color: #f0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 12px;
+  }
+  
+  .progress-bar {
+    height: 100%;
+    background-color: #dfa1b2; /* 분홍색 */
+    transition: width 0.3s ease;
+  }
+
+  .gallery-pagination {
+    font-family: "Charmonman", cursive;
+    font-weight: 400;
+    font-style: normal;
+    text-align: center;
+    font-size: 14px;
+    color: #999;
+    margin-top: 8px;
+  }
+
+  /* 화살표 크기 줄이기 */
+.swiper-button-next,
+.swiper-button-prev {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  color: white;
+  font-size: 12px;
+}
+
+/* 내부 아이콘(▶/◀) 줄이기 */
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 14px;  /* 기본은 20~24px이라 조금 줄여줘 */
+}
+
+/* 모바일에서 약간 위로 올리기 (선택사항) */
+@media (max-width: 768px) {
+  .swiper-button-next,
+  .swiper-button-prev {
+    top: 45%;
+  }
+}
+
+
+/* gallerySlider.css */
+.swiper {
+  height: auto !important;  /* Swiper 컨테이너 높이 자동 */
+}
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+}
+.gallery-img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;  /* 비율 유지하며 맞춤 */
+  border-radius: 10px;
+}
