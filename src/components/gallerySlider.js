@@ -6,7 +6,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import '../styles/swiper.css'; // ← 너가 만든 스타일이 있다면 유지
 
-const GallerySlider = ({ images, showProgressBar }) => {
+const GallerySlider = ({ images, showProgressBar, isPrv }) => {
     const [activeIndex, setActiveIndex] = useState(0);
     const swiperRef = useRef(null);
     useEffect(() => {
@@ -28,7 +28,7 @@ const GallerySlider = ({ images, showProgressBar }) => {
             >
             {images.map((img, idx) => (
                 <SwiperSlide key={idx}>
-                <img src={img.previewUrl} alt={`slide-${idx}`} className="gallery-img" />
+                <img src={isPrv === "prv" ? img : img.previewUrl} alt={`slide-${idx}`} className="gallery-img" />
                 </SwiperSlide>
             ))}
             </Swiper>

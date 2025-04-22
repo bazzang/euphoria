@@ -8,7 +8,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import '../styles/swiper.css'; // ← 너가 만든 스타일이 있다면 유지
 
-const CircleGallery = ({ images, onImageClick }) => {
+const CircleGallery = ({ images, onImageClick, isPrv }) => {
   const [selectedIndex, setSelectedIndex] = useState(null);
 
   const openSlider = (index) => {
@@ -28,7 +28,7 @@ const CircleGallery = ({ images, onImageClick }) => {
             key={index}
             onClick={() => onImageClick(index)}
           >
-            <img src={img.previewUrl} alt={`circle-${index}`} />
+            <img src={isPrv === "prv" ? img : img.previewUrl} alt={`circle-${index}`} />
             {/* <span className="number">{index + 1}</span> */}
           </div>
         ))}

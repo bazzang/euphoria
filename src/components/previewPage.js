@@ -351,6 +351,7 @@ function PreviewPage() {
         });
         
         setGallImgs(newImages); // 상태 업데이트
+        console.log("gallimgs", gallImgs)
     }, [galList]); // gallImgs가 아닌 galList에 의존
 
 
@@ -502,6 +503,48 @@ function PreviewPage() {
     // -------------------------------------------------------------------------------------------------
     // *********************************[카톡인앱] 카톡인앱 > 외부브라우저 ***********************************************
     // -------------------------------------------------------------------------------------------------
+    useEffect(() => {
+        const script = document.createElement("script");
+        script.src = "https://developers.kakao.com/sdk/js/kakao.min.js";
+        script.async = true;
+        script.onload = () => {
+          // 안전하게 확인 후 초기화
+          if (window.Kakao && !window.Kakao.isInitialized()) {
+            window.Kakao.init("5e85b98fd4f0ad015d88a1aaee9ef20d");
+          }
+        };
+        document.head.appendChild(script);
+      }, []);
+
+      const shareKakao = () => {
+        if (window.Kakao && window.Kakao.isInitialized()) {
+            window.Kakao.Link.sendDefault({
+              objectType: 'feed',
+              content: {
+                title: '우리 결혼해요 💍',
+                description: '청첩장을 확인해보세요!',
+                imageUrl: 'https://euphoria-1.s3.ap-northeast-2.amazonaws.com/gallery/대표이미지.jpg', // 대표 이미지
+                link: {
+                  mobileWebUrl: 'https://euphoria-psi.vercel.app/preview?itemId=27',
+                  webUrl: 'https://euphoria-psi.vercel.app/preview?itemId=27'
+                }
+              },
+              buttons: [
+                {
+                  title: '청첩장 보기',
+                  link: {
+                    mobileWebUrl: 'https://euphoria-psi.vercel.app/preview?itemId=27',
+                    webUrl: 'https://euphoria-psi.vercel.app/preview?itemId=27'
+                  }
+                }
+              ]
+            });
+          }
+      };
+
+    // -------------------------------------------------------------------------------------------------
+    // *********************************[카톡인앱] 카톡인앱 > 외부브라우저 ***********************************************
+    // -------------------------------------------------------------------------------------------------
     const isKakaoInApp = navigator.userAgent.toLowerCase().includes('kakaotalk');
     const handleOpenInChrome = () => {
         const isAndroid = /android/i.test(navigator.userAgent);
@@ -522,7 +565,11 @@ function PreviewPage() {
             </div>
         );
     }
+
+
     
+
+   
   return (
     <>
           {/* <SEO title={inv.groomLastName + "와 " + inv.brideLastName} description={inv.mainTxt} image={mainImg} /> */}
@@ -756,7 +803,7 @@ function PreviewPage() {
 
         {selectedIndex && (
             <div className={`modal-overlay ${selectedIndex ? 'active' : ''}`}>
-                <div className="gallery-modal" style={{width:"100%", height:"100%"}}>
+                <div className="gallery-modal" style={{width:"100%", height:"100%", maxWidth: "428px"}}>
                 <div className="gallery-header">
                     <button className="close-btn" onClick={closeSlider}>✕</button>
                 </div>
@@ -766,6 +813,7 @@ function PreviewPage() {
                         images={gallImgs} 
                         showProgressBar={inv.galleryProgressBarVisible}
                         className=""
+                        isPrv={"prv"}
                     />    
                 </div>
                 
@@ -776,7 +824,7 @@ function PreviewPage() {
         )}
 
         <div className="frame" style={{width: "100%", maxWidth: "428px", margin: "0 auto",  boxShadow:" 0 0 10px rgba(0, 0, 0, 0.1)", backgroundColor: "white" }}>
-            
+        <button onClick={shareKakao}>카카오톡 공유</button>
             {/* 메인 */}
             {/* <div className="create-preview">
                 <div className="noframe-wrap">
@@ -1237,7 +1285,7 @@ function PreviewPage() {
                                 {gallImgs &&
                                     gallImgs.map((image, index) => (
                                         <div className="gallery-item" key={index} onClick={handleCircleImageClick}>
-                                            <img src={image.previewUrl} alt={`gallery-${index}`} />
+                                            <img src={image} alt={`gallery-${index}`} />
                                         </div>
                                     ))
                                 }
@@ -1249,18 +1297,19 @@ function PreviewPage() {
                                     images={gallImgs} 
                                     showProgressBar={inv.galleryProgressBarVisible}
                                     onImageClick={handleCircleImageClick}
+                                    isPrv= {"prv"}
                                 />    
                             )}
                                 
                             {/* 슬라이드 */}
                             {inv.galleryType === "slide" && (
-                                <GallerySlider images={gallImgs} showProgressBar={inv.galleryProgressBarVisible}/>    
+                                <GallerySlider images={gallImgs} showProgressBar={inv.galleryProgressBarVisible} isPrv= {"prv"}/>    
                             )}
 
 
                             {/* 그리드형 서클형 슬라이더 */}
                             {selectedIndex !== null && (
-                                <GallerySlider images={gallImgs} showProgressBar={inv.galleryProgressBarVisible}/>    
+                                <GallerySlider images={gallImgs} showProgressBar={inv.galleryProgressBarVisible} isPrv= {"prv"}/>    
                             )}
                             
                         </section>
