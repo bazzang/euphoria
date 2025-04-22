@@ -492,7 +492,9 @@ function PreviewPage() {
     // *********************************[카톡인앱] 카톡인앱 > 외부브라우저 ***********************************************
     // -------------------------------------------------------------------------------------------------
     const isKakaoInApp = navigator.userAgent.toLowerCase().includes('kakaotalk');
-
+    const handleOpenInChrome = () => {
+        window.location.href = 'intent://euphoria-psi.vercel.app/#Intent;scheme=https;package=com.android.chrome;end';
+    };
     
   return (
     <>
@@ -512,12 +514,19 @@ function PreviewPage() {
         {isKakaoInApp && (
         <div className="inapp-notice">
             ⚠️ 카카오톡에서는 일부 기능이 정상 작동하지 않을 수 있어요.<br />
-            👉 <a
-                href="intent://euphoria-psi.vercel.app/#Intent;scheme=https;package=com.android.chrome;end"
-                style={{ color: '#d58c98', textDecoration: 'underline', fontWeight: 'bold' }}
-            >
-                브라우저에서 열기
-            </a>
+            👉<button
+                onClick={handleOpenInChrome}
+                style={{
+                    color: '#fff',
+                    backgroundColor: '#d58c98',
+                    border: 'none',
+                    borderRadius: '6px',
+                    padding: '10px 16px',
+                    fontWeight: 'bold',
+                }}
+                >
+                    브라우저에서 열기
+                </button>
         </div>
         )}
         {inv.confirmedAt === null  && (
