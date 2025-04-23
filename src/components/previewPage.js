@@ -528,6 +528,8 @@ function PreviewPage() {
       }, []);
 
     const shareKakao = () => {
+        // 카카오톡 공유하
+        console.log("카톡공유클릭")
         if (window.Kakao && window.Kakao.isInitialized()) {
                 window.Kakao.Link.sendDefault({
                     objectType: 'feed',
