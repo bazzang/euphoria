@@ -529,23 +529,24 @@ function PreviewPage() {
 
     const shareKakao = () => {
         if (window.Kakao && window.Kakao.isInitialized()) {
+                const currentUrl = window.location.href;
                 window.Kakao.Link.sendDefault({
                     objectType: 'feed',
                     content: {
-                        title: '우리 결혼해요 💍',
-                        description: '청첩장을 확인해보세요!',
-                        imageUrl: 'https://euphoria-1.s3.ap-northeast-2.amazonaws.com/gallery/대표이미지.jpg', // 대표 이미지
+                        title: inv.kakaoTitle ? inv.kakaoTitle : inv.brideLastName + "❤️" + inv.groomLastName,
+                        description: inv.kakaoContent ? inv.kakaoContent : "",
+                        imageUrl: inv.kakaoImg ? inv.kakaoImg : inv.mainImg  , // 대표 이미지
                         link: {
-                        mobileWebUrl: 'https://euphoria-psi.vercel.app/preview?itemId=27',
-                        webUrl: 'https://euphoria-psi.vercel.app/preview?itemId=27'
+                        mobileWebUrl: currentUrl,
+                        webUrl: currentUrl
                         }
                     },
                     buttons: [
                         {
-                        title: '청첩장 보기',
+                        title: inv.kakaoTitle,
                         link: {
-                            mobileWebUrl: 'https://euphoria-psi.vercel.app/preview?itemId=27',
-                            webUrl: 'https://euphoria-psi.vercel.app/preview?itemId=27'
+                            mobileWebUrl:currentUrl,
+                            webUrl: currentUrl
                         }
                         }
                     ]
