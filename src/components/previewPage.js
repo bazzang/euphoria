@@ -509,27 +509,25 @@ function PreviewPage() {
     // -------------------------------------------------------------------------------------------------
     // *********************************[카톡인앱] 카톡인앱 > 외부브라우저 ***********************************************
     // -------------------------------------------------------------------------------------------------
-    // useEffect(() => {
-    //     const script = document.createElement("script");
-    //     script.src = "https://developers.kakao.com/sdk/js/kakao.min.js";
-    //     script.async = true;
-    //     script.onload = () => {
-    //       // 안전하게 확인 후 초기화
-    //       if (window.Kakao && !window.Kakao.isInitialized()) {
-    //         window.Kakao.init("5e85b98fd4f0ad015d88a1aaee9ef20d");
-    //       }
-    //     };
-    //     document.head.appendChild(script);
-    //   }, []);
-
     useEffect(() => {
-        initKakao();
-        // window.Kakao.Share.sendDefault(...) 가능
+        const script = document.createElement("script");
+        script.src = "https://developers.kakao.com/sdk/js/kakao.min.js";
+        script.async = true;
+        script.onload = () => {
+          // 안전하게 확인 후 초기화
+          if (window.Kakao && !window.Kakao.isInitialized()) {
+            window.Kakao.init("5e85b98fd4f0ad015d88a1aaee9ef20d");
+          }
+        };
+        document.head.appendChild(script);
       }, []);
 
+    // useEffect(() => {
+    //     initKakao();
+    //     // window.Kakao.Share.sendDefault(...) 가능
+    //   }, []);
+
     const shareKakao = () => {
-        // 카카오톡 공유하
-        console.log("카톡공유클릭")
         if (window.Kakao && window.Kakao.isInitialized()) {
                 window.Kakao.Link.sendDefault({
                     objectType: 'feed',
