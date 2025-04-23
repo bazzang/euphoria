@@ -20,6 +20,7 @@ import MapComponent from './map.js';
 import SmsIcon from './SmsIcon.js';
 import GallerySlider from './gallerySlider.js';
 import CircleGallery from './CircleGallery.js';
+import { initKakao } from '../util/kakao.js';
 // import { Helmet } from 'react-helmet-async';
 // import SEO from './Seo.js';
 
@@ -314,6 +315,7 @@ function PreviewPage() {
     const [calendarImg, setCalendarImg] = useState(); 
     const [endingImg, setEndingImg] = useState(); 
     const [salutImg, setSalutImg] = useState(); 
+    const [kakaoImg, setKakaoImg] = useState(); 
     const [gallImgs, setGallImgs] = useState([]); // 상태로 설정
     
     
@@ -342,9 +344,13 @@ function PreviewPage() {
                 case "salut":
                     setSalutImg(imageUrl);
                     break;
+                case "kakao":
+                    setKakaoImg(imageUrl);
+                    break;
                 case "gallery":
                     newImages.push(imageUrl);
                     break;
+                    
                 default:
                     break;
             }
@@ -503,44 +509,49 @@ function PreviewPage() {
     // -------------------------------------------------------------------------------------------------
     // *********************************[카톡인앱] 카톡인앱 > 외부브라우저 ***********************************************
     // -------------------------------------------------------------------------------------------------
+    // useEffect(() => {
+    //     const script = document.createElement("script");
+    //     script.src = "https://developers.kakao.com/sdk/js/kakao.min.js";
+    //     script.async = true;
+    //     script.onload = () => {
+    //       // 안전하게 확인 후 초기화
+    //       if (window.Kakao && !window.Kakao.isInitialized()) {
+    //         window.Kakao.init("5e85b98fd4f0ad015d88a1aaee9ef20d");
+    //       }
+    //     };
+    //     document.head.appendChild(script);
+    //   }, []);
+
     useEffect(() => {
-        const script = document.createElement("script");
-        script.src = "https://developers.kakao.com/sdk/js/kakao.min.js";
-        script.async = true;
-        script.onload = () => {
-          // 안전하게 확인 후 초기화
-          if (window.Kakao && !window.Kakao.isInitialized()) {
-            window.Kakao.init("5e85b98fd4f0ad015d88a1aaee9ef20d");
-          }
-        };
-        document.head.appendChild(script);
+        initKakao();
+        // window.Kakao.Share.sendDefault(...) 가능
       }, []);
 
-      const shareKakao = () => {
+    const shareKakao = () => {
         if (window.Kakao && window.Kakao.isInitialized()) {
-            window.Kakao.Link.sendDefault({
-              objectType: 'feed',
-              content: {
-                title: '우리 결혼해요 💍',
-                description: '청첩장을 확인해보세요!',
-                imageUrl: 'https://euphoria-1.s3.ap-northeast-2.amazonaws.com/gallery/대표이미지.jpg', // 대표 이미지
-                link: {
-                  mobileWebUrl: 'https://euphoria-psi.vercel.app/preview?itemId=27',
-                  webUrl: 'https://euphoria-psi.vercel.app/preview?itemId=27'
-                }
-              },
-              buttons: [
-                {
-                  title: '청첩장 보기',
-                  link: {
-                    mobileWebUrl: 'https://euphoria-psi.vercel.app/preview?itemId=27',
-                    webUrl: 'https://euphoria-psi.vercel.app/preview?itemId=27'
-                  }
-                }
-              ]
-            });
-          }
-      };
+                window.Kakao.Link.sendDefault({
+                    objectType: 'feed',
+                    content: {
+                        title: '우리 결혼해요 💍',
+                        description: '청첩장을 확인해보세요!',
+                        imageUrl: 'https://euphoria-1.s3.ap-northeast-2.amazonaws.com/gallery/대표이미지.jpg', // 대표 이미지
+                        link: {
+                        mobileWebUrl: 'https://euphoria-psi.vercel.app/preview?itemId=27',
+                        webUrl: 'https://euphoria-psi.vercel.app/preview?itemId=27'
+                        }
+                    },
+                    buttons: [
+                        {
+                        title: '청첩장 보기',
+                        link: {
+                            mobileWebUrl: 'https://euphoria-psi.vercel.app/preview?itemId=27',
+                            webUrl: 'https://euphoria-psi.vercel.app/preview?itemId=27'
+                        }
+                        }
+                    ]
+                });
+        }
+    };
 
     // -------------------------------------------------------------------------------------------------
     // *********************************[카톡인앱] 카톡인앱 > 외부브라우저 ***********************************************

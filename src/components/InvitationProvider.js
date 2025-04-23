@@ -226,6 +226,15 @@ export const InvitationProvider = ({ children }) => {
     guestbookTitle : "", // 방명록 타이틀 
     masterPwd : "", // 방명록 마스터 비밀번호
 
+    // 카카오톡 공유 버튼 
+    useKakaoShare : false, // use_kakaoshare
+    kakaoThumbUrl : "",
+    kakaoThumbFile : "",
+    kakaoTitle : "",  // kakao_title
+    kakaoContent : "",  // kakao_content
+    isLocationButtonEnabled : false, // is_location_btn_enabled
+
+
     // 20250418 추가 안된 컬럼 
     useLoading : false, 
     loadType : "loading_1", //로딩화면타입
@@ -238,17 +247,7 @@ export const InvitationProvider = ({ children }) => {
     typingClr : "", // 타이핑형 배경 컬러
     typingTxt : "", // 타이핑형 문구
 
-    // 카카오톡 공유 버튼 
-    useKakaoShare : false, // use_kakaoshare
-    kakaoThumbUrl : "",
-    kakaoThumbFile : "",
-    kakaoTitle : "",  // kakao_title
-    kakaoContent : "",  // kakao_content
-    isLocationButtonEnabled : false, // is_location_btn_enabled
-
-
     
-
 
 
 

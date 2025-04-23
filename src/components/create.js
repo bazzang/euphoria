@@ -193,6 +193,13 @@ function Create() {
                      guestbook: value, 
                 }));
                 break;
+            case "useKakaoShare" :  // 카카오톡 공유 스타일 
+                setCategories((prevCategories) => ({
+                    ...prevCategories,
+                    kakaoShareOption: value, 
+                }));
+                break;
+                
 
             default : 
                 break;
@@ -1166,7 +1173,7 @@ function Create() {
                     userId: null
                 })
             }
-            if (invitationState.calendarFile) {
+            if (invitationState.useCalendar && invitationState.calendarFile) {
                 let temp = await handleS3Upload(invitationState.calendarFile);
                 urls.push({
                     pic1 : temp[0],
@@ -1196,7 +1203,7 @@ function Create() {
                     userId: null
                 })
             }
-            if (invitationState.endingPhotoFile) {
+            if (invitationState.useEnding && invitationState.endingPhotoFile) {
                 let temp = await handleS3Upload(invitationState.endingPhotoFile);
                 urls.push({
                     pic1 : temp[0],
@@ -1206,7 +1213,7 @@ function Create() {
                     userId: null
                 })
             }
-            if (invitationState.urlPhotoFile) { // 공유하기 사진
+            if (invitationState.useUrlShareStyle && invitationState.urlPhotoFile) { // 공유하기 사진
                 let temp = await handleS3Upload(invitationState.urlPhotoFile);
                 urls.push({
                     pic1 : temp[0],
@@ -1216,7 +1223,18 @@ function Create() {
                     userId: null
                 })
             }
-            if (invitationState.salutPhotoFile) { // 인사말 사진
+            if (invitationState.useKakaoShare && invitationState.kakaoPhotoFile) { // 카톡공유 사진
+                let temp = await handleS3Upload(invitationState.kakaoPhotoFile);
+                urls.push({
+                    pic1 : temp[0],
+                    type : "kakao",
+                    seq: null,
+                    invSeq: null,
+                    userId: null
+                })
+            }
+
+            if (invitationState.useSalutations && invitationState.salutPhotoFile) { // 인사말 사진
                 let temp = await handleS3Upload(invitationState.salutPhotoFile);
                 urls.push({
                     pic1 : temp[0],
@@ -1320,7 +1338,35 @@ function Create() {
         return uploadedUrl; 
     };
 
+    // -------------------------------------------------------------------------------------------------
+
+    // *********************************[방명록] 방명록 ***********************************************
+
+    // -------------------------------------------------------------------------------------------------
+    const [isGuestbookOpen, setIsGuestbookOpen] = useState(false);
+    const openGuestbookModal = () => {
+        setIsGuestbookOpen(true);
+    };
     
+    const closeGuestbookModal = () => {
+        setIsGuestbookOpen(false);
+    };
+
+    // -------------------------------------------------------------------------------------------------
+
+    // *********************************[갤러리] 타입별 클릭 이벤트 ***********************************************
+
+    // -------------------------------------------------------------------------------------------------
+    const [selectedIndex, setSelectedIndex] = useState(null);
+
+    const handleCircleImageClick = (index) => {
+        setSelectedIndex(index); // 슬라이더 열기
+    };
+
+    const closeSlider = () => {
+        setSelectedIndex(null);
+    };
+
     // -------------------------------------------------------------------------------------------------
 
     // *********************************[로딩화면] 로딩 ***********************************************
@@ -1405,35 +1451,7 @@ function Create() {
     const Ref = useRef(null);
     const galleryRef = useRef(null);
     
-    // -------------------------------------------------------------------------------------------------
-
-    // *********************************[방명록] 방명록 ***********************************************
-
-    // -------------------------------------------------------------------------------------------------
-    const [isGuestbookOpen, setIsGuestbookOpen] = useState(false);
-    const openGuestbookModal = () => {
-        setIsGuestbookOpen(true);
-    };
     
-    const closeGuestbookModal = () => {
-        setIsGuestbookOpen(false);
-    };
-
-    // -------------------------------------------------------------------------------------------------
-
-    // *********************************[갤러리] 타입별 클릭 이벤트 ***********************************************
-
-    // -------------------------------------------------------------------------------------------------
-    const [selectedIndex, setSelectedIndex] = useState(null);
-
-    const handleCircleImageClick = (index) => {
-        setSelectedIndex(index); // 슬라이더 열기
-    };
-
-    const closeSlider = () => {
-        setSelectedIndex(null);
-    };
-
 
     
   return (
@@ -4954,7 +4972,7 @@ function Create() {
                                             <input type="password" className="input-sts" placeholder="비밀번호 확인"/>
                                         </div>
                                     </div>
-                                    <div className="option">
+                                    {/* <div className="option">
                                         <div className="option-label">수신받을 메일</div>
                                         <div className="option-contents">
                                             <input type="email" className="input-sts"/>
@@ -4972,7 +4990,7 @@ function Create() {
                                                 전화번호를 입력하시면 하객들의 참석여부가 카카오톡으로 실시간 발송됩니다.
                                             </p>
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             )}
                             </div>
@@ -5733,10 +5751,14 @@ function Create() {
 
 
                             {/* 목요일 이후 구현 (퍼블리싱, 디자인 없음) */}
-                            {/* <div className="category">
+                            <div className="category">
                                 <div className="category-head">
                                     <label for="" className="switch">
-                                        <input type="checkbox" checked/>
+                                        <input 
+                                            type="checkbox" 
+                                            checked={invitationState.useKakaoShare} 
+                                            onChange={(e) => handleChange('useKakaoShare', e.target.checked)}
+                                        />
                                     </label>
                                     <strong>카카오톡 공유 스타일 수정</strong>
 
@@ -5751,13 +5773,36 @@ function Create() {
                                     <div className="option">
                                         <div className="option-label">썸네일</div>
                                         <div className="option-contents">
-                                            <div className="img-uploader">
+                                        <div className="img-uploader">
                                                 <div className="img-upload">
-                                                    <button className="img-upload-add"></button>
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        id="kakaoPhotoInput"
+                                                        style={{ display: "none" }}
+                                                        onChange={(e) => {
+                                                            const file = e.target.files[0];
+                                                            if (file) {
+                                                                const imageUrl = URL.createObjectURL(file);
+                                                                handleChange("kakaoThumbUrl", imageUrl);
+                                                                handleFileChange(e, 'kakaoPhoto');
+                                                            }
+                                                        }}
+                                                    />
+
+                                                    <button
+                                                        className="img-upload-add"
+                                                        onClick={() => document.getElementById('kakaoPhotoInput').click()}
+                                                    />
                                                 </div>
                                                 <div className="img-upload fin">
-                                                    <div className="img-upload-thumb"><img src="./images/create/sample.png" alt="sample"/></div>
-                                                    <button className="img-upload-cancel">삭제</button>
+                                                    <div className="img-upload-thumb">
+                                                        <img 
+                                                            src={invitationState.kakaoThumbUrl} 
+                                                            alt="" 
+                                                        />
+                                                    </div>
+                                                    <button className="img-upload-cancel" onClick={() =>invitationState.kakaoThumbUrl = "" }>삭제</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -5765,18 +5810,28 @@ function Create() {
                                     <div className="option">
                                         <div className="option-label">제목</div>
                                         <div className="option-contents">
-                                            <input className="input-sts" type="text"/>
+                                            <input
+                                                type="text"
+                                                className="input-sts"
+                                                value={invitationState.kakaoTitle}
+                                                onChange={(e) => handleChange("kakaoTitle", e.target.value)} // Update state
+                                            />
                                         </div>
                                     </div>
                                     <div className="option">
                                         <div className="option-label">내용</div>
                                         <div className="option-contents">
-                                            <textarea name="" id="" className="textarea-sts" rows="9"></textarea>
+                                            <input
+                                                type="text"
+                                                className="input-sts"
+                                                value={invitationState.kakaoContent}
+                                                onChange={(e) => handleChange("kakaoContent", e.target.value)} // Update state
+                                            />
                                         </div>
                                     </div>
                                 </div>
                                 )}
-                            </div> */}
+                            </div> 
 
 
 
