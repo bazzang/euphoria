@@ -234,6 +234,8 @@ export const InvitationProvider = ({ children }) => {
     kakaoContent : "",  // kakao_content
     isLocationButtonEnabled : false, // is_location_btn_enabled
 
+    // 외부공유
+    useExternalShare : false,
 
     // 20250418 추가 안된 컬럼 
     useLoading : false, 
