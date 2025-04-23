@@ -4962,13 +4962,25 @@ function Create() {
                                     <div className="option">
                                         <div className="option-label">타이틀</div>
                                         <div className="option-contents">
-                                            <input type="text" className="input-sts" placeholder="방명록"/>
+                                            <input
+                                                type="text"
+                                                className="input-sts"
+                                                placeholder="방명록"
+                                                value={invitationState.guestbookTitle}
+                                                onChange={(e) => handleChange("guestbookTitle", e.target.value)} // Update state
+                                            />
                                         </div>
                                     </div>
                                     <div className="option">
                                         <div className="option-label">마스터 비밀번호</div>
                                         <div className="option-contents">
-                                            <input type="password" className="input-sts" placeholder="비밀번호 입력"/>
+                                            <input
+                                                type="password"
+                                                className="input-sts"
+                                                placeholder="비밀번호 입력"
+                                                value={invitationState.masterPwd}
+                                                onChange={(e) => handleChange("masterPwd", e.target.value)} // Update state
+                                            />
                                             <input type="password" className="input-sts" placeholder="비밀번호 확인"/>
                                         </div>
                                     </div>
@@ -5921,8 +5933,22 @@ function Create() {
                                 </div>
                                 )}
                             </div>
+                                
+                            {/* 외부공유 버튼 */}
+                            <div className="category">
+                                <div className="category-head" >
 
-
+                                    {/* value=useExternalShare */}
+                                    <label className="switch">
+                                        <input 
+                                            type="checkbox" 
+                                            checked={invitationState.useExternalShare} 
+                                            onChange={(e) => handleChange('useExternalShare', e.target.checked)}
+                                        />
+                                    </label>
+                                    <strong>외부공유 버튼</strong>
+                                </div>
+                            </div>
 
                             {/* 목요일 구현 */}
                             {/* <div className="category">
@@ -6151,10 +6177,990 @@ function Create() {
                 {isPreviewOpen ? '돌아가기' : '미리보기'}
             </button>
             {/* <button className="btn-preview" onClick={() => setIsPreviewOpen(false)}>돌아가기</button> */}
+
+
+            
             
             
         </div>
 
+        {/* <div className="create-preview2"> */}
+        <div className={`create-preview2 ${isPreviewOpen ? ' active' : ''}`}>
+            <div className="frame-wrap" style={{marginTop:"2vh"}}  >
+                {isLoading && !isAnimationFinished && !isPopupVisible && (
+                    <div className="frame" id="popup" >
+                            <div className="loading-screen">
+                                {/* <HandwritingTitle />
+                                <span id="text"></span><span id="cursor"></span> */}
+                                
+                                💍 청첩장 로딩 중이에요...
+                                {/* <Test1 />11 */}
+                                
+                            </div>
+
+                        
+                    </div>
+                )}
+                
+                {!isLoading && isAnimationFinished || isPopupVisible && (
+                <div className="frame" id="popup">
+                    <section className="calendar">
+                        <div style={{width:"100%", justifyContent: "space-between", paddingBottom: "10px", marginTop:"-30px", borderBottom: "1px solid #c7c7c7"}}>
+                            <div onClick={closeContactModal} style={{float:"right", marginRight:"10px", background: "none", cursor: "pointer"}}>✕</div>
+                            <p className="info" style={{marginLeft:"30px"}}>혼주에게 연락하기</p> 
+                        </div>
+                        <div className="profile-wrap" style={{marginTop:"40px"}}>
+                            <div className="item">
+                                <div className="thumb" style={{backgroundColor: "#ffffff"}}>
+                                    <p className="t1"
+                                        style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"3px", position:"relative"}}
+                                    >
+                                        <span className="blue">신랑측</span>
+                                    </p>
+
+                                    {invitationState.broomFatherPhone && (
+                                    <div style={{marginTop:"30px", marginBottom:"30px"}}>
+                                        <p className="t2" >
+                                            아버지 {invitationState.groomFatherFirstName}{invitationState.groomFatherLastName}
+                                        </p>
+                                        <p className="t3" style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"15px", position:"relative"}}>
+
+                                            <div style={{display: "flex", alignItems:"center", justifyContent:"center"}}
+                                                onClick={() => onClickPhoneCall(invitationState.broomFatherPhone)}>
+                                                <CallIcon />
+                                            </div>
+                                            <div style={{display: "flex", alignItems:"center", justifyContent:"center"}}
+                                                onClick={() => onClickSendSMS(invitationState.broomFatherPhone)}>
+                                                <SmsIcon />
+                                            </div>
+                                        </p>
+                                    </div>
+                                    )}
+                                    
+                                    {invitationState.broomMotherPhone && (
+                                    <div style={{marginTop:"30px", marginBottom:"30px"}}>
+                                        <p className="t2">
+                                            어머니 {invitationState.groomMotherFirstName}{invitationState.groomMotherLastName}
+                                        </p>
+                                        <p className="t3" style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"15px", position:"relative"}}>
+
+                                            <div style={{display: "flex", alignItems:"center", justifyContent:"center"}}
+                                                onClick={() => onClickPhoneCall(invitationState.broomMotherPhone)}>
+                                                    <CallIcon />
+                                            </div>
+                                            <div style={{display: "flex", alignItems:"center", justifyContent:"center"}}
+                                                onClick={() => onClickSendSMS(invitationState.broomMotherPhone)}>
+                                                <SmsIcon />
+                                            </div>
+                                        </p>
+                                    </div>
+                                    )}
+
+                                </div>
+                            </div>
+                            <div className="item">
+                                <div className="thumb" style={{backgroundColor: "#ffffff"}}>
+                                    <p className="t1"
+                                        style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"3px", position:"relative"}}
+                                    >
+                                        <span className="pink">신부측</span>
+                                    </p>
+
+                                    {invitationState.brideFatherPhone && (
+                                    <div style={{marginTop:"30px", marginBottom:"30px"}}>
+                                        <p className="t2" >
+                                            아버지 {invitationState.brideFatherFirstName}{invitationState.brideFatherLastName}
+                                        </p>
+                                        <p className="t3" style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"15px", position:"relative"}}>
+
+                                            <div style={{display: "flex", alignItems:"center", justifyContent:"center"}}
+                                                onClick={() => onClickPhoneCall(invitationState.brideFatherPhone)}>
+                                                    <CallIcon />
+                                            </div>
+                                            <div style={{display: "flex", alignItems:"center", justifyContent:"center"}}
+                                                onClick={() => onClickSendSMS(invitationState.brideFatherPhone)}>
+                                                <SmsIcon />
+                                            </div>
+                                        </p>
+                                    </div>
+                                    )}
+
+                                    {invitationState.brideMotherPhone && (
+                                    <div style={{marginTop:"30px", marginBottom:"30px"}}>
+                                        <p className="t2">
+                                            어머니 {invitationState.brideMotherFirstName}{invitationState.brideMotherLastName}
+                                        </p>
+                                        <p className="t3" style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"15px", position:"relative"}}>
+
+                                            <div style={{display: "flex", alignItems:"center", justifyContent:"center"}}
+                                                onClick={() => onClickPhoneCall(invitationState.brideMotherPhone)}>
+                                                    <CallIcon />
+                                            </div>
+                                            <div style={{display: "flex", alignItems:"center", justifyContent:"center"}}
+                                                onClick={() => onClickSendSMS(invitationState.brideMotherPhone)}>
+                                                <SmsIcon />
+                                            </div>
+                                        </p>
+                                    </div>
+                                    )}
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <br/>
+                        
+                    </section>
+                </div>
+                )}
+
+                {isGuestbookOpen && (
+                    <div className="frame" id="popup" >
+                        <div className={`modal-overlay ${isGuestbookOpen ? 'active' : ''}`}>
+                            <div className="guestbook-modal">
+                            <div className="guestbook-header">
+                                <h2>방명록 작성</h2>
+                                <button className="close-btn" onClick={closeGuestbookModal}>✕</button>
+                            </div>
+
+                            <div className="guestbook-body">
+                                <label htmlFor="name">성함</label>
+                                <input type="text" id="name" placeholder="" />
+
+                                <label htmlFor="message">내용</label>
+                                <textarea id="message" rows="5" placeholder=""></textarea>
+
+                                <label htmlFor="password">비밀번호</label>
+                                <input type="password" id="password" placeholder="비밀번호 입력 (수정·삭제 시 필요)" />
+
+                                <button className="submit-btn">작성</button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                )}
+
+                {selectedIndex && (
+                        <div className={`modal-overlay ${selectedIndex ? 'active' : ''}`}>
+                            <div className="gallery-modal" style={{width:"100%", height:"100%"}}>
+                            <div className="gallery-header">
+                                <button className="close-btn" onClick={closeSlider}>✕</button>
+                            </div>
+                            <div className="gallery-body">
+
+                                <GallerySlider 
+                                    images={previewGallery} 
+                                    showProgressBar={invitationState.galleryProgressBarVisible}
+                                    className=""
+                                />    
+                            </div>
+                            
+
+                            </div>
+                        </div>
+                
+                )}
+
+                {!isLoading && isAnimationFinished || !isPopupVisible && (
+                <div className="frame">
+
+                    {/* 메인*/}
+                    <section className="main">
+                        {/* <img className="bg" src={bgimg} alt="bg"/> */}
+                        <img className="bg" src={backgroundImage} alt="bg" />
+                        <div className="cts">
+                            <strong
+                                className="lettering type1"
+                                style={{
+                                    color: color1,
+                                    top: letteringTop.type1, // 동적 스타일 적용
+                                    display: invitationState.letteringMsg === 'type1' ? 'block' : 'none',
+                                }}
+                                >
+                                our<br />wedding<br />day
+                            </strong>
+                            <strong
+                                className="lettering type2"
+                                style={{
+                                    color: color1,
+                                    top: letteringTop.type2, // 동적 스타일 적용
+                                    display: invitationState.letteringMsg === "type2" ? 'block' : 'none',
+                                }}
+                                >
+                                We're getting<br />married!
+                            </strong>
+                            <strong
+                                className="lettering type3"
+                                style={{
+                                    color: color1,
+                                    top: letteringTop.type3, // 동적 스타일 적용
+                                    display: invitationState.letteringMsg === 'type3' ? 'block' : 'none',
+                                }}
+                                >
+                                Just married
+                            </strong>
+                            <strong
+                                className="lettering type4"
+                                style={{
+                                    color: color1,
+                                    top: letteringTop.type4, // 동적 스타일 적용
+                                    display: invitationState.letteringMsg === 'type4' ? 'block' : 'none',
+                                }}
+                                >
+                                With love,<br /> always
+                            </strong>
+                            <strong
+                                className="lettering type5"
+                                style={{
+                                    color: color1,
+                                    top: letteringTop.type5, // 동적 스타일 적용
+                                    display: invitationState.letteringMsg === 'type5' ? 'block' : 'none',
+                                }}
+                                >
+                                Happy <br />wedding<br /> day
+                            </strong>
+
+                            <strong
+                                className="lettering type6"
+                                style={{
+                                    color: color1,
+                                    top: letteringTop.type6, // 동적 스타일 적용
+                                    display: invitationState.letteringMsg === 'type6' ? 'block' : 'none',
+                                }}
+                                >
+                                Our first page
+                            </strong>
+                            <strong
+                                className="lettering type7"
+                                style={{
+                                    color: color1,
+                                    top: letteringTop.type7, // 동적 스타일 적용
+                                    display: invitationState.letteringMsg === 'type7' ? 'block' : 'none',
+                                }}
+                                >
+                                Happily ever after
+                            </strong>
+
+
+                            <p
+                                className="text"
+                                style={{
+                                    color : color2,
+                                    top: maintxtHg,
+                                    fontFamily: "Nanum Myeongjo",
+                                    wordWrap: "break-word", // 긴 단어를 자동으로 줄바꿈
+                                    overflowWrap: "break-word", // 긴 단어가 깨지도록 줄바꿈
+                                    whiteSpace: "normal", // 일반 줄바꿈 허용
+                                }}
+                                >
+                                {invitationState.mainTxt || ""}
+                            </p>
+
+                    </div>
+                    </section>
+
+                    {/* 메인 하단 예식 정보 */}
+                    {invitationState.mainWddInfoOnoff ? (
+                    <section className="calendar" style={{textAlign: "center"}}>
+                        <div style={{width:"300px", borderTop:"2px solid #c7c7c7",  borderBottom:"2px solid #c7c7c7", margin:"0 auto 20px", paddingTop:"20px", paddingBottom:"20px"}}>
+                            <p className="info">{parseInt(invitationState.weddingDate.split("-")[0], 10)}년&nbsp;
+                                                {parseInt(invitationState.weddingDate.split("-")[1], 10)}월&nbsp;
+                                                {parseInt(invitationState.weddingDate.split("-")[2])}일&nbsp;
+                                                {/* {}요일 오후 {}시 */}
+                                                {getKoreanDateInfo(invitationState.weddingDate)}<br/>
+                                                {invitationState.weddingHallName || "예식장"}&nbsp;
+                            </p>
+                        </div>
+                    </section>
+                    ) : null}
+
+                    {/* 글귀 */}
+                    {invitationState.usePhrases ? (
+                    <section className="calendar">
+                        <div style={{margin:"10px"}}>
+                            <span
+                            className="infoP"
+                            dangerouslySetInnerHTML={{ __html: invitationState.phrases }}
+                            ></span>
+                        </div>
+                        
+                    </section>
+                    ) : null}
+
+
+                    {/* 인사말 */}
+                    {invitationState.useSalutations ? (
+                    <section className="calendar">
+                        <strong className="title">
+                        {/* <strong className="title" data-aos="fade-up" data-aos-duration="100"> */}
+                        {invitationState.salutationsTitle || "소중한 분들을 초대합니다."}</strong>
+                        <div style={{margin:"10px"}}>
+                            <span
+                            className="infoP"
+                            dangerouslySetInnerHTML={{ __html: invitationState.salutations }}
+                            ></span>
+                        </div>
+                        <img 
+                            src={invitationState.salutPhotoUrl || ""} 
+                            alt="인사말" 
+                            style={{
+                                visibility: invitationState.salutPhotoUrl ? "visible" : "hidden",
+                                
+                            }}
+                        />
+                    </section>
+                    ) : null}
+
+                    {/* 프로필형 */}
+                    {/* useProfile 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
+                    {invitationState.useProfile && (
+                    <section className="profile"> 
+                        <div className="profile-wrap">
+                        {/* <div className="profile-wrap" data-aos="fade-up" data-aos-duration="100"> */}
+                            <div className="item">
+                                <div className="thumb">
+                                    <img 
+                                        src={invitationState.groomPhotoUrl || ""} 
+                                        alt="신랑이미지" 
+                                        style={{
+                                            visibility: invitationState.groomPhotoUrl ? "visible" : "hidden",
+                                        }}
+                                    />
+                                </div>
+                                
+                                <p className="t1"
+                                    style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"3px", position:"relative"}}
+                                >
+                                    <span className="blue">신랑</span>
+                                    
+                                <strong>
+                                    {invitationState.groomFirstName}{invitationState.groomLastName}
+                                </strong>
+                                {invitationState.groomPhoneNumber && (
+                                            <div style={{marginLeft:"2px"}}
+                                            onClick={() => onClickPhoneCall(invitationState.groomPhoneNumber)}>
+                                                <CallIcon />
+                                            </div>
+                                    )}
+                                
+                                </p>
+                                <p className="t2">{invitationState.groomIntroduction}</p>
+                                {/* <p className="t3"><span>신랑 아버지</span>의 {invitationState.groomRelationship}</p> */}
+
+                                    <p className="t3">
+                                        <span style={{marginRight:"0px"}}>
+
+                                            {/* 고인표시 */}
+                                            {invitationState.groomFatherDeceased ? (
+                                                <span>故</span> 
+                                            ) : null}
+                                            {invitationState.groomFatherFirstName}{invitationState.groomFatherLastName}
+                                            
+                                            {invitationState.groomFatherFirstName && (
+                                                <span style={{marginRight:"-1px"}}>•</span> 
+                                            )}
+
+                                            {/* 고인표시 */}
+                                            {invitationState.groomMotherDeceased ? (
+                                                <span>故</span> 
+                                            ) : null}
+                                            {invitationState.groomMotherFirstName}{invitationState.groomMotherLastName}
+                                            
+                                        </span>
+                                        {invitationState.groomFatherFirstName&&(<>의</> )} {invitationState.groomRelationship}
+                                    </p>
+                                
+                            </div>
+                            <div className="item">
+                                <div className="thumb">
+                                    <img 
+                                        src={invitationState.bridePhotoUrl || ""} 
+                                        alt="신부이미지" 
+                                        style={{
+                                            visibility: invitationState.groomPhotoUrl ? "visible" : "hidden",
+                                        }}
+                                    />
+
+                                </div>
+                                <p className="t1"
+                                    style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"3px", position:"relative"}}
+                                >
+                                    
+                                    <span className="pink">신부</span>
+                                <strong>
+                                    {invitationState.brideFirstName}{invitationState.brideLastName}
+                                </strong>
+                                {invitationState.bridePhoneNumber && (
+                                        <div style={{marginLeft:"2px"}}
+                                        onClick={() => onClickPhoneCall(invitationState.bridePhoneNumber)}>
+                                            <CallIcon />
+                                        </div>
+                                )}
+                                            
+                                
+                                </p>
+                                <p className="t2">{invitationState.brideIntroduction}</p>
+                                    <p className="t3" >
+                                        <span style={{marginRight:"0px"}}>
+                                            {/* 고인표시 */}
+                                            {invitationState.brideFatherDeceased ? (
+                                                <span>故</span> 
+                                            ) : null}
+                                            {invitationState.brideFatherFirstName}{invitationState.brideFatherLastName}
+                                            
+                                            {invitationState.brideFatherFirstName && (
+                                                <span style={{marginRight:"-1px"}}>•</span> 
+                                            )}
+                                            
+                                            {/* 고인표시 */}
+                                            {invitationState.brideMotherDeceased ? (
+                                                <span>故</span> 
+                                            ) : null}
+                                            {invitationState.brideMotherFirstName}{invitationState.brideMotherLastName}
+                                            
+                                        </span>
+                                        {invitationState.brideFatherFirstName&&(<>의</> )} {invitationState.brideRelationship}
+                                        
+                                    </p>
+                            </div>
+                        </div>
+                        {/* 목요일 이후 / 팝업 디자인 및 퍼블리싱 없음  故人*/}
+                        {invitationState.useParentsContactInfo && (
+                        <button className="btn" onClick={openContactModal}>혼주에게 연락하기</button>
+                        )}
+                        {/* <ContactParentsModal open={isContactModalOpen} onClose={closeContactModal} /> */}
+
+                    </section>
+                    )}
+                    
+                    {/* 메인하단예식정보 */}
+                    {invitationState.weddingHallName && (
+                    <section className='calendar'>
+                        <p className="info">{parseInt(invitationState.weddingDate.split("-")[0], 10)}년&nbsp;
+                                            {parseInt(invitationState.weddingDate.split("-")[1], 10)}월&nbsp;
+                                            {parseInt(invitationState.weddingDate.split("-")[2])}일&nbsp;
+                                            {/* {}요일 오후 {}시 */}
+                                            {getKoreanDateInfo(invitationState.weddingDate)}<br/>
+                                            {invitationState.weddingHallName || ""}&nbsp;
+                                            {invitationState.weddingHallFloorAndRoom || ""}<br/>
+                                            <p 
+                                            style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"5px", position:"relative"}}
+                                            >
+                                                {invitationState.weddingHallAddress || ""}
+                                                {invitationState.weddingHallPhoneNumber && (
+                                                    <strong onClick={() => onClickPhoneCall(invitationState.weddingHallPhoneNumber)}>
+                                                        <CallIcon />
+                                                    </strong>
+                                                )}
+                                            </p>
+                        </p>
+
+                    </section>
+                    )}
+
+                    {/* useCalendar 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
+                    {invitationState.useCalendar && (
+                    <section className="calendar">
+                        
+                        <strong className="title">{invitationState.calendarTitle || "예식 안내"}</strong>
+                        
+
+                        {invitationState.calendarImage && (
+                            <img
+                                className="bg"
+                                src={invitationState.calendarImage}
+                                alt="calbg"
+                                style={{ borderRadius: "60px", padding: "30px"}}
+                            />  
+                        )}
+
+
+                        <div className="month">
+                        {/* <div className="month" data-aos="fade-up" data-aos-duration="100"> */}
+                            <span className="month-title">{parseInt(invitationState.weddingDate.split("-")[1], 10)}월</span>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th className="holiday">일</th>
+                                        <th>월</th>
+                                        <th>화</th>
+                                        <th>수</th>
+                                        <th>목</th>
+                                        <th>금</th>
+                                        <th>토</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {Array.from({ length: Math.ceil(calendarDays.length / 7) }).map(
+                                    (_, weekIndex) => (
+                                        <tr key={weekIndex}>
+                                        {calendarDays
+                                            .slice(weekIndex * 7, weekIndex * 7 + 7)
+                                            .map((day, index) => (
+                                            <td
+                                                key={index}
+                                                className={day ? (day === parseInt(invitationState.weddingDate.split("-")[2]) ? "target" : "") : ""}
+                                            >
+                                                {day && <span>{day}</span>}
+                                            </td>
+                                            ))}
+                                        </tr>
+                                    )
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {invitationState.useDday ? (
+                        <div
+                            className={`d-day ${invitationState.useDday ? '' : 'hidden'}`}
+                            style={{ display: invitationState.useDday ? 'block' : 'none' }}
+                        >
+                            <p className="point">
+                            {/* <p className="point" data-aos="fade-up" data-aos-duration="100"> */}
+                                <span>{invitationState.groomLastName || "신랑"}</span>♥
+                                <span>{invitationState.brideLastName || "신부"}</span> 결혼식까지
+                            </p>
+                            <ul className="timer">
+                            {/* <ul className="timer" data-aos="fade-up" data-aos-duration="100"> */}
+                                <li><span>{timeLeft.days}</span>Days</li>
+                                <li><span>{timeLeft.hours}</span>Hours</li>
+                                <li><span>{timeLeft.minutes}</span>Minutes</li>
+                                <li><span>{timeLeft.seconds}</span>Seconds</li>
+                            </ul>
+                        </div>
+                        ) : null}
+                    </section>
+                    )}
+
+
+
+                    {/* useVideo 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
+                    {/* 식전영상상 */}
+                    {invitationState.useVideo && (
+                    <section className="gallery">
+                        <strong className="title">
+                        {/* <strong className="title" data-aos="fade-up" data-aos-duration="100"> */}
+                        {invitationState.videoTitle || "식전 영상"}</strong>
+                                <iframe 
+                                width="361"
+                                height="280" 
+                                src={invitationState.videoUrl}
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen
+                            ></iframe>
+                    </section>
+                    )}
+
+                    {/* [타임라인] useLoading 값의 true/false에 따라 이 섹션 활성화/비활성화 */}
+                    {invitationState.useTimeLine && (
+                    <section className="timeline">
+                        <div className='title-wrap'>
+                            <h2 className='timeline-title'>{invitationState.timeLineTitle}</h2>
+                        </div>
+                        
+                        {tlList &&
+                        tlList.map((list, index) => (
+                            <div className={`item ${index % 2 === 0 ? 'row' : 'row-reverse'}`} key={index}>
+                            <div className="left">
+                                {list.imgUrl && (
+                                // <img className="bg" src={list.imgUrl} alt="tl" />
+                                <img
+                                className={invitationState.timeLineType === 'timeline1_2' ? 'bg-rectangle' : 'bg'}
+                                src={list.imgUrl}
+                                alt="tl"
+                                />
+                                )}
+                                <span className="year">{list.date}</span>
+                            </div>
+
+                            <div className="center-line"></div>
+
+                            <div className="right">
+                                <strong className="title">{list.title || ""}</strong>
+                                <span className="content">{list.content}</span>
+                            </div>
+                            </div>
+                        ))}
+                    </section>
+                    )}
+
+                    {/* [갤러리]useGallery 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
+                    {invitationState.useGallery && (
+                    <section className="gallery">
+                        <strong className="title">
+                            {invitationState.galleryTitle || "갤러리"}
+                        </strong>
+                        {/* 그리드 */}
+                        {invitationState.galleryType === "grid" && (
+                            <div className="gallery-list">
+                            {previewGallery &&
+                                previewGallery.map((image, index) => (
+                                    <div className="gallery-item" key={index} onClick={handleCircleImageClick}>
+                                        <img src={image.previewUrl} alt={`gallery-${index}`} />
+                                    </div>
+                                ))
+                            }
+                            </div>
+                        )}    
+                        {/* 서클 */}
+                        {invitationState.galleryType === "circle" && (
+                            <CircleGallery 
+                                images={previewGallery} 
+                                showProgressBar={invitationState.galleryProgressBarVisible}
+                                onImageClick={handleCircleImageClick}
+                            />    
+                        )}
+                            
+                        {/* 슬라이드 */}
+                        {invitationState.galleryType === "slide" && (
+                            <GallerySlider images={previewGallery} showProgressBar={invitationState.galleryProgressBarVisible}/>    
+                        )}
+
+
+                        {/* 그리드형 서클형 슬라이더 */}
+                        {selectedIndex !== null && (
+                            <GallerySlider images={previewGallery} showProgressBar={invitationState.galleryProgressBarVisible}/>    
+                        )}
+                        
+                    </section>
+                    )}
+
+                    {/* 웨딩 인터뷰 useInterview 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
+                    {invitationState.useInterview && (
+                    <section className="transportion">
+                        <strong className="title" style={{textAlign:"center"}}>웨딩 인터뷰</strong>
+                    {interviewList &&
+                        interviewList.map((list, index) => (
+                            <div key={index}>
+                                <span className="title" style={{fontSize:"14px"}}>{list.question}</span>
+                                <p className="text" style={{fontSize:"14px"}}>{list.answer}</p> 
+                            </div>
+                    ))}
+                    </section>
+                    )}
+
+
+
+                    {/*[안내문] useNotice 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
+                    {invitationState.useNotice && (
+                    <section className="infomation">
+                        <div className="infomation-box">
+                        {/* <div className="infomation-box" data-aos="fade-up" data-aos-duration="100"> */}
+                            <strong className="title">{invitationState.noticeTitle || "안내문"}</strong>
+                            <p>
+                                {invitationState.noticeContent}
+                            </p>
+                            {/* 목요일 구현  */}
+                            {/* <a href="#" className="btn">버튼</a> */}
+                        </div>
+                    </section>
+                    )}
+
+                    {/* [화환] useFlower 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
+                    {invitationState.useFlower && (
+                    <section className="flower">
+                        <div className="flower-box" onClick={onClickFlower}>
+                        {/* <div className="flower-box" data-aos="fade-up" data-aos-duration="100"> */}
+                            <img src={flower} alt="화환"/>
+                            <div className="text">
+                                <strong className="title">축하 화환 보내기</strong>
+                                <p>축하의 마음을 담아 전해보세요.</p>
+                            </div>
+                        </div>
+                    </section>
+                    )}
+
+
+                    
+
+                    {/* useFirstMeetTime 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
+                    {invitationState.useFirstMeetTime && (
+                    <section className="our-time">
+                        <strong className="title">함께한 시간</strong>
+                        {/* <span className="title" data-aos="fade-up" data-aos-duration="100">함께한 시간</span> */}
+                        {/* <p className="timer" data-aos="fade-up" data-aos-duration="1000">“25년 1개월 17시간 42분 7초”</p> */}
+                        <p className="timer">
+                        {/* <p className="timer" data-aos="fade-up" data-aos-duration="100"> */}
+                            {elapsedTime}</p>
+                    </section>
+                    )}
+
+
+
+
+                    {/* useDirections 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
+                    {invitationState.useMap && (
+                    <section className="directions">
+                        <strong className="title">
+                        {/* <strong className="title" data-aos="fade-up" data-aos-duration="100"> */}
+                            오시는 길</strong>
+                        <div className="info">
+                        {/* <div className="info" data-aos="fade-up" data-aos-duration="100"> */}
+                            <strong className="name">
+                                {invitationState.weddingHallName || "예식장 이름"}
+                                {/* <a href="#" className="call"></a> */}
+                            </strong>
+                            <p className="place">{invitationState.weddingHallFloorAndRoom || "OOO홀"}</p>
+                            <p className="address">{ invitationState.weddingHallAddress||"경기 성남시 분당구 판교역로 4"}</p>
+                            
+                            <div className="map">
+                                {/* <div
+                                    id="map"
+                                    style={{ width: "100%", height: `${invitationState.mapHeight}`}}
+                                ></div> */}
+                                <MapComponent mapId="map2" address={invitationState.weddingHallAddress} mapHeight={invitationState.mapHeight} />
+                                {invitationState.navigationRemove && (
+                                    <div className="map-btns">
+                                        {/* 티맵 */}
+                                        <a 
+                                            href={`tmap://search?name=${encodeURIComponent(invitationState.weddingHallAddress)}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="map-btn"
+                                        >
+                                            <img src={map_t} alt=""/>
+                                            티맵
+                                        </a>
+                                        
+                                        {/* 카카오 내비 */}
+                                        <a 
+                                            href={`kakaonavi://search?q=${encodeURIComponent(invitationState.weddingHallAddress)}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="map-btn"
+                                        >
+                                            <img src={map_kakao} alt=""/>
+                                            카카오 내비
+                                        </a>
+                                        
+                                        {/* 네이버 지도 */}
+                                        <a 
+                                            href={`nmap://search?query=${encodeURIComponent(invitationState.weddingHallAddress)}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="map-btn"
+                                        >
+                                            <img src={map_naver} alt=""/>
+                                            네이버 지도
+                                        </a>
+                                    </div>
+                                )}
+                                
+                            </div>
+                            {/* <div className="map-btns">
+                                <a href="#" className="map-btn"><img src={map_t} alt=""/>티맵</a>
+                                <a href="#" className="map-btn"><img src={map_kakao} alt=""/>카카오 내비</a>
+                                <a href="#" className="map-btn"><img src={map_naver} alt=""/>네이버 지도</a>
+                            </div> */}
+                            
+                        </div>
+                    </section>
+                    )}
+
+                    {/* useTransportation 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
+                    {invitationState.useTransportation && (
+                    <section className="transportion">
+                    {transportationList &&
+                        transportationList.map((list, index) => (
+                            <div key={index}>
+                                {/* <span className="title" data-aos="fade-up" data-aos-duration="1000">{list.method}</span>
+                                <p className="text" data-aos="fade-up" data-aos-duration="1000">{list.details}</p> */}
+                                <span className="title" >{list.method}</span>
+                                <p className="text" >{list.details}</p> 
+                            </div>
+                    ))}
+                    </section>
+                    )}
+
+                    {/* [계좌번호] useAcnt 값의 true/false에 따라 이 섹션 활성화/비활성화 */}
+                    {invitationState.useAcnt && (
+                    <section className="calendar">
+                        <div >
+                            <span className="title" >{invitationState.acntTitle}</span>
+                            <div style={{margin:"10px"}}>
+                                <span
+                                    className="infoP"
+                                    dangerouslySetInnerHTML={{ __html: invitationState.acntContent}}
+                                ></span>
+                            </div>
+                            
+                        </div>
+                            {invitationState.brmAcnt && (
+                                <div className="item" style={{border: "1px solid #c2c0c0", margin:"10px", padding:"10px"}}>
+                                    <div className="blue-acnt" style={{borderBottom:"1px solid #c2c0c0", paddingBottom:"2px"}}>신랑</div>
+                                    <div className="font-acnt">
+                                        <span>{invitationState.brmNm}</span>
+                                    </div>
+                                    <div className="font-acnt">
+                                        <span>{invitationState.brmBank}&nbsp;</span>
+                                        <span>{invitationState.brmAcnt}</span>
+                                    </div>
+                                </div>
+                            )}
+                            {invitationState.brdAcnt && (
+                                <div className="item" style={{border: "1px solid #c2c0c0", margin:"10px", padding:"10px"}}>
+                                    <div className="pink-acnt" style={{borderBottom:"1px solid #c2c0c0", paddingBottom:"2px"}}>신부</div>
+                                    <div className="font-acnt">
+                                        <span>{invitationState.brdNm}</span>
+                                    </div>
+                                    <div className="font-acnt">
+                                        <span>{invitationState.brdBank}&nbsp;</span>
+                                        <span>{invitationState.brdAcnt}</span>
+                                    </div>
+                                </div>
+                            )}
+                            {invitationState.brmfAcnt && (
+                                <div className="item" style={{border: "1px solid #c2c0c0", margin:"10px", padding:"10px"}}>
+                                    <div className="blue-acnt" style={{borderBottom:"1px solid #c2c0c0", paddingBottom:"2px"}}>신랑 아버지</div>
+                                    <div className="font-acnt">
+                                        <span>{invitationState.brmfNm}</span>
+                                    </div>
+                                    <div className="font-acnt">
+                                        <span>{invitationState.brmfBank}&nbsp;</span>
+                                        <span>{invitationState.brmfAcnt}</span>
+                                    </div>
+                                </div>
+                            )}
+                            {invitationState.brmmAcnt && (
+                                <div className="item" style={{border: "1px solid #c2c0c0", margin:"10px", padding:"10px"}}>
+                                    <div className="blue-acnt" style={{borderBottom:"1px solid #c2c0c0", paddingBottom:"2px"}}>신랑 어머니</div>
+                                    <div className="font-acnt">
+                                        <span>{invitationState.brmmNm}</span>
+                                    </div>
+                                    <div className="font-acnt">
+                                        <span>{invitationState.brmmBank}&nbsp;</span>
+                                        <span>{invitationState.brmmAcnt}</span>
+                                    </div>
+                                </div>
+                            )}
+                            {invitationState.brdfAcnt && (
+                                <div className="item" style={{border: "1px solid #c2c0c0", margin:"10px", padding:"10px"}}>
+                                    <div className="pink-acnt" style={{borderBottom:"1px solid #c2c0c0", paddingBottom:"2px"}}>신부 아버지</div>
+                                    <div className="font-acnt">
+                                        <span>{invitationState.brdfNm}</span>
+                                    </div>
+                                    <div className="font-acnt">
+                                        <span>{invitationState.brdfBank}&nbsp;</span>
+                                        <span>{invitationState.brdfAcnt}</span>
+                                    </div>
+                                </div>
+                            )}
+                            {invitationState.brdmAcnt && (
+                                <div className="item" style={{border: "1px solid #c2c0c0", margin:"10px", padding:"10px"}}>
+                                    <div className="pink-acnt" style={{borderBottom:"1px solid #c2c0c0", paddingBottom:"2px"}}>신부 어머니</div>
+                                    <div className="font-acnt">
+                                        <span>{invitationState.brdmNm}</span>
+                                    </div>
+                                    <div className="font-acnt">
+                                        <span>{invitationState.brdmBank}&nbsp;</span>
+                                        <span>{invitationState.brdmAcnt}</span>
+                                    </div>
+                                </div>
+                            )}
+                            
+                            
+                        
+                    </section>
+                    )}
+
+                    {/* [방명록]  */}
+                    {invitationState.useGuestbook && (
+                    <section className="guestbook">
+                        <div className="guestbook-empty">
+                            <h2 className="guestbook-title">방명록</h2>
+                            <p className="guestbook-message">
+                            아직 작성된 방명록이 없습니다.<br />
+                            첫 방명록을 작성해주세요.
+                            </p>
+                            <div className="guestbook-buttons">
+                                <button className="btn-outline">전체보기</button>
+                                <button className="btn-primary" onClick={openGuestbookModal}>작성</button>
+                            </div>
+                        </div>
+                    </section>
+                        
+                    )}
+
+                    {/* [안내사항] useInfo 값의 true/false에 따라 이 섹션 활성화/비활성화 */}
+                    {invitationState.useInfo && (
+                    <section className="calendar">
+                    {infoList &&
+                        infoList.map((list, index) => (
+                            <div key={index} style={{marginTop:"30px"}} >
+                                <strong className="title">{list.title || ""}</strong>
+                                {list.imgUrl && (
+                                    <img
+                                    className="bg"
+                                    src={list.imgUrl }
+                                    alt="test"
+                                    style={{ borderRadius: "60px", padding: "30px"}}
+                                    /> 
+                                )}
+                                    
+                                <span className="info">{list.content}</span>
+                                {list.useBtn && (
+                                    <p className="text" >{list.btnTxt}</p> 
+                                )}
+                            </div>
+                    ))}
+                    </section>
+                    )}
+
+
+
+                    {/* useEnding 값의 true/false에 따라 이 섹션 활성화/비활성화화 */}
+                    {invitationState.useEnding && (
+                    <section className="land">
+                        {/* <section className="land" data-aos="fade-up" data-aos-duration="100"> */}
+                        <img className="bg" src={invitationState.endingImage ||bgimg} alt="bg" />
+                        {/* <p className="text">
+                            {invitationState.endingContent}
+                        </p> */}
+                        
+                        <p
+                            className="text"
+                            style={{
+                                // color : color2,
+                                top: endingHg,
+                                wordWrap: "break-word", // 긴 단어를 자동으로 줄바꿈
+                                overflowWrap: "break-word", // 긴 단어가 깨지도록 줄바꿈
+                                whiteSpace: "normal", // 일반 줄바꿈 허용
+                            }}
+                            >
+                            {invitationState.endingContent}
+                        </p>
+                    </section>
+                    )}
+
+                </div>
+
+                )}
+                {/* <!-- // 2024-11-13 미리보기 영역 --> */}
+
+
+
+
+
+
+
+
+
+
+
+            </div>
+            {/* <div className="preview-focus">
+                <label for="" className="switch">
+                    <input type="checkbox" checked />
+                </label>
+                <strong>자동 포커스</strong>
+                <span>(사용하시면 제작하실때 편리합니다.)</span>
+            </div> */}
+
+        </div>
+                            
         
     </div>
   )

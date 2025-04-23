@@ -27,6 +27,7 @@
 .frame::-webkit-scrollbar {display:none;}
 .frame::-webkit-scrollbar-thumb {display:none;}
 
+.create-preview2 {display:none;}
 
 /* 2024-11-13 미리보기 영역 */
 /* 미리보기 메인 */
@@ -374,6 +375,8 @@ input[type="range"]::-moz-range-thumb {height:18px; width:50px; background-color
     .create {padding-right:0;}
     .create-wrap {padding-top:10px; height:auto;}
     .create-preview {display:none;}
+    .create-preview2 {display:none;}
+    .create-preview2.active {display:block; align-content: center;display: flex; justify-content: center; /* 수평 중앙 */  height: 86vh;  }
     .create-contents {padding-bottom:0;}
     .category-body .option {flex-direction:column; gap:8px; margin-bottom:17px;}
     .category-body {padding:30px 0 0;}
