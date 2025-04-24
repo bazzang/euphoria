@@ -252,7 +252,13 @@ export const InvitationProvider = ({ children }) => {
     
 
 
-
+    // 썸네일 위치 조정
+    groomHrz : "50",
+    groomVtc : "50",
+    brideHrz : "50",
+    brideVtc : "50",
+    salutHrz : "50",
+    salutVtc : "50",
 
     
     

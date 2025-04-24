@@ -1,0 +1,54 @@
+.thumbnail-modal {
+    width: 100%;
+    max-width: 500px;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+  }
+  
+  .image-container {
+    width: 100%;
+    height: 300px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  
+  .image-container img {
+    width: 100%;
+    height: 100%;
+    transition: object-position 0.2s ease;
+  }
+  
+  .sliders label {
+    display: block;
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  .sliders input[type="range"] {
+    width: 100%;
+  }
+  
+  .thumbnail-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #333;
+  }
+  
+  .close-btn:hover {
+    color: #999;
+  }

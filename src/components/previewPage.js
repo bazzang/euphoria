@@ -991,7 +991,10 @@ function PreviewPage() {
                                 alt="인사말" 
                                 style={{
                                     visibility: inv.salutPhotoUrl ? "visible" : "hidden",
-                                    
+                                    width: "100%",             // 컨테이너에 맞춤
+                                    height: "300px",           // 원하는 높이
+                                    objectFit: "cover",        // 비율 유지 + 넘치는 부분 잘라냄
+                                    objectPosition: `${inv.salutHrz}% ${inv.salutVtc}%`
                                 }}
                             />
                         </section>
@@ -1008,6 +1011,10 @@ function PreviewPage() {
                                             className="bg"
                                             src={groomImg || ""} 
                                             alt="신랑이미지" 
+                                            style={{
+                                                objectFit: "cover",        // 비율 유지 + 넘치는 부분 잘라냄
+                                                objectPosition: `${inv.groomHrz}% ${inv.groomVtc}%`
+                                            }}
                                         />
                                     </div>
                                     <p className="t1"
@@ -1051,7 +1058,11 @@ function PreviewPage() {
                                 </div>
                                 <div className="item">
                                     <div className="thumb">
-                                        <img className="bg" src={brideImg || ""} alt="" />
+                                        <img className="bg" src={brideImg || ""} alt=""
+                                        style={{
+                                            objectFit: "cover",        // 비율 유지 + 넘치는 부분 잘라냄
+                                            objectPosition: `${inv.brideHrz}% ${inv.brideVtc}%`
+                                        }} />
                                     </div>
                                     <p className="t1"
                                         style={{display:"flex", alignItems:"center", justifyContent:"center", gap:"3px", position:"relative"}}

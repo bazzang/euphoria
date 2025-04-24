@@ -31,6 +31,7 @@ import SmsIcon from './SmsIcon.js';
 import { uploadImageToS3, uploadImagesToS3 } from '../api/S3Uploader.js';
 import GallerySlider from './gallerySlider.js';
 import CircleGallery from './CircleGallery.js';
+import ThumbnailAdjustModal, { openThumbnailModal } from './ThumbnailAbjustModal.js';
 
 
 // import HandwritingTitle from './HandwritingTitle.js'; 
@@ -1451,7 +1452,31 @@ function Create() {
     const Ref = useRef(null);
     const galleryRef = useRef(null);
     
-    
+    // -------------------------------------------------------------------------------------------------
+
+    // *********************************[사진] 위치조정 ***********************************************
+
+    // -------------------------------------------------------------------------------------------------
+    const [thumbnailType, setThumbnailType] = useState("");
+    //  위치 조정 값 추가 
+    const handleThmbModalValue = (ver, hor, type) => {
+        switch(type) {
+            case "salut" : 
+                handleChange("salutHrz", hor);
+                handleChange("salutVtc", ver);
+                break;
+            case "bride" : 
+                handleChange("brideHrz", hor);
+                handleChange("brideVtc", ver);
+                break;
+            case "groom" : 
+                handleChange("groomHrz", hor);
+                handleChange("groomVtc", ver);
+                break;
+            default : 
+                break;
+        }
+    }
 
     
   return (
@@ -1637,6 +1662,8 @@ function Create() {
                             
                             )}
 
+                            
+
                             {!isLoading && isAnimationFinished || !isPopupVisible && (
                             <div className="frame">
 
@@ -1776,13 +1803,24 @@ function Create() {
                                         dangerouslySetInnerHTML={{ __html: invitationState.salutations }}
                                         ></span>
                                     </div>
-                                    <img 
+                                    {/* <img 
                                         src={invitationState.salutPhotoUrl || ""} 
                                         alt="인사말" 
                                         style={{
                                             visibility: invitationState.salutPhotoUrl ? "visible" : "hidden",
-                                            
+                                            height:"300px"
                                         }}
+                                    /> */}
+                                    <img
+                                    src={invitationState.salutPhotoUrl || ""}
+                                    alt="인사말"
+                                    style={{
+                                        visibility: invitationState.salutPhotoUrl ? "visible" : "hidden",
+                                        width: "100%",             // 컨테이너에 맞춤
+                                        height: "300px",           // 원하는 높이
+                                        objectFit: "cover",        // 비율 유지 + 넘치는 부분 잘라냄
+                                        objectPosition: `${invitationState.salutHrz}% ${invitationState.salutVtc}%`
+                                    }}
                                     />
                                 </section>
                                 ) : null}
@@ -1800,6 +1838,10 @@ function Create() {
                                                     alt="신랑이미지" 
                                                     style={{
                                                         visibility: invitationState.groomPhotoUrl ? "visible" : "hidden",
+                                                        width: "100%",             // 컨테이너에 맞춤
+                                                        height: "300px",           // 원하는 높이
+                                                        objectFit: "cover",        // 비율 유지 + 넘치는 부분 잘라냄
+                                                        objectPosition: `${invitationState.groomHrz}% ${invitationState.groomVtc}%`
                                                     }}
                                                 />
                                             </div>
@@ -1854,6 +1896,10 @@ function Create() {
                                                     alt="신부이미지" 
                                                     style={{
                                                         visibility: invitationState.groomPhotoUrl ? "visible" : "hidden",
+                                                        width: "100%",             // 컨테이너에 맞춤
+                                                        height: "300px",           // 원하는 높이
+                                                        objectFit: "cover",        // 비율 유지 + 넘치는 부분 잘라냄
+                                                        objectPosition: `${invitationState.brideHrz}% ${invitationState.brideVtc}%`
                                                     }}
                                                 />
 
@@ -2437,6 +2483,33 @@ function Create() {
                     </div>
 
                     {/* <div className="create-contents"> */}
+
+                    {/* 사진 조정 모달 */}
+                    <ThumbnailAdjustModal
+                        imageSrc={thumbnailType === "salut"
+                            ? invitationState.salutPhotoUrl
+                            : thumbnailType === "groom"
+                            ? invitationState.groomPhotoUrl
+                            : thumbnailType === "bride"
+                            ? invitationState.bridePhotoUrl
+                            : ""}
+                        onApply={({ vertical, horizontal }) => {
+                            switch (thumbnailType) {
+                            case "salut":
+                                handleChange("salutVtc", vertical);
+                                handleChange("salutHrz", horizontal);
+                                break;
+                            case "groom":
+                                handleChange("groomVtc", vertical);
+                                handleChange("groomHrz", horizontal);
+                                break;
+                            case "bride":
+                                handleChange("brideVtc", vertical);
+                                handleChange("brideHrz", horizontal);
+                                break;
+                            }
+                        }}
+                    />
                     <div className={`create-contents ${isPreviewOpen ? 'hidden' : ''}`}>
 
                             <div className="category">
@@ -3310,14 +3383,19 @@ function Create() {
                                                 </div>
                                                 )}
                                             </div>
-                                            {/* <div className="mt-10"><button className="btn-positioning">위치 조정</button></div> */}
+                                            <div className="mt-10">
+                                                <button className="btn-positioning" 
+                                                onClick={() => {setThumbnailType("salut");openThumbnailModal("salut", invitationState.salutPhotoUrl)}}>
+                                                위치 조정</button>
+                                            </div>
                                         </div>
+                                        
                                     </div>
 
                                 </div>
                             )}
                             </div>
-
+                            
 
                             <div className="category">
                                 <div className="category-head" >
@@ -3378,7 +3456,11 @@ function Create() {
                                                 )}
                                                 
                                             </div>
-                                            {/* <div className="mt-10"><button className="btn-positioning">위치 조정</button></div> */}
+                                            <div className="mt-10">
+                                                <button className="btn-positioning" 
+                                                onClick={() => {setThumbnailType("groom");openThumbnailModal("groom", invitationState.groomPhotoUrl)}}>
+                                                위치 조정</button>
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="option">
@@ -3432,7 +3514,11 @@ function Create() {
                                                     </div>
                                                 )}
                                             </div>
-                                            {/* <div className="mt-10"><button className="btn-positioning">위치 조정</button></div> */}
+                                            <div className="mt-10">
+                                                <button className="btn-positioning" 
+                                                onClick={() => {setThumbnailType("bride");openThumbnailModal("bride", invitationState.bridePhotoUrl)}}>
+                                                위치 조정</button>
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="option">
@@ -6152,7 +6238,7 @@ function Create() {
                                 )}
                             </div> */}
 
-
+                            
                             
                             {/* <button className="btn-save" onClick={onClickSaveFiles}>저장</button> */}
                             <FormDialog onSave={handleDialogSave} />
