@@ -2232,8 +2232,13 @@ function Create() {
                                                 id="map"
                                                 style={{ width: "100%", height: `${invitationState.mapHeight}`}}
                                             ></div> */}
-                                            <MapComponent mapId="map2" address={invitationState.weddingHallAddress} mapHeight={invitationState.mapHeight} />
-                                            {invitationState.navigationRemove && (
+                                            <MapComponent 
+                                                mapId="map2" 
+                                                address={invitationState.weddingHallAddress} 
+                                                mapHeight={invitationState.mapHeight} 
+                                                mapFix={invitationState.mapFix}
+                                            />
+                                            {!invitationState.navigationRemove && (
                                                 <div className="map-btns">
                                                     {/* 티맵 */}
                                                     <a 
@@ -4165,7 +4170,13 @@ function Create() {
                                         <div className="option-label">지도 마커</div>
                                         <div className="option-contents">
                                             <div className="map-marker">
-                                                <MapComponent mapId="map1" address={invitationState.weddingHallAddress} onCoordinatesChange={handleCoordinatesChange} mapHeight={invitationState.mapHeight}/>
+                                                <MapComponent 
+                                                    mapId="map1" 
+                                                    address={invitationState.weddingHallAddress} 
+                                                    onCoordinatesChange={handleCoordinatesChange} 
+                                                    mapHeight={invitationState.mapHeight}
+                                                    mapFix={invitationState.mapFix}
+                                                />
                                             </div>
                                         </div>
                                     </div>
@@ -4225,7 +4236,8 @@ function Create() {
                                         <div className="option-contents">
                                             <div className="check-wrap">
                                                 <span className="check">
-                                                    <input type="checkbox" id="map_fix"/>
+                                                    <input type="checkbox" id="map_fix"
+                                                    onChange={(e) => handleChange("mapFix", e.target.checked)}/>
                                                     <label for="map_fix"><i></i>지도 이동 고정</label>
                                                 </span>
                                             </div>
@@ -6997,7 +7009,12 @@ function Create() {
                                     id="map"
                                     style={{ width: "100%", height: `${invitationState.mapHeight}`}}
                                 ></div> */}
-                                <MapComponent mapId="map2" address={invitationState.weddingHallAddress} mapHeight={invitationState.mapHeight} />
+                                <MapComponent 
+                                    mapId="map2" 
+                                    address={invitationState.weddingHallAddress} 
+                                    mapHeight={invitationState.mapHeight} 
+                                    mapFix={invitationState.mapFix}
+                                />
                                 {invitationState.navigationRemove && (
                                     <div className="map-btns">
                                         {/* 티맵 */}

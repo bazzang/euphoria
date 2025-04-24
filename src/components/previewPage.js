@@ -1438,7 +1438,12 @@ function PreviewPage() {
                                                 height: inv.mapHeight || "400px", // 기본 높이
                                             }}
                                         ></div> */}
-                                        <MapComponent mapId="map2" address={inv.weddingHallAddress} mapHeight={inv.mapHeight} />
+                                        <MapComponent 
+                                            mapId="map2" 
+                                            address={inv.weddingHallAddress} 
+                                            mapHeight={inv.mapHeight} 
+                                            mapFix={inv.mapFix}
+                                        />
                                     </div>
                                 </div>
                                 ) : null}

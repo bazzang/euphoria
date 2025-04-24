@@ -1,7 +1,12 @@
 import React, { useEffect, useRef } from "react";
 
-const MapComponent = ({ mapId, address, onCoordinatesChange, mapHeight }) => {
+const MapComponent = ({ mapId, address, onCoordinatesChange, mapHeight, mapFix}) => {
   const mapRef = useRef(null);
+  useEffect(() => {
+    if (mapRef.current) {
+      mapRef.current.setDraggable(!mapFix); // true일 때 고정
+    }
+  }, [mapFix]);
 
   useEffect(() => {
     if (!mapRef.current) {
