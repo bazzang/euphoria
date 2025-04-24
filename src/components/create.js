@@ -1680,6 +1680,7 @@ function Create() {
                             {!isLoading && isAnimationFinished || !isPopupVisible && (
                             <div className="frame">
 
+                                
                                 {/* 메인*/}
                                 <section className="main">
                                     {/* <img className="bg" src={bgimg} alt="bg"/> */}
@@ -3401,11 +3402,11 @@ function Create() {
                                                 </div>
                                                 )}
                                             </div>
-                                            <div className="mt-10">
+                                            {/* <div className="mt-10">
                                                 <button className="btn-positioning" 
                                                 onClick={() => {setThumbnailType("salut");openThumbnailModal("salut", invitationState.salutPhotoUrl)}}>
                                                 위치 조정</button>
-                                            </div>
+                                            </div> */}
                                         </div>
                                         
                                     </div>
@@ -3474,11 +3475,11 @@ function Create() {
                                                 )}
                                                 
                                             </div>
-                                            <div className="mt-10">
+                                            {/* <div className="mt-10">
                                                 <button className="btn-positioning" 
                                                 onClick={() => {setThumbnailType("groom");openThumbnailModal("groom", invitationState.groomPhotoUrl)}}>
                                                 위치 조정</button>
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </div>
                                     <div className="option">
@@ -3532,11 +3533,11 @@ function Create() {
                                                     </div>
                                                 )}
                                             </div>
-                                            <div className="mt-10">
+                                            {/* <div className="mt-10">
                                                 <button className="btn-positioning" 
                                                 onClick={() => {setThumbnailType("bride");openThumbnailModal("bride", invitationState.bridePhotoUrl)}}>
                                                 위치 조정</button>
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </div>
                                     <div className="option">
@@ -3816,7 +3817,7 @@ function Create() {
                                                         )}
                                                     </div>
 
-                                                    <div className="mt-10"><button className="btn-positioning">위치 조정</button></div>
+                                                    {/* <div className="mt-10"><button className="btn-positioning">위치 조정</button></div> */}
                                                 </div>
                                             </div>
 
