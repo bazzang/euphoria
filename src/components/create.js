@@ -1620,7 +1620,7 @@ function Create() {
                                         <div className="guestbook-modal">
                                         <div className="guestbook-header">
                                             <h2>방명록 작성</h2>
-                                            <button className="close-btn" onClick={closeGuestbookModal}>✕</button>
+                                            <button className="guestbook-close-btn" onClick={closeGuestbookModal}>✕</button>
                                         </div>
 
                                         <div className="guestbook-body">
