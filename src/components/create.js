@@ -896,7 +896,20 @@ function Create() {
           const minutes = Math.floor((diffInSeconds % (60 * 60)) / 60);
           const seconds = diffInSeconds % 60;
   
-          setElapsedTime(`${years}년 ${months}개월 ${days}일 ${hours}시간 ${minutes}분 ${seconds}초`);
+        //   setElapsedTime(`${years}년 ${months}개월 ${days}일 ${hours}시간 ${minutes}분 ${seconds}초`);
+        // 조건부로 각 단위를 문자열에 추가
+            const formattedTime = [
+                years > 0 ? `${years}년` : "",
+                months > 0 ? `${months}개월` : "",
+                days > 0 ? `${days}일` : "",
+                hours > 0 ? `${hours}시간` : "",
+                minutes > 0 ? `${minutes}분` : "",
+                seconds > 0 ? `${seconds}초` : "",
+            ]
+            .filter(Boolean) // 빈 문자열 제거
+            .join(" "); // 공백으로 연결
+
+            setElapsedTime(formattedTime);
         } else {
           setElapsedTime("날짜를 입력해주세요.");
         }
