@@ -986,17 +986,20 @@ function PreviewPage() {
                                 dangerouslySetInnerHTML={{ __html: inv.salutations }}
                                 ></span>
                             </div>
-                            <img 
-                                src={inv.salutPhotoUrl || ""} 
+                            {salutImg && (
+                                <img 
+                                src={salutImg || ""} 
                                 alt="인사말" 
                                 style={{
-                                    visibility: inv.salutPhotoUrl ? "visible" : "hidden",
+                                    visibility: salutImg ? "visible" : "hidden",
                                     width: "100%",             // 컨테이너에 맞춤
                                     height: "300px",           // 원하는 높이
                                     objectFit: "cover",        // 비율 유지 + 넘치는 부분 잘라냄
                                     objectPosition: `${inv.salutHrz}% ${inv.salutVtc}%`
                                 }}
-                            />
+                                />
+                            )}
+                            
                         </section>
                         ) : null}
                         
