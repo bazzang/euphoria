@@ -535,7 +535,7 @@ function PreviewPage() {
                     content: {
                         title: inv.kakaoTitle ? inv.kakaoTitle : inv.brideLastName + "❤️" + inv.groomLastName,
                         description: inv.kakaoContent ? inv.kakaoContent : "",
-                        imageUrl: inv.kakaoImg ? inv.kakaoImg : inv.mainImg  , // 대표 이미지
+                        imageUrl: kakaoImg ? kakaoImg : mainImg , // 대표 이미지
                         link: {
                         mobileWebUrl: currentUrl,
                         webUrl: currentUrl
